@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_map_black_24dp"
+            android:title="Map" />
+        <item
+            android:id="@+id/nav_userProfile"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="Profile" />
+
+        <item
+            android:id="@+id/nav_opengate"
+            android:icon="@drawable/ic_vpn_key_black_24dp"
+            android:title="Open Gate" />
+
+    </group>
+
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:icon="@drawable/ic_launch_black_24dp"
+                android:title="Log in" />
+
+            <item
+                android:id="@+id/nav_aboutUS"
+                android:icon="@drawable/ic_power_settings_new_black_24dp"
+                android:title="Log  out" />
+
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_info_outline_black_24dp"
+                android:title="About us" />
+        </menu>
+    </item>
+
+</menu>
