@@ -42,29 +42,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
-
         //Checking if the google services is correctly configured
         if (googleServiceAvailable()) {
-            Toast.makeText(this, "Google Services Available !!", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Google Services Available !!", Toast.LENGTH_LONG).show();
 
 
         } else {
-            Toast.makeText(this, "Google Map Services is not Available !!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Google Services is not Available  !!", Toast.LENGTH_LONG).show();
 
         }
 
         //Displaying the map when the main activity starts
         Home_Map map = new Home_Map();
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.content_main, map, map.getTag()).commit();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.content_main,map,map.getTag());
+        transaction.addToBackStack("Home fragment");
+        transaction.commit();
 
-        /*
-        RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.content_main);
-        LayoutInflater inflater =
-                (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View menuLayout = inflater.inflate(R.layout.fragment_login, mainLayout, true);
-        */
+       // manager.beginTransaction().replace(R.id.content_main, map, map.getTag()).commit();
+
+
     }
 
 
@@ -89,7 +87,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else
+        {
             super.onBackPressed();
         }
     }
@@ -120,9 +120,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
 
+        if (id == R.id.action_login)
+        {
+            Login login = new Login();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.content_main, login, login.getTag()).commit();
+            return true;
+        }
 
 
-        return super.onOptionsItemSelected(item);
+
+
+
+            return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -132,14 +142,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
 
-        if (id == R.id.nav_home) {
-            // Handle the home action
-
+        if(id == R.id.nav_homeMap)
+        {
             Home_Map map = new Home_Map();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.content_main, map, map.getTag()).commit();
-
-        } else if (id == R.id.nav_userProfile) {
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.add(R.id.content_main,map,map.getTag());
+            transaction.addToBackStack("Home fragment");
+            transaction.commit();
+        }
+        else if (id == R.id.nav_userProfile) {
             // Handle the Gallery action
 
             FM = getSupportFragmentManager();
@@ -158,6 +170,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(openGateIntent);
         }
 
+        else if(id == R.id.nav_register){
+
+            Registration registration = new Registration();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.content_main, registration, registration.getTag()).commit();
+        }
+
+        else if(id == R.id.nav_logout)
+        {
+            GlobalVariables gv = ((GlobalVariables)this.getApplicationContext());
+            gv.setUserID("empty");
+
+            Home_Map map = new Home_Map();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.content_main, map, map.getTag()).commit();
+
+            Toast.makeText(this,"Good Bye",Toast.LENGTH_LONG).show();
+
+
+            return true;
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

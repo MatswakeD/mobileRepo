@@ -8,8 +8,10 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -22,9 +24,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dee_kay.myapplication.WcfObjects.Input;
+import com.example.dee_kay.myapplication.WcfObjects.Output;
+import com.example.dee_kay.myapplication.WcfObjects.Parking;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -41,10 +47,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.threepin.fireexit_wcf.Configurator;
+import com.threepin.fireexit_wcf.FireExitClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.dee_kay.myapplication.Login.USER_ID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,6 +75,13 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     static final LatLng Myhome = new LatLng(-26.179948, 27.995744);
 
     Button btnBottom;
+    EditText et_Search;
+
+    Output output;
+    Sessions session;
+    private String User_id = "";
+    private String userIDgv = "";
+    Handler handler;
 
     public Home_Map() {
         // Required empty public constructor
@@ -74,10 +91,51 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //Saving the fragment data
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_first_, container, false);
+        getActivity().setTitle("MAP");
 
-        btnBottom = (Button) mView.findViewById(R.id.button_3);
+        handler = new Handler();
+        session = new Sessions();
+
+
+
+        et_Search = (EditText) mView.findViewById(R.id.et_search);
+        btnBottom = (Button) mView.findViewById(R.id.btnSearch);
+
+        btnBottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(et_Search.getVisibility() == View.VISIBLE)
+                {
+                    Toast.makeText(getActivity(),"Visible now", Toast.LENGTH_LONG).show();
+                    et_Search.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    et_Search.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
+        Bundle b = getArguments();
+        if(b != null){
+            this.User_id = b.getString(USER_ID);
+
+        }
+
+        GlobalVariables gv = ((GlobalVariables)getActivity().getApplicationContext());
+        userIDgv = gv.getUserID();
+
+
 
         return mView;
     }
@@ -86,13 +144,36 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         mapView = (MapView) mView.findViewById(R.id.map);
         if (mapView != null) {
             mapView.onCreate(null);
             mapView.onResume();
             mapView.getMapAsync(this);
+
+
         }
 
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(USER_ID,User_id);
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(savedInstanceState != null)
+        {
+            User_id = savedInstanceState.getString(USER_ID,"");
+        }
+
+            new myAsync().execute();
 
     }
 
@@ -106,6 +187,67 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         }
     }
 
+
+
+    /*
+ * Used for getting parking(s) from the data-store
+ * */
+    class myAsync extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object[] params)
+        {
+
+            FireExitClient client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
+            client.configure(new Configurator("http://tempuri.org/","IService1","Parkings"));
+
+            //passing the input class as a parameter to the service
+            client.addParameter("request","");
+
+
+            output = new Output();
+
+            try {
+                output = client.call(output);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
+            return output;
+        }
+
+        @Override
+        protected void onPostExecute( final Object o) {
+            super.onPostExecute(o);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Output out = (Output)o;
+
+
+                    if(out.parkingList.size() != 0) {
+                        //"For searching a specific location
+                        try {
+
+                            geoLocation();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(getActivity(), "Could not retrieve parkings, please try to load the page", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+    }
+
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getActivity());
@@ -113,8 +255,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         //Initialize google Play Service
-
-
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getActivity(),
                     android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -122,6 +262,10 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                 //Location Permission already granted
                 buildGoogleApiClient();
                 mGoogleMap.setMyLocationEnabled(true);
+
+
+
+
             } else {
                 //Request Location Permission
                 checkLocationPermission();
@@ -130,17 +274,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         else {
             buildGoogleApiClient();
             mGoogleMap.setMyLocationEnabled(true);
+
         }
-
-
-
-        //"For searching a specific location
-        try {
-            geoLocation();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
 
         if(mGoogleMap !=null)
         {
@@ -178,66 +313,82 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         }
 
 
-
         if(mGoogleMap != null){
             mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
 
-                    Intent i = new Intent(getActivity(), Booking.class);
-                    startActivity(i);
-                    ((Activity) getActivity()).overridePendingTransition(0,0);
 
-                    LatLng ll = marker.getPosition();
-                    gotoLocationZoom(ll,17);
+                    if(marker != mCurrLocationMarker)
+                    {
+                        if(!userIDgv.equals("empty"))
+                        {
+                            //Switching to a booking class
+                            Intent i = new Intent(getActivity(), Booking.class);
+                            startActivity(i);
+                            ((Activity) getActivity()).overridePendingTransition(0,0);
+
+                            // LatLng ll = marker.getPosition();
+                            // gotoLocationZoom(ll,17);
+                        }
+                        else
+                        {
+                            Toast.makeText(getActivity(),"User not logged in", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+
                 }
             });
         }
 
     }
 
+
+    /*
+    * Used for zooming the camera
+    * */
     private void gotoLocationZoom(LatLng ll, float zoom)
     {
         CameraUpdate updateCamera = CameraUpdateFactory.newLatLngZoom(ll,zoom);
         mGoogleMap.moveCamera(updateCamera);
     }
 
+    /*
+    * Used for drawing parking(s) on the map
+    * */
     public void geoLocation()throws IOException
     {
         Geocoder gc = new Geocoder(getActivity());
-        String location = "campus square Johannesburg";
-        List<String> parkings = new ArrayList<String>();
 
-        parkings.add("campus square Johannesburg");
-        parkings.add("helen joseph hospital");
-        parkings.add("sabc johannesburg");
-        parkings.add("brixton johannesburg");
+        List<Parking> parkingList =  output.parkingList;
 
 
-      for(int i=0; i < parkings.size(); i++)
-      {
-          List<Address> list = gc.getFromLocationName(parkings.get(i),1);
-          Address address = list.get(0);
-          String locality = address.getFeatureName();
+            for (int i = 0; i < parkingList.size(); i++) {
+                List<Address> list = gc.getFromLocationName(parkingList.get(i).Parking_Name + "" + parkingList.get(i).Parking_City, 1);
+                Address address = list.get(0);
+                String locality = address.getFeatureName();
 
-          // Toast.makeText(getActivity(),locality,Toast.LENGTH_LONG).show();
+                // Toast.makeText(getActivity(),locality,Toast.LENGTH_LONG).show();
 
-          double lat = address.getLatitude();
-          double lng = address.getLongitude();
-          LatLng ll = new LatLng(lat, lng);
+                double lat = address.getLatitude();
+                double lng = address.getLongitude();
+                LatLng ll = new LatLng(lat, lng);
 
-          MarkerOptions markerOptions = new MarkerOptions();
-          markerOptions.position(ll);
-          markerOptions.title("Parking(s) Around").snippet(locality);
-          markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-          OtherOlaces = mGoogleMap.addMarker(markerOptions);
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(ll);
+                markerOptions.title("Parking(s) Around").snippet(locality);
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                OtherOlaces = mGoogleMap.addMarker(markerOptions);
 
-          CameraUpdate updateCamera = CameraUpdateFactory.newLatLngZoom(ll,11);
-          mGoogleMap.moveCamera(updateCamera);
-      }
+                CameraUpdate updateCamera = CameraUpdateFactory.newLatLngZoom(ll, 13);
+                mGoogleMap.moveCamera(updateCamera);
 
+
+            }
 
     }
+
 
 
     protected synchronized void buildGoogleApiClient()
@@ -295,7 +446,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
         //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
 
         //optionally, stop location updates if only current location is needed
         if (mGoogleApiClient != null) {

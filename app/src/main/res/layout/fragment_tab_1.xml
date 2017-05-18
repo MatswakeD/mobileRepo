@@ -57,6 +57,7 @@
 
 
                 <TextView
+                    android:id="@+id/tv_userEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="driver@gmail.com"
@@ -81,17 +82,101 @@
             <GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <TextView/>
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="User information"
+                    android:textColor="@android:color/white"
+                    android:textSize="15dp"
+                    />
 
             </GridLayout>
 
         </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#B0BEC5"
+            android:padding="16dp"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/et_userFirstname"
+                android:layout_width="368dp"
+                android:layout_height="40dp"
+                android:selectAllOnFocus="true"
+                android:background="#455A64"
+                android:text="First Name"
+                android:textColor="@android:color/white"
+                android:textSize="15dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.20" />
+
+
+
+
+            <EditText
+                android:id="@+id/et_userLastName"
+                android:layout_width="368dp"
+                android:layout_height="40dp"
+                android:selectAllOnFocus="true"
+                android:background="#455A64"
+                android:text="Last Name"
+                android:textColor="@android:color/white"
+                android:textSize="15dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.20" />
+
+
+
+            <EditText
+                android:id="@+id/et_ContactNumber"
+                android:layout_width="368dp"
+                android:layout_height="40dp"
+                android:selectAllOnFocus="true"
+                android:background="#455A64"
+                android:text="Contact Number"
+                android:textColor="@android:color/white"
+                android:textSize="15dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.20" />
+
+
+            <EditText
+                android:id="@+id/et_UserAddress"
+                android:layout_width="368dp"
+                android:layout_height="40dp"
+                android:selectAllOnFocus="true"
+                android:background="#455A64"
+                android:text="User Address"
+                android:textColor="@android:color/white"
+                android:textSize="15dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.20" />
+
+
+            <!--<EditText-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:selectAllOnFocus="true"-->
+                <!--android:text="Driver"-->
+                <!--android:textSize="15dp"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--/>-->
+
+
+        </LinearLayout>
 
     </android.support.design.widget.AppBarLayout>
-
-
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -100,10 +185,10 @@
         app:fabSize="normal"
         app:backgroundTint="#03A9F4"
         android:layout_gravity="bottom|end"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginBottom="1dp"
         android:layout_marginEnd="16dp"
-        app:rippleColor="#FFFFFF"
+        app:rippleColor="#03A9F4"
         app:srcCompat="@drawable/ic_border_color_black_24dp"
         android:id="@+id/fab_EditProfile" />
 

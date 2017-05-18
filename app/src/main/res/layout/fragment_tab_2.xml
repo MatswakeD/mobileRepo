@@ -6,25 +6,54 @@
     tools:context="com.example.dee_kay.myapplication.Tab_2">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello Second Tab" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="normal"
-        app:backgroundTint="#03A9F4"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        app:rippleColor="#FFFFFF"
-        app:srcCompat="@drawable/ic_attach_money_black_24dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/fab_addCredits" />
+        android:orientation="vertical"
+        android:background="#B0BEC5"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="95dp">
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="Wallet"
+                android:textColor="@android:color/black"
+                android:textSize="18dp"
+                />
+
+        </GridLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:selectAllOnFocus="true"
+            android:textColorHint="@android:color/black"
+            android:hint="User Amount"
+            android:textSize="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/editText2" />
+
+
+        <Button
+            android:id="@+id/btn_load"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Load"
+            android:textColor="@android:color/black"
+            android:backgroundTint="#00C853"/>
+
+
+    </LinearLayout>
+
 
 </RelativeLayout>

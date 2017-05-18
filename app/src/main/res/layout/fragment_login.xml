@@ -2,61 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="com.example.dee_kay.myapplication.Login">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textColor="#455A64"
-            android:layout_marginTop="20dp"
-            android:textSize="24sp"
-            android:text="Log in form"
-            android:textAlignment="center"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email Address"
-            android:inputType="textEmailAddress"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
-            android:background="#455A64"
-            android:layout_marginTop="8dp"
-            android:padding="10dp"
-            />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
-            android:background="#455A64"
-            android:layout_marginTop="8dp"
-            android:padding="10dp"
-            />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign In"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#03A9F4"/>
-
-
-
-
-    </LinearLayout>
 
 
     <LinearLayout
@@ -66,18 +15,76 @@
         android:gravity="center"
         android:layout_marginBottom="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#455A64"
-            android:text="You dont have an account ?"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign Up"
+            android:textStyle="bold"
             android:textColor="#455A64"
+            android:layout_marginTop="20dp"
+            android:textSize="24sp"
+            android:text="Log in"
+            android:textAlignment="center"/>
+
+        <EditText
+            android:id="@+id/et_EmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:background="#B0BEC5"
+            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            />
+
+        <EditText
+            android:id="@+id/et_Password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:background="#B0BEC5"
+            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            />
+
+        <Button
+            android:id="@+id/btn_SignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:textColor="@android:color/black"
+            android:backgroundTint="#00C853"/>
+
+        <TextView
+            android:id="@+id/tv_loginStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#FFFF"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            android:text="log in status"
+            android:textColor="#00C853"
             android:textStyle="bold"/>
+
+
+
 
     </LinearLayout>
 

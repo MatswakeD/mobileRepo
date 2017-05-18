@@ -5,14 +5,7 @@
     android:layout_height="match_parent">
 
 
-    <!--
-    <Button
-        android:text="Button"
-        android:layout_width="79dp"
-        android:layout_height="40dp"
-        android:id="@+id/btnBook"
-        android:onClick="OpenBookingForm"/>
-       -->
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,13 +14,19 @@
 
 
         <TextView
-            android:id="@+id/tv_tittle"
+            android:id="@+id/tv_clickMe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView for infor window"
+            android:text="Click me to book"
             android:textStyle="bold"
             android:textSize="15sp"
             />
+
+        <TextView
+            android:id="@+id/tv_tittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView for infor window"/>
 
         <TextView
             android:id="@+id/tv_location"
