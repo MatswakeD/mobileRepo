@@ -7,4 +7,5 @@ package com.example.dee_kay.myapplication.WcfObjects;
 public class uProfile
 {
     public String Deactivate;
+    public int Profile_id;
 }

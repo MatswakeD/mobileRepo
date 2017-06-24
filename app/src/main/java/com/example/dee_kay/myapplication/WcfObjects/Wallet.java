@@ -7,7 +7,7 @@ package com.example.dee_kay.myapplication.WcfObjects;
 public class Wallet
 {
     public String AccountNumber ;
-    public double Balance ;
+    public Double Balance ;
     public String Active ;
     public int Wallet_ID ;
 }

@@ -78,9 +78,16 @@ public class Tab_1 extends Fragment {
                      editing = "true";
                      new myAsync().execute();
 
+                     //Capturing User details
                      input.user.User_ID = User_id;
                      input.user.FirstName = et_firstname.getText().toString();
                      input.user.LastName = et_lastname.getText().toString();
+
+                     //Capturing user contact details
+                     input.contact.Contact_Number = et_contacts.getText().toString();
+                     input.contact.Address = et_address.getText().toString();
+
+
                  }
 
 
@@ -116,7 +123,7 @@ public class Tab_1 extends Fragment {
             if(editing.equals("false"))
             {
                 FireExitClient client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
-                client.configure(new Configurator("http://tempuri.org/","IService1","getCredits"));
+                client.configure(new Configurator("http://tempuri.org/","IService1","GetProfile"));
                 //passing the input class as a parameter to the service
                 client.addParameter("request",input);
 
@@ -130,7 +137,7 @@ public class Tab_1 extends Fragment {
                 }
 
             }
-            else
+            else  //edit the user profile
             {
 
                 FireExitClient client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
@@ -149,8 +156,6 @@ public class Tab_1 extends Fragment {
                 }
 
             }
-
-
 
             return output;
         }

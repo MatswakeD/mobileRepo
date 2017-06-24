@@ -10,10 +10,13 @@ public class Input implements Serializable
 {
 
     public User user;
-
+    public Contact contact;
+    public Wallet wallet;
     public Input()
     {
         this.user = new User();
+        this.contact = new Contact();
+        this.wallet = new Wallet();
     }
 
 
