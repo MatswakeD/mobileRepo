@@ -8,7 +8,6 @@ import java.util.List;
  */
 public class Output
 {
-    public String textValue;
     public String Comfirmation;
 
     public int User_ID;

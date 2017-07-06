@@ -88,7 +88,7 @@ public class Registration extends Fragment {
 
                         user.FirstName = et_FirstName.getText().toString();
                         user.LastName = et_LastName.getText().toString();
-                        user.EmailAddress = et_Email.getText().toString();
+                        user.Email = et_Email.getText().toString();
                         user.Password = password;
 
                         //packaging

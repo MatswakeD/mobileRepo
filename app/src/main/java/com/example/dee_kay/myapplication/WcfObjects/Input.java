@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Input implements Serializable
 {
 
+    public static final String AZURE_URL = "http://eparkingservices.cloudapp.net/Service1.svc";
     public User user;
     public Contact contact;
     public Wallet wallet;

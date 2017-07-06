@@ -27,7 +27,8 @@ dependencies {
     })
 
 
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile(name: 'fireexit-wcf', ext: 'aar')
+    compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.google.android.gms:play-services:10.2.1'
@@ -39,11 +40,10 @@ dependencies {
     compile 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
     compile 'me.dm7.barcodescanner:zxing:1.9'
     compile 'gr.pantrif:easy-android-splash-screen:0.0.1'
-    compile (name: 'fireexit-wcf',ext:'aar')
     testCompile 'junit:junit:4.12'
 }
-repositories{
-    flatDir{
+repositories {
+    flatDir {
         dirs 'libs'
     }
 }

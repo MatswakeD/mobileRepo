@@ -72,13 +72,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
     MapView mapView;
     View mView;
-    static final LatLng Myhome = new LatLng(-26.179948, 27.995744);
-
-    Button btnBottom;
-    EditText et_Search;
 
     Output output;
-    Sessions session;
     private String User_id = "";
     private String userIDgv = "";
     Handler handler;
@@ -96,35 +91,10 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_first_, container, false);
-        getActivity().setTitle("MAP");
 
         handler = new Handler();
-        session = new Sessions();
-
-
-
-        et_Search = (EditText) mView.findViewById(R.id.et_search);
-        btnBottom = (Button) mView.findViewById(R.id.btnSearch);
-
-        btnBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(et_Search.getVisibility() == View.VISIBLE)
-                {
-                    Toast.makeText(getActivity(),"Visible now", Toast.LENGTH_LONG).show();
-                    et_Search.setVisibility(View.INVISIBLE);
-                }
-                else
-                {
-                    et_Search.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
 
         Bundle b = getArguments();
         if(b != null){
@@ -134,9 +104,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         GlobalVariables gv = ((GlobalVariables)getActivity().getApplicationContext());
         userIDgv = gv.getUserID();
-
-
-
         return mView;
     }
 
@@ -144,17 +111,12 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         mapView = (MapView) mView.findViewById(R.id.map);
         if (mapView != null) {
             mapView.onCreate(null);
             mapView.onResume();
             mapView.getMapAsync(this);
-
-
         }
-
-
     }
 
     @Override
@@ -187,8 +149,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         }
     }
 
-
-
     /*
  * Used for getting parking(s) from the data-store
  * */
@@ -198,8 +158,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         protected Object doInBackground(Object[] params)
         {
 
-            FireExitClient client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
-            client.configure(new Configurator("http://tempuri.org/","IService1","Parkings"));
+            FireExitClient client = new FireExitClient(Input.AZURE_URL);
+            client.configure(new Configurator("http://tempuri.org/","IService1","GetParkings"));
 
             //passing the input class as a parameter to the service
             client.addParameter("request","");
@@ -212,9 +172,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
-
             return output;
         }
 
@@ -239,13 +196,21 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                     }
                     else
                     {
-                        Toast.makeText(getActivity(), "Could not retrieve parkings, please try to load the page", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Could not retrieve parking(s), please try to load the page", Toast.LENGTH_LONG).show();
                     }
                 }
             });
         }
     }
 
+    /**
+     * Setting Google map type
+     * @param googleMap
+     */
+    protected void setMapType(GoogleMap googleMap)
+    {
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    }
 
 
     @Override
@@ -262,9 +227,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                 //Location Permission already granted
                 buildGoogleApiClient();
                 mGoogleMap.setMyLocationEnabled(true);
-
-
-
 
             } else {
                 //Request Location Permission
@@ -300,6 +262,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                     {
                         tv_tittle.setText(marker.getTitle());
                         tv_location.setText(marker.getSnippet());
+
                     }
                     else {
                         tv_tittle.setText(marker.getTitle());
@@ -323,13 +286,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                     {
                         if(!userIDgv.equals("empty"))
                         {
-                            //Switching to a booking class
-                            Intent i = new Intent(getActivity(), Booking.class);
-                            startActivity(i);
-                            ((Activity) getActivity()).overridePendingTransition(0,0);
 
-                            // LatLng ll = marker.getPosition();
-                            // gotoLocationZoom(ll,17);
                         }
                         else
                         {
@@ -345,44 +302,76 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     }
 
 
-    /*
-    * Used for zooming the camera
-    * */
+    /**
+     * For zooming the camera
+     * @param ll
+     * @param zoom
+     */
     private void gotoLocationZoom(LatLng ll, float zoom)
     {
         CameraUpdate updateCamera = CameraUpdateFactory.newLatLngZoom(ll,zoom);
         mGoogleMap.moveCamera(updateCamera);
+        mGoogleMap.animateCamera(updateCamera);
     }
 
-    /*
-    * Used for drawing parking(s) on the map
-    * */
+
+    /**
+     * Draw parking(s) onto the GoogleMaps
+     * @throws IOException
+     */
     public void geoLocation()throws IOException
     {
         Geocoder gc = new Geocoder(getActivity());
 
         List<Parking> parkingList =  output.parkingList;
+        int parkingSize = parkingList.size();
 
 
-            for (int i = 0; i < parkingList.size(); i++) {
-                List<Address> list = gc.getFromLocationName(parkingList.get(i).Parking_Name + "" + parkingList.get(i).Parking_City, 1);
-                Address address = list.get(0);
-                String locality = address.getFeatureName();
+            for (int i = 0; i < parkingSize; i++) {
+                //List<Address> listA = gc.getFromLocation(28.057293,-26.189586,1);
 
-                // Toast.makeText(getActivity(),locality,Toast.LENGTH_LONG).show();
+                double latt = Double.parseDouble(parkingList.get(i).Coordinates_ltd);
+                double lngg = Double.parseDouble(parkingList.get(i).Coordinates_lng);
 
-                double lat = address.getLatitude();
-                double lng = address.getLongitude();
-                LatLng ll = new LatLng(lat, lng);
+                List<Address> list = gc.getFromLocation(latt, lngg, 1);
 
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(ll);
-                markerOptions.title("Parking(s) Around").snippet(locality);
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                OtherOlaces = mGoogleMap.addMarker(markerOptions);
+                //If did not find the parking by lat-long, the search using parking name
+                if(list.size()== 0)
+                {
+                    list = gc.getFromLocationName(parkingList.get(i).Parking_Name, 1);
+                    Address address = list.get(0);
+                    String locality = address.getSubLocality() + "\n" + address.getLocality() + "\n" + address.getFeatureName();
 
-                CameraUpdate updateCamera = CameraUpdateFactory.newLatLngZoom(ll, 13);
-                mGoogleMap.moveCamera(updateCamera);
+
+                    double lat = address.getLatitude();
+                    double lng = address.getLongitude();
+                    LatLng ll = new LatLng(lat, lng);
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(ll);
+                    markerOptions.title(address.getLocality()).snippet(locality);
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    OtherOlaces = mGoogleMap.addMarker(markerOptions);
+                    gotoLocationZoom(ll,8);
+                }
+                else
+                {
+                    Address address = list.get(0);
+                    String locality = address.getSubLocality() + "\n" + address.getFeatureName();
+
+
+                    double lat = address.getLatitude();
+                    double lng = address.getLongitude();
+                    LatLng ll = new LatLng(lat, lng);
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(ll);
+                    markerOptions.title(address.getLocality()).snippet(locality);
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    OtherOlaces = mGoogleMap.addMarker(markerOptions);
+                    gotoLocationZoom(ll,8);
+
+                }
 
 
             }
@@ -442,13 +431,12 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position").snippet(latLng + "");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
-        //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
+        //zoom in the camera to user current location
+        gotoLocationZoom(latLng,8);
 
-        //optionally, stop location updates if only current location is needed
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }

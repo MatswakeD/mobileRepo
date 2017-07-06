@@ -1,8 +1,10 @@
 package com.example.dee_kay.myapplication;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -53,18 +56,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         //Displaying the map when the main activity starts
-        Home_Map map = new Home_Map();
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.content_main,map,map.getTag());
-        transaction.addToBackStack("Home fragment");
-        transaction.commit();
-
-       // manager.beginTransaction().replace(R.id.content_main, map, map.getTag()).commit();
-
+        setTitle("HOME");
+        FM = getSupportFragmentManager();
+        FT = FM.beginTransaction();
+        FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
 
     }
-
 
     //Checking for google services permissions
     public boolean googleServiceAvailable()
@@ -82,17 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        else
-        {
-            super.onBackPressed();
-        }
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,21 +131,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if(id == R.id.nav_homeMap)
         {
-            Home_Map map = new Home_Map();
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.add(R.id.content_main,map,map.getTag());
-            transaction.addToBackStack("Home fragment");
-            transaction.commit();
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+            ((Activity) this).overridePendingTransition(0,0);
         }
-        else if (id == R.id.nav_userProfile) {
-            // Handle the Gallery action
 
-            FM = getSupportFragmentManager();
-            FT = FM.beginTransaction();
-            FT.replace(R.id.content_main, new TabFragment()).commit();
-
-        } else if (id == R.id.nav_login) {
+         else if (id == R.id.nav_login) {
 
             Login login = new Login();
             FragmentManager manager = getSupportFragmentManager();
@@ -177,6 +155,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             manager.beginTransaction().replace(R.id.content_main, registration, registration.getTag()).commit();
         }
 
+        else if(id == R.id.nav_aboutus){
+
+            Intent openGateIntent = new Intent(this, Tabbed.class);
+            startActivity(openGateIntent);
+        }
+
         else if(id == R.id.nav_logout)
         {
             GlobalVariables gv = ((GlobalVariables)this.getApplicationContext());
@@ -191,10 +175,62 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             return true;
         }
+
+        else if(id == R.id.nav_newProfile){
+
+            Intent profile = new Intent(this, profile_nav_drawer.class);
+            startActivity(profile);
+        }
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+
+
+
+
+            boolean doubleBackToExitPressedOnce = false;
+
+            @Override
+            public void onBackPressed() {
+
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                    return;
+                }
+
+
+
+                if (doubleBackToExitPressedOnce) {
+                    finish();
+                    Toast.makeText(this, "Application closed", Toast.LENGTH_LONG).show();
+                    System.exit(0);
+                    return;
+                }
+
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Tap again to quit", Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 1500);
+                return;
+
+            }
+
+
+
+
+
 }
 
 

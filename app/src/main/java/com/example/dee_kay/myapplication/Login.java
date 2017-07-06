@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,7 @@ public class Login extends Fragment {
     public static final String USER_ID = "ID";
 
     private EditText et_EmailAddress, et_Password;
-    private TextView tv_loginStatus, tv_hearFirstname;
+    private TextView tv_loginStatus;
     Button btn_SignIn;
 
 
@@ -52,7 +53,6 @@ public class Login extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
-        getActivity().setTitle("Log in");
         handler = new Handler();
 
 
@@ -62,7 +62,7 @@ public class Login extends Fragment {
 
 
         tv_loginStatus = (TextView) v.findViewById(R.id.tv_loginStatus);
-        //tv_hearFirstname = (TextView) v.findViewById(R.id.tv_headerFirstname);
+
 
         btn_SignIn = (Button) v.findViewById(R.id.btn_SignIn);
 
@@ -77,7 +77,7 @@ public class Login extends Fragment {
                 String password = et_Password.getText().toString();
 
                 user = new User();
-                user.EmailAddress = email;
+                user.Email = email;
                 user.Password = password;
 
 
@@ -92,7 +92,7 @@ public class Login extends Fragment {
                 }
                 else
                 {
-                    Toast.makeText(getActivity(),"Log in details are required", Toast.LENGTH_LONG).show();
+                    Snackbar.make(v, "Log in details are required", Snackbar.LENGTH_LONG).show();
                     tv_loginStatus.setVisibility(View.VISIBLE);
                     tv_loginStatus.setText("Log in details are required");
 
@@ -101,18 +101,15 @@ public class Login extends Fragment {
             }
         });
 
-
-
         return v ;
     }
 
     class myAsync extends AsyncTask{
-
         @Override
         protected Object doInBackground(Object[] params)
         {
 
-            FireExitClient client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
+            FireExitClient client = new FireExitClient(Input.AZURE_URL);
             client.configure(new Configurator("http://tempuri.org/","IService1","SignIn"));
 
             //passing the input class as a parameter to the service
@@ -157,10 +154,10 @@ public class Login extends Fragment {
 
                             gv.setUserID(User_id);
 
-                            Home_Map fragB = new Home_Map();
-                            fragB.setArguments(b);
-                            getFragmentManager().beginTransaction().replace(R.id.content_main, fragB).commit();
-
+                            //Switching to home
+                            Intent i = new Intent(getActivity(), MainActivity.class);
+                            startActivity(i);
+                            ((Activity) getActivity()).overridePendingTransition(0,0);
                         }
                         Toast.makeText(getActivity(),"Welcome "+ out.user.LastName,Toast.LENGTH_LONG).show();
                     }

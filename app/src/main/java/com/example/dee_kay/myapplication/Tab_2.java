@@ -121,10 +121,9 @@ public class Tab_2 extends Fragment {
             {
 
                 FireExitClient client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
-                client.configure(new Configurator("http://tempuri.org/","IService1","editProfile"));
+                client.configure(new Configurator("http://tempuri.org/","IService1","EditWallet"));
                 //passing the input class as a parameter to the service
                 client.addParameter("request",input);
-
 
                 output = new Output();
                 editing = "false";
@@ -135,6 +134,20 @@ public class Tab_2 extends Fragment {
                     e.printStackTrace();
                 }
 
+                input.user.User_ID = User_id;
+                client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
+                client.configure(new Configurator("http://tempuri.org/","IService1","GetProfile"));
+                //passing the input class as a parameter to the service
+                client.addParameter("request",input);
+
+                output = new Output();
+                editing = "false";
+                try {
+                    output = client.call(output);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             return output;

@@ -11,19 +11,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.support.design.widget.Snackbar;
 import com.example.dee_kay.myapplication.WcfObjects.Input;
 import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
-
-import java.io.IOException;
-
-import static com.example.dee_kay.myapplication.Login.USER_ID;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +31,7 @@ public class Tab_1 extends Fragment {
     private TextView tv_email;
     private EditText et_firstname,et_lastname,et_contacts,et_address;
 
+    private Button btn_Edit_profile;
     Output output;
     Input input;
 
@@ -60,19 +58,18 @@ public class Tab_1 extends Fragment {
         et_contacts = (EditText) v.findViewById(R.id.et_ContactNumber);
         et_address = (EditText) v.findViewById(R.id.et_UserAddress);
 
+        btn_Edit_profile = (Button)v.findViewById(R.id.btn_edit);
         tv_email = (TextView) v.findViewById(R.id.tv_userEmail) ;
 
 
-        getActivity().setTitle("Profile");
 
-        FloatingActionButton myFab = (FloatingActionButton) v.findViewById(R.id.fab_EditProfile);
-        myFab.setOnClickListener(new View.OnClickListener() {
+
+        btn_Edit_profile.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
 
                  if(User_id.equals("empty"))
                  {
-                     Toast.makeText(getActivity(),"User is not logged in",Toast.LENGTH_LONG).show();
+                     Snackbar.make(v, "User not logged in", Snackbar.LENGTH_LONG).show();
                  }
                 else {
                      editing = "true";
@@ -87,11 +84,7 @@ public class Tab_1 extends Fragment {
                      input.contact.Contact_Number = et_contacts.getText().toString();
                      input.contact.Address = et_address.getText().toString();
 
-
                  }
-
-
-
             }
         });
 
@@ -102,13 +95,12 @@ public class Tab_1 extends Fragment {
 
         if(this.User_id.equals("empty"))
         {
-            Toast.makeText(getActivity(),"User is not logged in",Toast.LENGTH_LONG).show();
+            Snackbar.make(v, "User not logged in", Snackbar.LENGTH_LONG).show();
         }else {
             new myAsync().execute();
         }
         return v;
     }
-
 
     /*
 * Used for getting parking(s) from the data-store
@@ -145,6 +137,20 @@ public class Tab_1 extends Fragment {
                 //passing the input class as a parameter to the service
                 client.addParameter("request",input);
 
+                output = new Output();
+                editing = "false";
+                try {
+                    output = client.call(output);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                input.user.User_ID = User_id;
+                client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
+                client.configure(new Configurator("http://tempuri.org/","IService1","GetProfile"));
+                //passing the input class as a parameter to the service
+                client.addParameter("request",input);
 
                 output = new Output();
                 editing = "false";
@@ -170,20 +176,15 @@ public class Tab_1 extends Fragment {
 
                     if(out != null)
                     {
-                        tv_email.setText(out.user.EmailAddress);
+                        tv_email.setText(out.user.Email);
                         et_firstname.setText(out.user.FirstName);
                         et_lastname.setText(out.user.LastName);
                         et_contacts.setText(out.contact.Contact_Number);
                         et_address.setText(out.contact.Address);
 
-//                        if(out.Comfirmation.equals("UPDATED"))
-//                        {
-//                            Toast.makeText(getActivity(),"Updates went through please refresh the page",Toast.LENGTH_LONG).show();
-//                        }
-
                     }else
                     {
-                        Toast.makeText(getActivity(),"User is not logged in",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(),"User is not logged in",Toast.LENGTH_LONG).show();
                     }
 
                 }

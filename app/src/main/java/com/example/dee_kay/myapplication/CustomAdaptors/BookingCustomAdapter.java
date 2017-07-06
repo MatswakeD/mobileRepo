@@ -18,7 +18,7 @@ import com.example.dee_kay.myapplication.R;
 public class BookingCustomAdapter extends ArrayAdapter<String>
 {
 
-     public BookingCustomAdapter(Context context, String[] BOOKINGS ) {
+    public BookingCustomAdapter(Context context, String[] BOOKINGS ) {
         super(context, R.layout.custom_layout,BOOKINGS);
     }
 

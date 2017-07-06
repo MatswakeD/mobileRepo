@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_tabbed"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.dee_kay.myapplication.Tabbed">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:fitsSystemWindows="false">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            app:tabGravity= "fill"
+            android:background="#B0BEC5"
+            app:tabIndicatorColor="#03a9f4"
+            app:tabSelectedTextColor="#000"
+            app:tabTextColor="#000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:tabMode="fixed"
+
+            >
+        </android.support.design.widget.TabLayout>
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            >
+
+        </android.support.v4.view.ViewPager>
+
+
+
+    </LinearLayout>
+
+
+    <android.support.design.widget.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:id="@+id/nav_view"
+        android:background="#80FFFFFF"
+        android:layout_gravity="start"
+        app:menu="@menu/menu_new"
+        app:headerLayout="@layout/header_layout"
+        >
+    </android.support.design.widget.NavigationView>
+
+
+</android.support.v4.widget.DrawerLayout>

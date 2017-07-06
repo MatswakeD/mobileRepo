@@ -1,22 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context="com.example.dee_kay.myapplication.Login">
-
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:layout_marginBottom="16dp">
+    android:background="#ffff"
+    tools:context="com.example.dee_kay.myapplication.Login"
+    android:layout_marginBottom="28dp"
+    android:layout_marginTop="50dp"
+    >
 
 
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,11 +22,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:textStyle="bold"
-            android:textColor="#455A64"
+            android:textColor="#000"
             android:layout_marginTop="20dp"
             android:textSize="24sp"
-            android:text="Log in"
+            android:text="LOG IN"
             android:textAlignment="center"/>
 
         <EditText
@@ -69,7 +62,7 @@
             android:layout_height="wrap_content"
             android:text="Sign In"
             android:textColor="@android:color/black"
-            android:backgroundTint="#00C853"/>
+            android:backgroundTint="#03a9f4"/>
 
         <TextView
             android:id="@+id/tv_loginStatus"

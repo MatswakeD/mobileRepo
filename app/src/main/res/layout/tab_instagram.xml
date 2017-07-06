@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/twitter_layout">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/instagram_swipe_down_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        >
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/instagram_listview"
+            android:dividerHeight="2.0sp"
+            android:divider="@android:color/transparent"
+            android:textColor="@android:color/black"
+            />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>

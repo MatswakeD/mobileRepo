@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:text="Load"
             android:textColor="@android:color/black"
-            android:backgroundTint="#00C853"/>
+            android:backgroundTint="#03a9f4"/>
 
 
     </LinearLayout>

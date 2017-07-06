@@ -4,27 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.dee_kay.myapplication.Home_Map"
-    android:orientation="vertical">
-
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <com.google.android.gms.maps.MapView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map"
-        android:layout_weight="1" />
-
-
-    <Button
-            android:text="Search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/btnSearch"
-            android:backgroundTint="#00C853"
-            />
+    android:orientation="vertical"
+    >
 
     <EditText
         android:id="@+id/et_search"
@@ -35,9 +16,14 @@
         android:hint="Search for parking here"
         android:textColorHint="@android:color/black"
         android:inputType="textCapWords"
-        android:layout_above="@+id/btnSearch"
         android:layout_alignParentStart="true"
         android:visibility="invisible"/>
+
+    <com.google.android.gms.maps.MapView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        android:layout_alignParentTop="true" />
 
 
 </RelativeLayout>

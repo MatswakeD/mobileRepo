@@ -10,7 +10,7 @@ public class User implements Serializable
     public String User_ID;
     public String FirstName;
     public String LastName;
-    public String EmailAddress;
+    public String Email;
     public String Password;
 
 }
