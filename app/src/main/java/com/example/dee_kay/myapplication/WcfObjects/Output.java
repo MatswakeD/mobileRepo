@@ -16,15 +16,22 @@ public class Output
     public Contact contact;
     public uProfile profile;
     public Wallet wallet;
+    public Parking parking;
 
     public List<Parking> parkingList;
+    public List<Book> Booking_List_Old;
+    public List<Book> Booking_List_Active;
     public Output()
     {
         this.parkingList = new ArrayList<>();
+        this.Booking_List_Old = new ArrayList<>();
+        this.Booking_List_Active = new ArrayList<>();
+
         this.user = new User();
         this.User_ID = 0;
 
 
+        this.parking = new Parking();
         this.contact = new Contact();
         this.profile = new uProfile();
         this.wallet = new Wallet();

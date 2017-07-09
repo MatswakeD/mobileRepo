@@ -38,12 +38,14 @@ public class Tab_ParkingList extends Fragment {
     List<Parking> parking_list = null;
     ListView listView;
     Parking parking;
-     private boolean book = false;
+    private boolean book = false;
 
     GlobalVariables gv;
 
     Output output;
     Handler handler;
+
+
     public Tab_ParkingList() {
         // Required empty public constructor
     }
@@ -116,8 +118,6 @@ public class Tab_ParkingList extends Fragment {
 
 
             clickCallBack();
-
-
     }
 
     /**

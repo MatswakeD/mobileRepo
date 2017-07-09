@@ -6,110 +6,175 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.dee_kay.myapplication.Booking"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    android:layout_marginTop="50dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/round"
+        android:weightSum="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:layout_marginTop="20dp"
+            android:textSize="24sp"
+            android:text="BOOKING"
+            android:textAlignment="center"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:background="@drawable/oval"
+            android:hint="Parking Name"
+            android:id="@+id/parking_name"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:background="@drawable/oval"
+            android:hint="Parking City"
+            android:id="@+id/parking_city" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:background="@drawable/oval"
+            android:hint="Parking Agent Name"
+            android:id="@+id/parking_agent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:background="@drawable/oval"
+            android:hint="Number of bay"
+            android:id="@+id/tv_numOfbays" />
+
+        <LinearLayout
+            android:layout_width="343dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="226dp"
+                android:layout_height="35dp"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:background="@drawable/oval"
+                android:hint="Choose parking bay type"
+                android:id="@+id/bayType"
+                android:layout_weight="0.24" />
+
+            <Spinner
+                android:layout_width="38dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:id="@+id/spinner"
+                android:backgroundTint="#000"
+                android:layout_gravity="center_vertical"
+                ></Spinner>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="0.63">
+
+            <TextView
+                android:layout_width="226dp"
+                android:layout_height="35dp"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:background="@drawable/oval"
+                android:hint="Booking Start time"
+                android:id="@+id/booking_startTime"
+                android:layout_weight="0.14" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_schedule_black_24dp"
+                android:background="@drawable/noborder"
+                android:id="@+id/btn_starTime"
+                android:layout_weight="0.05" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="0.63">
+
+            <TextView
+                android:layout_width="226dp"
+                android:layout_height="35dp"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:background="@drawable/oval"
+                android:hint="Booking End time"
+                android:id="@+id/booking_endTime"
+                android:layout_weight="0.14" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_schedule_black_24dp"
+                android:background="@drawable/noborder"
+                android:id="@+id/btn_endTime"
+                android:layout_weight="0.05" />
+
+
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_marginTop="16dp"
-        android:background="#ffff"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="30dp"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_margin="0dp"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/end_layout">
-
-
-
-        <TextView
-            android:text="End Time"
-            android:inputType="text"
-            android:background="#455A64"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:id="@+id/tv_endTime"
-            android:layout_weight="1" />
-
-        <Button
-            android:text="End Time"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:id="@+id/btn_endTime"
-            android:backgroundTint="#03a9f4"
-            android:layout_weight="1" />
-
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/start_layout"
         >
 
-
-        <TextView
-            android:text="Start time"
-            android:inputType="text"
-            android:background="#455A64"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:id="@+id/tv_StartingTime"
-            android:layout_weight="1" />
-
-        <Button
-            android:text="Start Time"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:id="@+id/btn_Starting"
-            android:backgroundTint="#03a9f4"
-            android:layout_weight="1" />
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:layout_marginBottom="16dp"
-        android:weightSum="1">
-
     <Button
-        android:text="Place booking"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="13dp"
-        android:id="@+id/btn_book"
-        android:backgroundTint="#03a9f4"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:gravity="center"
-        android:layout_weight="0.99" />
+            android:text="Place Booking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_book"
+            android:background="@drawable/oval"
+            android:backgroundTint="#03a9f4"
+            android:layout_weight="0.14" />
 
     </LinearLayout>
+
+    </LinearLayout>
+
+
 </RelativeLayout>

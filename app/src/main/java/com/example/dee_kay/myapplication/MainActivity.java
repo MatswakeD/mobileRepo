@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
+
         //Displaying the map when the main activity starts
         setTitle("HOME");
         FM = getSupportFragmentManager();
@@ -114,10 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             manager.beginTransaction().replace(R.id.content_main, login, login.getTag()).commit();
             return true;
         }
-
-
-
-
 
             return super.onOptionsItemSelected(item);
     }

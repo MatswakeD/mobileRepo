@@ -6,8 +6,16 @@ package com.example.dee_kay.myapplication.WcfObjects;
 
 public class Book
 {
+    public String Parking_Name;
+    public String Parking_Subcity;
+    public String Parkng_Fee;
+    public String BookingDate;
+
     public String Booking_ID;
-    public int BookingStartTime;
-    public int BookingEndTime;
+    public String User_ID;
+    public String Parking_ID;
+    public String BookingStartTime;
+    public String BookingEndTime;
+    public String BayType;
     public String Booking_Reference;
 }

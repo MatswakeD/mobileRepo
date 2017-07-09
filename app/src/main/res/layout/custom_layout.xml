@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="Parking Name"
-        android:textSize="15sp"
-        android:layout_marginBottom="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_marginStart="41dp"
-        android:id="@+id/tv_parkingName" />
-
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -36,11 +25,41 @@
         android:layout_alignStart="@+id/tv_parkingName" />
 
     <TextView
-        android:text="parking location"
+        android:text="Parking Fee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
-        android:id="@+id/tv_bookingTime"
+        android:id="@+id/tv_parkingFee"
         android:layout_below="@+id/tv_parkingLocation"
         android:layout_alignStart="@+id/tv_parkingLocation" />
+
+    <TextView
+        android:text="Booking Date/Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:id="@+id/tv_bookingDate"
+        android:layout_below="@+id/tv_parkingFee"
+        android:layout_alignStart="@+id/tv_parkingFee" />
+
+    <TextView
+        android:text="Bay Type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:id="@+id/tv_bayType"
+        android:layout_below="@+id/tv_bookingDate"
+        android:layout_alignStart="@+id/tv_bookingDate" />
+
+    <TextView
+        android:text="Parking Name"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:id="@+id/tv_parkingName"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView" />
+
 </RelativeLayout>

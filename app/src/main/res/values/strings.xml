@@ -17,4 +17,11 @@
 
     <string name="title_activity_profile_nav_drawer">profile_nav_drawer</string>
 
+    <string-array name="StrTypeOfbay">
+        <item>Special Bay</item>
+        <item>Normal Bay</item>
+    </string-array>
+
+
+
 </resources>

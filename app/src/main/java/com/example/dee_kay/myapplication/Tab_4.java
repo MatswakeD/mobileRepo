@@ -1,7 +1,4 @@
 package com.example.dee_kay.myapplication;
-
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-
+/**
+ * This class will be used to show active bookings
+ */
 public class Tab_4 extends Fragment {
 
     public Tab_4() {

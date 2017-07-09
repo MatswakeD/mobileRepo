@@ -152,7 +152,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     /*
  * Used for getting parking(s) from the data-store
  * */
-    class myAsync extends AsyncTask {
+   class myAsync extends AsyncTask {
 
         @Override
         protected Object doInBackground(Object[] params)
@@ -378,8 +378,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
     }
 
-
-
     protected synchronized void buildGoogleApiClient()
     {
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
@@ -509,5 +507,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
 
     }
+
 
 }

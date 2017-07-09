@@ -10,15 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dee_kay.myapplication.R;
+import com.example.dee_kay.myapplication.WcfObjects.Book;
 
 /**
  * Created by DEE-KAY on 2017/05/08.
  */
 
-public class BookingCustomAdapter extends ArrayAdapter<String>
+public class BookingCustomAdapter extends ArrayAdapter<Book>
 {
 
-    public BookingCustomAdapter(Context context, String[] BOOKINGS ) {
+    public BookingCustomAdapter(Context context, Book[] BOOKINGS ) {
         super(context, R.layout.custom_layout,BOOKINGS);
     }
 
@@ -29,16 +30,28 @@ public class BookingCustomAdapter extends ArrayAdapter<String>
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View customView = inflater.inflate(R.layout.custom_layout,parent,false);
 
-        String singleBookingItem = getItem(position);
+        String parkingName = getItem(position).Parking_Name;
+        String location = getItem(position).Parking_Subcity;
+        String parkingFee = getItem(position).Parkng_Fee;
+         String bookingDate = getItem(position).BookingDate;
+        String bayType = getItem(position).BayType;
 
-        ImageView imageView = (ImageView) customView.findViewById(R.id.imageView);
+
         TextView tv_parkingName = (TextView) customView.findViewById(R.id.tv_parkingName);
+        TextView tv_location = (TextView) customView.findViewById(R.id.tv_parkingLocation);
+        TextView tv_parkingFee = (TextView) customView.findViewById(R.id.tv_parkingFee);
+        TextView tv_bookingDate = (TextView) customView.findViewById(R.id.tv_bookingDate);
+        TextView tv_bayType = (TextView) customView.findViewById(R.id.tv_bayType);
 
        /// TextView tv_parkingLocation = (TextView) convertView.findViewById(R.id.tv_parkingLocation);
         //TextView tv_bookingTime = (TextView) convertView.findViewById(R.id.tv_bookingTime);
 
-        imageView.setImageResource(R.drawable.ic_import_contacts_black_24dp);
-        tv_parkingName.setText(singleBookingItem);
+        //imageView.setImageResource(R.drawable.ic_import_contacts_black_24dp);
+        tv_parkingName.setText(parkingName);
+        tv_location.setText(location);
+        tv_parkingFee.setText(parkingFee);
+        tv_bookingDate.setText(bookingDate);
+        tv_bayType.setText(bayType);
 
         return customView;
     }

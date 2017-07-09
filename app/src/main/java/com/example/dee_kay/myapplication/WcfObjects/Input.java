@@ -10,14 +10,17 @@ public class Input implements Serializable
 {
 
     public static final String AZURE_URL = "http://eparkingservices.cloudapp.net/Service1.svc";
+    public String parking_id;
     public User user;
     public Contact contact;
     public Wallet wallet;
+    public Book book;
     public Input()
     {
         this.user = new User();
         this.contact = new Contact();
         this.wallet = new Wallet();
+        this.book = new Book();
     }
 
 
