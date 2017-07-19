@@ -9,6 +9,8 @@ public class GlobalVariables extends Application
 {
     private String userID ="empty";
     private String parking_ID= "empty";
+    private String LoggedIN = "empty";
+    private String LasrName = "empty", Firstname ="empty";
     private static GlobalVariables singleton = null;
 
 
@@ -37,5 +39,29 @@ public class GlobalVariables extends Application
 
     public String getParking_ID() {
         return parking_ID;
+    }
+
+    public String getLasrName() {
+        return LasrName;
+    }
+
+    public void setLasrName(String lasrName) {
+        LasrName = lasrName;
+    }
+
+    public String getFirstname() {
+        return Firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        Firstname = firstname;
+    }
+
+    public String getLoggedIN() {
+        return LoggedIN;
+    }
+
+    public void setLoggedIN(String loggedIN) {
+        LoggedIN = loggedIN;
     }
 }

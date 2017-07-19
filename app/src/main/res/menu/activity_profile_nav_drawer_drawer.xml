@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-
     <group android:checkableBehavior="single">
 
+        <item
+            android:id="@+id/nav_profilee"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="Account" />
         <item
             android:id="@+id/nav_profile_home"
             android:icon="@drawable/ic_map_black_24dp"
@@ -12,26 +14,38 @@
         <item
             android:id="@+id/nav_booking"
             android:icon="@drawable/ic_collections_bookmark_black_24dp"
-            android:title="Bookings" />
+            android:title="Bookings"
+            />
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_history_black_24dp"
-            android:title="History" />
+            android:title="History"
+            android:visible="false"/>
 
     </group>
 
     <item android:title="Access your account">
         <menu>
-            <item
-                android:id="@+id/nav_login_profile"
-                android:icon="@drawable/ic_exit_to_app_black_24dp"
-                android:title="Log in" />
 
+
+
+            <item
+                android:id="@+id/nav_activate_profile"
+                android:icon="@drawable/ic_check_circle_black_24dp"
+                android:title="Activate Profile"
+                />
+
+
+            <item
+                android:id="@+id/nav_Deactivate"
+                android:icon="@drawable/ic_close_black_24dp"
+                android:title="Deactivate Profile" />
 
             <item
                 android:id="@+id/nav_logout_profile"
                 android:icon="@drawable/ic_power_settings_new_black_24dp"
                 android:title="Log out" />
+
         </menu>
     </item>
 

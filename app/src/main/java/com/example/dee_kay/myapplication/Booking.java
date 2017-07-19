@@ -35,17 +35,16 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
 
     ImageView btn_start, btn_end;
     private Button btn_book;
-    TextView tv_parkingName, tv_parkingCity,tv_parking_agent,tv_numOfbay, tv_chooseBaytype,tv_start,tv_end;
+    TextView tv_parkingName, tv_parkingCity,tv_parking_agent,tv_numOfbay,tv_start,tv_end;
     int hour, minute,endHour,endMinute, hourFinal,minuteFinal, end_hourFinal,end_minuteFinal;
 
-    private String BayType = "";
     private boolean book = false;
 
     private Output output;
     private Input input;
     private Handler handler;
 
-    private String choosenBaytype, bookingStartTime,bookingEndTime;
+    private String bookingStartTime,bookingEndTime;
     private boolean Booked = false;
 
     @Override
@@ -56,7 +55,6 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
         gv = ((GlobalVariables)getBaseContext().getApplicationContext());
         handler =  new Handler();
 
-        spinner = (Spinner) findViewById(R.id.spinner);
         adapter = ArrayAdapter.createFromResource(this,R.array.StrTypeOfbay,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -70,8 +68,6 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
         btn_start = (ImageView) findViewById(R.id.btn_starTime);
         btn_end = (ImageView) findViewById(R.id.btn_endTime);
         btn_book = (Button) findViewById(R.id.btn_book);
-        tv_chooseBaytype = (TextView) findViewById(R.id.bayType);
-
 
         btn_book.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +76,6 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
                 if(tv_start.getText().length() != 0 || tv_end.getText().length() !=0) {
                     input = new Input();
                     input.book.User_ID = gv.getUserID();
-                    input.book.BayType = choosenBaytype;
                     input.book.Parking_ID = gv.getParking_ID();
                     input.book.BookingStartTime = bookingStartTime;
                     input.book.BookingEndTime = bookingEndTime;
@@ -94,40 +89,6 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
             }
         });
 
-        //Setting the adapter
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(),parent.getItemIdAtPosition(position)+ " selected",Toast.LENGTH_LONG).show();
-
-
-                BayType = String.valueOf(parent.getItemIdAtPosition(position));
-
-                int value = Integer.parseInt(BayType);
-                if(value == 0)
-                {
-                    tv_chooseBaytype.setText("Special");
-                    choosenBaytype = "Special";
-                }
-                else if(value == 1)
-                {
-                    tv_chooseBaytype.setText("Normal");
-                    choosenBaytype = "Normal";
-                }
-                else
-                {
-                    tv_chooseBaytype.setText("Choose Bay Type");
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         //Handling the timer images/buttons
         btn_start.setOnClickListener(new View.OnClickListener() {
@@ -246,9 +207,17 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
                     if(out.parking != null) {
                         //"For searching a specific location
 
-                        tv_parkingName.setText(out.parking.Parking_Name);
-                        tv_parkingCity.setText(out.parking.Parking_City);
-                        tv_numOfbay.setText(out.parking.Number_Of_bays + "");
+                        if(out.Comfirmation == "True")
+                        {
+                            Toast.makeText(getApplicationContext(), "Booking was successful.", Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            tv_parkingName.setText(out.parking.Parking_Name);
+                            tv_parkingCity.setText(out.parking.Parking_City);
+                            tv_numOfbay.setText(out.parking.Number_Of_bays + "");
+                        }
+
 
                     }
                     else

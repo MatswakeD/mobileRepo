@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,12 +38,6 @@ public class Tab_3 extends Fragment {
     Output output;
     Handler  handler;
 
-
-    String[] NAMES = {"Big B","Dimakatso", "Athule", "Nancy", "Pinkie", "Kgantshi", "A",
-            "B","C", "D", "E", "F", "G", "H", "I"};
-    String[] LOCATIONS = {"A","B", "C", "D", "E", "F"};
-    String[] DATES = {"1","2", "3", "4", "5", "6"};
-
     public Tab_3() {
         // Required empty public constructor
     }
@@ -53,9 +48,30 @@ public class Tab_3 extends Fragment {
         // Inflate the layout for this fragment
 
         handler = new Handler();
+        input = new Input();
         gv = ((GlobalVariables)getActivity().getApplicationContext());
         input.book.User_ID = gv.getUserID();
         View v = inflater.inflate(R.layout.fragment_tab_3, container, false);
+
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_active_bookings);
+       swipeRefreshLayout.setColorSchemeResources(R.color.refresh1,R.color.refresh2,R.color.refresh);
+
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                swipeRefreshLayout.setRefreshing(true);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                        new myAsync().execute();
+                    }
+                }, 2000);
+            }
+        });
+
 
         //Getting the booking of this user from the db
         new myAsync().execute();

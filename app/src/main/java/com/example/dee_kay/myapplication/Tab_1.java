@@ -22,15 +22,17 @@ import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
 
+import java.util.Locale;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Tab_1 extends Fragment {
 
 
-    private TextView tv_email;
+    private TextView tv_email,tv_profile_status;
     private EditText et_firstname,et_lastname,et_contacts,et_address;
-
+    View v;
     private Button btn_Edit_profile;
     Output output;
     Input input;
@@ -48,7 +50,7 @@ public class Tab_1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_tab_1, container, false);
+        v = inflater.inflate(R.layout.fragment_tab_1, container, false);
 
         input = new Input();
         handler = new Handler();
@@ -60,7 +62,7 @@ public class Tab_1 extends Fragment {
 
         btn_Edit_profile = (Button)v.findViewById(R.id.btn_edit);
         tv_email = (TextView) v.findViewById(R.id.tv_userEmail) ;
-
+        tv_profile_status = (TextView) v.findViewById(R.id.tv_profile_status) ;
 
 
 
@@ -102,9 +104,9 @@ public class Tab_1 extends Fragment {
         return v;
     }
 
-    /*
-* Used for getting parking(s) from the data-store
-* */
+    /**
+     * Used for fetching data from the db
+     */
     class myAsync extends AsyncTask {
 
         @Override
@@ -162,7 +164,6 @@ public class Tab_1 extends Fragment {
                 }
 
             }
-
             return output;
         }
 
@@ -174,17 +175,23 @@ public class Tab_1 extends Fragment {
                 public void run() {
                     Output out = (Output)o;
 
-                    if(out != null)
-                    {
-                        tv_email.setText(out.user.Email);
-                        et_firstname.setText(out.user.FirstName);
-                        et_lastname.setText(out.user.LastName);
-                        et_contacts.setText(out.contact.Contact_Number);
-                        et_address.setText(out.contact.Address);
+                    System.out.println(out.profile.Deactivate);
+                    if(!out.profile.Deactivate.toUpperCase(Locale.ENGLISH).equals("DEACTIVATED")) {
+                        if (out != null) {
+                            tv_email.setText(out.user.Email);
+                            et_firstname.setText(out.user.FirstName);
+                            et_lastname.setText(out.user.LastName);
+                            et_contacts.setText(out.contact.Contact_Number);
+                            et_address.setText(out.contact.Address);
 
+                        } else {
+                            Toast.makeText(getActivity(),"User is not logged in",Toast.LENGTH_LONG).show();
+                        }
                     }else
                     {
-                        //Toast.makeText(getActivity(),"User is not logged in",Toast.LENGTH_LONG).show();
+                        tv_profile_status.setVisibility(View.VISIBLE);
+                        tv_profile_status.setText("Profile is deactivated");
+
                     }
 
                 }

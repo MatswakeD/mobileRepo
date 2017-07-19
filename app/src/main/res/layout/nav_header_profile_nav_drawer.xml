@@ -21,6 +21,7 @@
         android:src="@drawable/ic_person_black2_24dp" />
 
     <TextView
+        android:id="@+id/nav_header_tvLastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"

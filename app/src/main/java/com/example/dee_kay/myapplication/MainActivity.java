@@ -16,12 +16,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.dee_kay.myapplication.WcfObjects.Input;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
         {
 
+            NavigationView navigationView;
             FragmentManager FM;
             FragmentTransaction FT;
 
@@ -41,9 +44,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        GlobalVariables gv = ((GlobalVariables)getBaseContext().getApplicationContext());
 
+        String userID =  gv.getUserID();
+        if(userID == "empty")
+        {
+            navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
+            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+            navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+
+        }
+        else
+        {
+            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
+            navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+        }
 
         //Checking if the google services is correctly configured
         if (googleServiceAvailable()) {
@@ -115,8 +132,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             manager.beginTransaction().replace(R.id.content_main, login, login.getTag()).commit();
             return true;
         }
+        if (id == R.id.action_exit)
+        {
+            finish();
+            return true;
+        }
 
-            return super.onOptionsItemSelected(item);
+
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -144,6 +167,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent openGateIntent = new Intent(this, OpenGate.class);
             startActivity(openGateIntent);
         }
+        else if(id == R.id.nav_nfc){
+
+            Intent nfc = new Intent(this, NFCtag.class);
+            startActivity(nfc);
+        }
+
 
         else if(id == R.id.nav_register){
 
@@ -167,8 +196,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.content_main, map, map.getTag()).commit();
 
-            Toast.makeText(this,"Good Bye",Toast.LENGTH_LONG).show();
-
+            Toast.makeText(this,"Good Bye "+ gv.getLasrName() ,Toast.LENGTH_LONG).show();
+            navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
 
             return true;
         }
@@ -184,12 +213,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
-
-
-
 
             boolean doubleBackToExitPressedOnce = false;
 

@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#03a9f4"
+            android:background="#B0BEC5"
             android:gravity="center">
 
             <GridLayout
@@ -95,79 +95,70 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#B0BEC5"
+            android:background="@drawable/round"
             android:padding="16dp"
             android:weightSum="1">
 
             <EditText
                 android:id="@+id/et_userFirstname"
-                android:layout_width="368dp"
-                android:layout_height="40dp"
-                android:selectAllOnFocus="true"
-                android:background="#455A64"
-                android:text="First Name"
-                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColorHint="@android:color/black"
+                android:gravity="center"
+                android:hint="First name"
                 android:textSize="15dp"
+                android:background="@drawable/rightroundcolor"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="0.20" />
-
-
-
+                />
 
             <EditText
                 android:id="@+id/et_userLastName"
-                android:layout_width="368dp"
-                android:layout_height="40dp"
-                android:selectAllOnFocus="true"
-                android:background="#455A64"
-                android:text="Last Name"
-                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColorHint="@android:color/black"
+                android:gravity="center"
+                android:hint="Last name"
                 android:textSize="15dp"
+                android:background="@drawable/rightroundcolor"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="0.20" />
-
+                />
 
 
             <EditText
                 android:id="@+id/et_ContactNumber"
-                android:layout_width="368dp"
-                android:layout_height="40dp"
-                android:selectAllOnFocus="true"
-                android:background="#455A64"
-                android:text="Contact Number"
-                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColorHint="@android:color/black"
+                android:gravity="center"
+                android:hint="Cell phone"
                 android:textSize="15dp"
+                android:background="@drawable/rightroundcolor"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="0.20" />
+                />
 
+            <EditText
+                android:id="@+id/et_telephone"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColorHint="@android:color/black"
+                android:gravity="center"
+                android:hint="Telephone"
+                android:textSize="15dp"
+                android:background="@drawable/rightroundcolor"
+                android:layout_marginBottom="10dp"
+                />
 
             <EditText
                 android:id="@+id/et_UserAddress"
-                android:layout_width="368dp"
-                android:layout_height="40dp"
-                android:selectAllOnFocus="true"
-                android:background="#455A64"
-                android:text="User Address"
-                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColorHint="@android:color/black"
+                android:gravity="center"
+                android:hint="Address"
                 android:textSize="15dp"
+                android:background="@drawable/rightroundcolor"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="0.20" />
-
-
-            <!--<EditText-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:selectAllOnFocus="true"-->
-                <!--android:text="Driver"-->
-                <!--android:textSize="15dp"-->
-                <!--android:layout_marginBottom="10dp"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--/>-->
-
+                />
             <Button
                 android:id="@+id/btn_edit"
                 android:layout_width="match_parent"
@@ -176,8 +167,23 @@
                 android:textColor="@android:color/black"
                 android:backgroundTint="#03a9f4"/>
 
+            <TextView
+                android:id="@+id/tv_profile_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile status"
+                android:layout_gravity="center"
+                android:textStyle="normal"
+                android:layout_margin="2dp"
+                android:layout_marginBottom="0dp"
+                android:visibility="invisible"
+                android:textColor="#d50000"/>
+
+
 
         </LinearLayout>
+
+
 
     </android.support.design.widget.AppBarLayout>
 

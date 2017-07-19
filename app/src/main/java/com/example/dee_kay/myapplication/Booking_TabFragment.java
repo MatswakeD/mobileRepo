@@ -20,7 +20,7 @@ public class Booking_TabFragment extends Fragment {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
-    public static int int_items = 2;
+    public static int items = 2;
 
     public Booking_TabFragment() {
         // Required empty public constructor

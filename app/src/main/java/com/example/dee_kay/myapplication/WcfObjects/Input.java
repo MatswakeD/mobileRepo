@@ -15,12 +15,14 @@ public class Input implements Serializable
     public Contact contact;
     public Wallet wallet;
     public Book book;
+    public VehicleJson vehicle;
     public Input()
     {
         this.user = new User();
         this.contact = new Contact();
         this.wallet = new Wallet();
         this.book = new Book();
+        this.vehicle = new VehicleJson();
     }
 
 

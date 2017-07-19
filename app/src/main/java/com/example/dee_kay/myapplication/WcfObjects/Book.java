@@ -16,6 +16,5 @@ public class Book
     public String Parking_ID;
     public String BookingStartTime;
     public String BookingEndTime;
-    public String BayType;
     public String Booking_Reference;
 }

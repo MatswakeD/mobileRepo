@@ -109,12 +109,6 @@ public class Tabbed extends AppCompatActivity implements TabLayout.OnTabSelected
                         layout.closeDrawer(GravityCompat.START);
                         break;
 
-                    case R.id.nav_login_profile:
-                        Toast.makeText(Tabbed.this, "login pro", Toast.LENGTH_LONG).show();
-                        item.setChecked(true);
-                        layout.closeDrawer(GravityCompat.START);
-                        break;
-
                 }
                 return false;
             }

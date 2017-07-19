@@ -4,9 +4,21 @@
     android:layout_height="match_parent"
     tools:context="com.example.dee_kay.myapplication.Tab_4">
 
-    <TextView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_old_bookings"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        >
+
+    <ListView
+        android:background="#B0BEC5"
+        android:id="@+id/listView_ActiveBookings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

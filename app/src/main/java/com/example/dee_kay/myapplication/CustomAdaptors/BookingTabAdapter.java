@@ -9,6 +9,7 @@ import com.example.dee_kay.myapplication.Tab_2;
 import com.example.dee_kay.myapplication.Tab_3;
 import com.example.dee_kay.myapplication.Tab_4;
 
+import static com.example.dee_kay.myapplication.Booking_TabFragment.items;
 import static com.example.dee_kay.myapplication.TabFragment.int_items;
 
 /**
@@ -36,7 +37,7 @@ public class BookingTabAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return int_items;
+        return items;
     }
 
     public CharSequence getPageTitle(int position) {

@@ -8,6 +8,7 @@ import android.widget.Switch;
 import com.example.dee_kay.myapplication.Tab_1;
 import com.example.dee_kay.myapplication.Tab_2;
 import com.example.dee_kay.myapplication.Tab_3;
+import com.example.dee_kay.myapplication.Tab_5_Vehicle;
 
 import static com.example.dee_kay.myapplication.TabFragment.int_items;
 
@@ -32,6 +33,9 @@ public class MyAdapter extends FragmentPagerAdapter
             case 1: {
                 return new Tab_2();
             }
+            case 2: {
+                return new Tab_5_Vehicle();
+            }
 
         }
         return null;
@@ -51,6 +55,10 @@ public class MyAdapter extends FragmentPagerAdapter
             case 1: {
                 return "Credits";
             }
+            case 2: {
+                return "Vehicle";
+            }
+
 
         }
         return null;

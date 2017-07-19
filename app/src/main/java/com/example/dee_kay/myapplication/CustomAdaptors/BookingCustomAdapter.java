@@ -33,25 +33,20 @@ public class BookingCustomAdapter extends ArrayAdapter<Book>
         String parkingName = getItem(position).Parking_Name;
         String location = getItem(position).Parking_Subcity;
         String parkingFee = getItem(position).Parkng_Fee;
-         String bookingDate = getItem(position).BookingDate;
-        String bayType = getItem(position).BayType;
+        String bookingDate = getItem(position).BookingDate;
 
 
         TextView tv_parkingName = (TextView) customView.findViewById(R.id.tv_parkingName);
         TextView tv_location = (TextView) customView.findViewById(R.id.tv_parkingLocation);
         TextView tv_parkingFee = (TextView) customView.findViewById(R.id.tv_parkingFee);
         TextView tv_bookingDate = (TextView) customView.findViewById(R.id.tv_bookingDate);
-        TextView tv_bayType = (TextView) customView.findViewById(R.id.tv_bayType);
-
-       /// TextView tv_parkingLocation = (TextView) convertView.findViewById(R.id.tv_parkingLocation);
-        //TextView tv_bookingTime = (TextView) convertView.findViewById(R.id.tv_bookingTime);
 
         //imageView.setImageResource(R.drawable.ic_import_contacts_black_24dp);
         tv_parkingName.setText(parkingName);
         tv_location.setText(location);
         tv_parkingFee.setText(parkingFee);
         tv_bookingDate.setText(bookingDate);
-        tv_bayType.setText(bayType);
+
 
         return customView;
     }

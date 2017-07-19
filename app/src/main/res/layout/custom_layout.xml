@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -43,15 +44,6 @@
         android:layout_alignStart="@+id/tv_parkingFee" />
 
     <TextView
-        android:text="Bay Type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:id="@+id/tv_bayType"
-        android:layout_below="@+id/tv_bookingDate"
-        android:layout_alignStart="@+id/tv_bookingDate" />
-
-    <TextView
         android:text="Parking Name"
         android:textStyle="bold"
         android:textSize="15sp"
@@ -61,5 +53,6 @@
         android:id="@+id/tv_parkingName"
         android:layout_alignTop="@+id/imageView"
         android:layout_toEndOf="@+id/imageView" />
+
 
 </RelativeLayout>

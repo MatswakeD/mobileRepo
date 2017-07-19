@@ -17,7 +17,7 @@ public class Output
     public uProfile profile;
     public Wallet wallet;
     public Parking parking;
-
+    public VehicleJson vehicle ;
     public List<Parking> parkingList;
     public List<Book> Booking_List_Old;
     public List<Book> Booking_List_Active;
@@ -35,5 +35,6 @@ public class Output
         this.contact = new Contact();
         this.profile = new uProfile();
         this.wallet = new Wallet();
+        this.vehicle = new VehicleJson();
     }
 }

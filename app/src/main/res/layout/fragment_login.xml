@@ -2,12 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="#ffff"
     tools:context="com.example.dee_kay.myapplication.Login"
     android:layout_marginBottom="28dp"
     android:layout_marginTop="50dp"
     >
-
 
 
     <LinearLayout
@@ -16,6 +14,7 @@
         android:layout_marginTop="27dp"
         android:orientation="vertical"
         android:padding="16dp"
+        android:background="@drawable/round"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
@@ -33,28 +32,34 @@
         <EditText
             android:id="@+id/et_EmailAddress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email Address"
+            android:layout_height="35dp"
+            android:selectAllOnFocus="true"
+            android:textColorHint="@android:color/black"
+            android:gravity="center"
             android:inputType="textEmailAddress"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
-            android:background="@drawable/oval"
-            android:layout_marginTop="8dp"
-            android:padding="10dp"
-            />
+            android:hint="Email Address"
+            android:textSize="15dp"
+            android:background="@drawable/rightroundcolor"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+             />
+
 
         <EditText
             android:id="@+id/et_Password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
+            android:selectAllOnFocus="true"
+            android:inputType="numberPassword"
+            android:textColorHint="@android:color/black"
+            android:gravity="center"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
-            android:background="@drawable/oval"
-            android:layout_marginTop="8dp"
-            android:padding="10dp"
-            />
+            android:textSize="15dp"
+            android:background="@drawable/rightroundcolor"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+             />
+
 
         <Button
             android:id="@+id/btn_SignIn"
@@ -62,7 +67,6 @@
             android:layout_height="wrap_content"
             android:text="Sign In"
             android:layout_margin="8dp"
-            android:background="@drawable/oval"
             android:textColor="@android:color/black"
             android:backgroundTint="#03a9f4"/>
 
