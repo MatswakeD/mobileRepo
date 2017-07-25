@@ -46,9 +46,6 @@
             </intent-filter>
         </activity>
 
-
-
-
         <!-- <activity -->
         <!-- android:name=".Splash" > -->
         <!-- &lt;!&ndash;android:screenOrientation="portrait"&ndash;&gt; -->
@@ -79,7 +76,7 @@
             android:label="@string/title_activity_profile_nav_drawer"
             android:theme="@style/AppTheme" />
         <activity android:name=".Tabbed" />
-        <activity android:name=".NFCtag"></activity>
+        <activity android:name=".NFC_TAG"></activity>
     </application>
 
 </manifest>

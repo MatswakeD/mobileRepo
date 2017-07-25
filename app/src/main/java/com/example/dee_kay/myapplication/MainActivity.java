@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(id == R.id.nav_nfc){
 
-            Intent nfc = new Intent(this, NFCtag.class);
+            Intent nfc = new Intent(this, NFC_TAG.class);
             startActivity(nfc);
         }
 

@@ -16,6 +16,11 @@ public class Input implements Serializable
     public Wallet wallet;
     public Book book;
     public VehicleJson vehicle;
+    public Parking parking;
+    public String choosenHours;
+    public String Done;
+
+
     public Input()
     {
         this.user = new User();

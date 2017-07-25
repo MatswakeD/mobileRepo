@@ -23,8 +23,12 @@ import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class Booking extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
 
@@ -95,6 +99,8 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
             @Override
             public void onClick(View v) {
                 Calendar c = Calendar.getInstance();
+                //c.setTimeZone(TimeZone.getTimeZone("UTC"));
+
                 hour = c.get(Calendar.HOUR_OF_DAY);
                 minute = c.get(Calendar.MINUTE);
 
@@ -112,6 +118,9 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
             public void onClick(View v) {
 
                 Calendar c = Calendar.getInstance();
+                //c.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+
                 endHour = c.get(Calendar.HOUR_OF_DAY);
                 endMinute = c.get(Calendar.MINUTE);
 
@@ -137,13 +146,38 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
         end_minuteFinal = minute;
 
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hmm");
+        SimpleDateFormat outputFmt = new SimpleDateFormat("HH:mm:ss aa");
+
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        outputFmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+
         if (book == true) {
-            tv_start.setText(hourFinal + ":" + minuteFinal);
-            bookingStartTime = hourFinal + ":" + minuteFinal;
+
+            try {
+                bookingStartTime = hourFinal +""+ minuteFinal ;
+                Date date = dateFormat.parse(bookingStartTime);
+
+                bookingStartTime = outputFmt.format(date);
+                tv_start.setText(bookingStartTime);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             book = false;
         } else if (book == false) {
-            tv_end.setText(end_hourFinal + ":" + end_minuteFinal);
-            bookingEndTime = end_hourFinal + ":" + end_minuteFinal;
+            try {
+                bookingEndTime = end_hourFinal +""+ end_minuteFinal ;
+                Date date = dateFormat.parse(bookingEndTime);
+
+                bookingEndTime = outputFmt.format(date);
+                tv_end.setText(bookingEndTime);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
 
 
