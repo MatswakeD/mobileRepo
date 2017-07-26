@@ -141,17 +141,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="0dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
 
     <Button
             android:text="Place Booking"
-            android:layout_width="wrap_content"
+            android:layout_width="335dp"
             android:layout_height="wrap_content"
             android:id="@+id/btn_book"
             android:background="@drawable/oval"
-            android:backgroundTint="#03a9f4"
-            android:layout_weight="0.14" />
+            android:backgroundTint="#03a9f4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:visibility="invisible"
+            android:background="@drawable/oval"
+            android:hint="Parking Name"
+            android:id="@+id/tv_bookingStatus"/>
 
     </LinearLayout>
 

@@ -39,7 +39,7 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
 
     ImageView btn_start, btn_end;
     private Button btn_book;
-    TextView tv_parkingName, tv_parkingCity,tv_parking_agent,tv_numOfbay,tv_start,tv_end;
+    TextView tv_parkingName, tv_parkingCity,tv_parking_agent,tv_numOfbay,tv_start,tv_end,tv_bookingStatus;
     int hour, minute,endHour,endMinute, hourFinal,minuteFinal, end_hourFinal,end_minuteFinal;
 
     private boolean book = false;
@@ -68,6 +68,8 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
         tv_parkingCity = (TextView) findViewById(R.id.parking_city);
         tv_parking_agent = (TextView) findViewById(R.id.parking_agent);
 
+
+        tv_bookingStatus = (TextView) findViewById(R.id.tv_bookingStatus);
         tv_numOfbay= (TextView) findViewById(R.id.tv_numOfbays);
         btn_start = (ImageView) findViewById(R.id.btn_starTime);
         btn_end = (ImageView) findViewById(R.id.btn_endTime);
@@ -146,37 +148,37 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
         end_minuteFinal = minute;
 
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("hmm");
-        SimpleDateFormat outputFmt = new SimpleDateFormat("HH:mm:ss aa");
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("hmm");
+//        SimpleDateFormat outputFmt = new SimpleDateFormat("HH:mm:ss");
 
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        outputFmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+//       dateFormat.setTimeZone(TimeZone.getTimeZone("UTC+2"));
+       //outputFmt.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         if (book == true) {
 
-            try {
-                bookingStartTime = hourFinal +""+ minuteFinal ;
-                Date date = dateFormat.parse(bookingStartTime);
+//            try {
+                bookingStartTime = hourFinal +":"+ minuteFinal ;
+//                Date date = dateFormat.parse(bookingStartTime);
 
-                bookingStartTime = outputFmt.format(date);
+//                bookingStartTime = outputFmt.format(date);
                 tv_start.setText(bookingStartTime);
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+//           } catch (ParseException e) {
+//               e.printStackTrace();
+//            }
 
             book = false;
         } else if (book == false) {
-            try {
-                bookingEndTime = end_hourFinal +""+ end_minuteFinal ;
-                Date date = dateFormat.parse(bookingEndTime);
+//            try {
+                bookingEndTime = end_hourFinal +":"+ end_minuteFinal ;
+                //Date date = dateFormat.parse(bookingEndTime);
 
-                bookingEndTime = outputFmt.format(date);
+               // bookingEndTime = outputFmt.format(date);
                 tv_end.setText(bookingEndTime);
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
 
         }
 
@@ -240,12 +242,15 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
 
                     if(out.parking != null) {
                         //"For searching a specific location
-
                         if(out.Comfirmation == "True")
                         {
                             Toast.makeText(getApplicationContext(), "Booking was successful.", Toast.LENGTH_LONG).show();
+                            tv_bookingStatus.setText("Booking was successful.");
                         }
-                        else
+                        else if (out.Comfirmation == "False")
+                        {
+                            tv_bookingStatus.setText("Failed to book..!!");
+                        }else
                         {
                             tv_parkingName.setText(out.parking.Parking_Name);
                             tv_parkingCity.setText(out.parking.Parking_City);

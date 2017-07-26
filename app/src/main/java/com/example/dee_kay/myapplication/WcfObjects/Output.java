@@ -21,9 +21,8 @@ public class Output
     public List<Parking> parkingList;
     public List<Book> Booking_List_Old;
     public List<Book> Booking_List_Active;
-
     public List<Hours> HoursList;
-    public boolean paid;
+    public String paid;
 
     public Output()
     {
