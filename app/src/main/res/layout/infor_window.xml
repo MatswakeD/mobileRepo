@@ -17,7 +17,7 @@
             android:id="@+id/tv_clickMe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Click me to book"
+            android:text="Parking Information"
             android:textStyle="bold"
             android:textSize="15sp"
             />

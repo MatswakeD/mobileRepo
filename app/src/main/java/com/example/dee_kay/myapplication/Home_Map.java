@@ -310,7 +310,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     private void gotoLocationZoom(LatLng ll, float zoom)
     {
         CameraUpdate updateCamera = CameraUpdateFactory.newLatLngZoom(ll,zoom);
-        mGoogleMap.moveCamera(updateCamera);
+       // mGoogleMap.moveCamera(updateCamera);
         mGoogleMap.animateCamera(updateCamera);
     }
 
@@ -340,7 +340,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                 {
                     list = gc.getFromLocationName(parkingList.get(i).Parking_Name, 1);
                     Address address = list.get(0);
-                    String locality = address.getSubLocality() + "\n" + address.getLocality() + "\n" + address.getFeatureName();
+                    String locality = parkingList.get(i).Parking_City + "\n" + "Number of bays " + parkingList.get(i).Number_Of_bays;
 
 
                     double lat = address.getLatitude();
@@ -349,7 +349,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(ll);
-                    markerOptions.title(address.getLocality()).snippet(locality);
+                    markerOptions.title(parkingList.get(i).Parking_Name).snippet(locality);
                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     OtherOlaces = mGoogleMap.addMarker(markerOptions);
                     gotoLocationZoom(ll,8);
@@ -357,7 +357,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                 else
                 {
                     Address address = list.get(0);
-                    String locality = address.getSubLocality() + "\n" + address.getFeatureName();
+                    String locality = parkingList.get(i).Parking_City + "\n" + "Number of bays " + parkingList.get(i).Number_Of_bays;
 
 
                     double lat = address.getLatitude();
@@ -366,7 +366,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(ll);
-                    markerOptions.title(address.getLocality()).snippet(locality);
+                    markerOptions.title(parkingList.get(i).Parking_Name).snippet(locality);
                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     OtherOlaces = mGoogleMap.addMarker(markerOptions);
                     gotoLocationZoom(ll,8);

@@ -242,15 +242,21 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
 
                     if(out.parking != null) {
                         //"For searching a specific location
-                        if(out.Comfirmation == "True")
+                        if(out.Comfirmation.equals("True"))
                         {
                             Toast.makeText(getApplicationContext(), "Booking was successful.", Toast.LENGTH_LONG).show();
                             tv_bookingStatus.setText("Booking was successful.");
                         }
-                        else if (out.Comfirmation == "False")
+                        else if (out.Comfirmation.equals("True"))
                         {
                             tv_bookingStatus.setText("Failed to book..!!");
-                        }else
+                        }
+                        else if (out.Comfirmation.equals("TIME BEHIND"))
+                        {
+                            tv_bookingStatus.setText("Your chosen starting time is behind the current time!!");
+
+                        }
+                        else
                         {
                             tv_parkingName.setText(out.parking.Parking_Name);
                             tv_parkingCity.setText(out.parking.Parking_City);

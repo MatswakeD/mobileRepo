@@ -158,8 +158,9 @@
             android:layout_margin="8dp"
             android:padding="8dp"
             android:visibility="invisible"
-            android:background="@drawable/oval"
-            android:hint="Parking Name"
+            android:gravity="center"
+            android:textColor="#4caf50"
+            android:hint="booking status"
             android:id="@+id/tv_bookingStatus"/>
 
     </LinearLayout>
