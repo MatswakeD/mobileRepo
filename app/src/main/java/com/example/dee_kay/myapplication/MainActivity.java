@@ -3,6 +3,8 @@ package com.example.dee_kay.myapplication;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -15,11 +17,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.example.dee_kay.myapplication.DataBase.DateBaseHelper;
 import com.example.dee_kay.myapplication.WcfObjects.Input;
+import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.threepin.fireexit_wcf.Configurator;
+import com.threepin.fireexit_wcf.FireExitClient;
+
+import java.io.FileInputStream;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
         {
@@ -27,6 +36,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             NavigationView navigationView;
             FragmentManager FM;
             FragmentTransaction FT;
+
+            DateBaseHelper myDB;
+            Input input;
+            Output output;
+            Handler handler;
+
+            String filename = "file.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        myDB = new DateBaseHelper(this);
+        handler = new Handler();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -43,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        //Getting data from the local database
+        getDataFromFile();
+
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -65,13 +87,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Checking if the google services is correctly configured
         if (googleServiceAvailable()) {
             //Toast.makeText(this, "Google Services Available !!", Toast.LENGTH_LONG).show();
-
-
         } else {
             Toast.makeText(this, "Google Services is not Available  !!", Toast.LENGTH_LONG).show();
 
         }
-
 
         //Displaying the map when the main activity starts
         setTitle("HOME");
@@ -79,9 +98,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FT = FM.beginTransaction();
         FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
 
+
     }
 
-    //Checking for google services permissions
+            /**
+             *  Checking for google services permissions
+             */
+
     public boolean googleServiceAvailable()
     {
         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
@@ -98,7 +121,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
+            /**
+             * Plugging the action bar menu
+             * @param menu
+             * @return
+             */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -106,6 +133,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+            /**
+             * Handling action bar menu clicks
+             * @param item
+             * @return
+             */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -142,6 +174,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+            /**
+             * handling menu item clicks
+              * @param item
+             * @return
+             */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -214,8 +251,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+            /**
+             * Handling a back button
+             */
             boolean doubleBackToExitPressedOnce = false;
-
             @Override
             public void onBackPressed() {
 
@@ -224,8 +263,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     drawer.closeDrawer(GravityCompat.START);
                     return;
                 }
-
-
 
                 if (doubleBackToExitPressedOnce) {
                     finish();
@@ -248,8 +285,109 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
 
+            /**
+             * Getting data from a local data
+             */
+            public void getDataFromFile()
+            {
+                //read file
+                String readFileInfor = readFile(filename);
+
+                input = new Input();
+
+                //Splitting the string from the file
+                String[] seperated = readFileInfor.split(":");
+                String email = seperated[0];
+                String pass = seperated[1];
+
+                input.user.Email = email;
+                input.user.Password = pass;
+
+                //Sending the data for verification
+                new myAsync().execute();
+
+            }
 
 
+            /**
+             * Read user information from file
+             * @param file
+             * @return
+             */
+            public String readFile(String file)
+            {
+                String text = "";
+                try{
+
+                    FileInputStream fis = openFileInput(file);
+                    int size = fis.available();
+                    byte[] buffer = new byte[size];
+                    fis.read(buffer);
+                    fis.close();
+                    text = new String(buffer);
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                    Toast.makeText(this,"File cannot be read!!",Toast.LENGTH_LONG).show();
+                }
+                return text;
+            }
+
+
+            class myAsync extends AsyncTask {
+                @Override
+                protected Object doInBackground(Object[] params)
+                {
+
+                    FireExitClient client = new FireExitClient(Input.AZURE_URL);
+                    client.configure(new Configurator("http://tempuri.org/","IService1","SignIn"));
+
+                    //passing the input class as a parameter to the service
+                    client.addParameter("request",input);
+
+                    output = new Output();
+
+                    try {
+                        output = client.call(output);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    return output;
+                }
+
+                @Override
+                protected void onPostExecute( final Object o) {
+                    super.onPostExecute(o);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Output out = (Output)o;
+
+                            if(out.Comfirmation.equals("true"))
+                            {
+                                if(out.User_ID > 0)
+                                {
+
+                                    GlobalVariables gv = ((GlobalVariables)getBaseContext().getApplicationContext());
+
+                                    gv.setUserID(out.User_ID + "");
+                                    //gv.setFirstname(out.user.FirstName);
+                                    gv.setLasrName(out.user.LastName);
+                                    gv.setLoggedIN("IN");
+
+
+                                }
+                                Toast.makeText(MainActivity.this,"Welcome "+ out.user.LastName,Toast.LENGTH_LONG).show();
+                            }
+                            else {
+
+                                Toast.makeText(MainActivity.this,"Incorrect Password Or User name",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            }
 
 }
 

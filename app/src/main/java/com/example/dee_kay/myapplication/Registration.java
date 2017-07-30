@@ -1,7 +1,9 @@
 package com.example.dee_kay.myapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,11 +16,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dee_kay.myapplication.DataBase.DateBaseHelper;
 import com.example.dee_kay.myapplication.WcfObjects.Input;
 import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.example.dee_kay.myapplication.WcfObjects.User;
 import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 
 /**
@@ -35,7 +41,9 @@ public class Registration extends Fragment {
     Output output;
     private User user;
     private Handler handler;
+    DateBaseHelper myDB;
 
+    String filename = "file.txt";
     public Registration() {
         // Required empty public constructor
     }
@@ -48,7 +56,7 @@ public class Registration extends Fragment {
         View v = inflater.inflate(R.layout.fragment_registration, container, false);
 
         getActivity().setTitle("Registration ");
-
+        myDB = new DateBaseHelper(getActivity());
         handler = new Handler();
 
 
@@ -91,9 +99,13 @@ public class Registration extends Fragment {
                         user.Email = et_Email.getText().toString();
                         user.Password = password;
 
-                        //packaging
-                        input.user = user;
-                        new myAsync().execute();
+                        String fileInfor = et_Email.getText().toString()+ ":" + password;
+
+
+                        //Saving to file
+                        saveFile(filename,fileInfor);
+
+
                     } else {
                         Toast.makeText(getActivity(), "Passwords do not match !!", Toast.LENGTH_LONG).show();
                     }
@@ -105,15 +117,29 @@ public class Registration extends Fragment {
                     tv_registtrationStatus.setText("User details are required to complete registration");
                 }
 
-
             }
         });
 
-
-
-
         return v;
     }
+
+    public void saveFile(String file, String text)
+    {
+        FileOutputStream fos;
+        try{
+
+            fos = getActivity().getApplicationContext().openFileOutput(file, Context.MODE_PRIVATE);
+            fos.write(text.getBytes());
+            fos.close();
+            Toast.makeText(getActivity(),"Saved",Toast.LENGTH_LONG).show();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Toast.makeText(getActivity(),"Error saving file!!",Toast.LENGTH_LONG).show();
+        }
+    }
+
+
 
     class myAsync extends AsyncTask {
 
@@ -121,7 +147,7 @@ public class Registration extends Fragment {
         protected Object doInBackground(Object[] params)
         {
 
-            FireExitClient client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
+            FireExitClient client = new FireExitClient(Input.AZURE_URL);
             client.configure(new Configurator("http://tempuri.org/","IService1","Register"));
 
             //passing the input class as a parameter to the service

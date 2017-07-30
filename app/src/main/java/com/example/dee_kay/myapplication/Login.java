@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dee_kay.myapplication.DataBase.DateBaseHelper;
 import com.example.dee_kay.myapplication.WcfObjects.Input;
 import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.example.dee_kay.myapplication.WcfObjects.User;
@@ -41,6 +42,8 @@ public class Login extends Fragment {
     Handler handler;
 
     private String User_id = "";
+
+
     public Login() {
         // Required empty public constructor
     }
@@ -53,13 +56,12 @@ public class Login extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
+
         handler = new Handler();
 
 
         et_EmailAddress = (EditText) v.findViewById(R.id.et_EmailAddress);
         et_Password = (EditText) v.findViewById(R.id.et_Password);
-
-
 
         tv_loginStatus = (TextView) v.findViewById(R.id.tv_loginStatus);
 
@@ -79,7 +81,6 @@ public class Login extends Fragment {
                 user = new User();
                 user.Email = email;
                 user.Password = password;
-
 
 
 
@@ -156,6 +157,7 @@ public class Login extends Fragment {
                             //gv.setFirstname(out.user.FirstName);
                             gv.setLasrName(out.user.LastName);
                             gv.setLoggedIN("IN");
+
                             //Switching to home
                             Intent i = new Intent(getActivity(), MainActivity.class);
                             startActivity(i);

@@ -17,6 +17,8 @@ import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
 
+import java.util.Locale;
+
 
 /**
  * View or edit vehicle information
@@ -163,14 +165,17 @@ public class Tab_5_Vehicle extends Fragment {
                 public void run() {
                     Output out = (Output)o;
 
-                    if(out != null)
-                    {
-                        et_registration_num.setText( out.vehicle.Registration_Num );
-                        et_vehicle_type.setText(out.vehicle.Vehicle_type );
+                    if(!out.profile.Deactivate.toUpperCase(Locale.ENGLISH).equals("DEACTIVATED")) {
+                        if (out != null) {
+                            et_registration_num.setText(out.vehicle.Registration_Num);
+                            et_vehicle_type.setText(out.vehicle.Vehicle_type);
 
+                        } else {
+                            Toast.makeText(getActivity(), "User is not logged in", Toast.LENGTH_LONG).show();
+                        }
                     }else
                     {
-                        Toast.makeText(getActivity(),"User is not logged in",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "user profile is deactivated", Toast.LENGTH_LONG).show();
                     }
 
                 }
