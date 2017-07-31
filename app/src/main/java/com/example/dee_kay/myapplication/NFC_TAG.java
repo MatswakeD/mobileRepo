@@ -80,10 +80,7 @@ public class NFC_TAG extends AppCompatActivity {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         tv_nfcTag = (TextView) findViewById(R.id.tv_nfcTag);
 
-
         input.parking_id = 14 + "";
-
-
     }
 
 
@@ -119,6 +116,7 @@ public class NFC_TAG extends AppCompatActivity {
         nfcAdapter.disableForegroundDispatch(this);
     }
 
+    
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

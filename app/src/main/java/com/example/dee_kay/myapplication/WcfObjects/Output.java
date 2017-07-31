@@ -24,6 +24,8 @@ public class Output
     public List<Hours> HoursList;
     public String paid;
 
+    public String INorOUT;
+
     public Output()
     {
         this.parkingList = new ArrayList<>();

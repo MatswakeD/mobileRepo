@@ -14,17 +14,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +49,7 @@ import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
 
 import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import static com.example.dee_kay.myapplication.Login.USER_ID;
@@ -77,6 +75,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     private String User_id = "";
     private String userIDgv = "";
     Handler handler;
+    FloatingActionButton btnNFC;
 
     public Home_Map() {
         // Required empty public constructor
@@ -101,6 +100,15 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             this.User_id = b.getString(USER_ID);
 
         }
+
+        btnNFC = (FloatingActionButton) mView.findViewById(R.id.floatingBTN_nfcTab);
+        btnNFC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent nfc = new Intent(getActivity(), NFC_TAG.class);
+                startActivity(nfc);
+            }
+        });
 
         GlobalVariables gv = ((GlobalVariables)getActivity().getApplicationContext());
         userIDgv = gv.getUserID();

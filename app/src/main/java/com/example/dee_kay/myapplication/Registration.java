@@ -105,6 +105,8 @@ public class Registration extends Fragment {
                         //Saving to file
                         saveFile(filename,fileInfor);
 
+                        //Saving the data in the database
+                        new myAsync().execute();
 
                     } else {
                         Toast.makeText(getActivity(), "Passwords do not match !!", Toast.LENGTH_LONG).show();

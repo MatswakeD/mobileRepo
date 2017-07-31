@@ -25,6 +25,7 @@ import com.example.dee_kay.myapplication.WcfObjects.Input;
 import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
 
@@ -68,21 +69,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        GlobalVariables gv = ((GlobalVariables)getBaseContext().getApplicationContext());
-
-        String userID =  gv.getUserID();
-        if(userID == "empty")
-        {
-            navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
-            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
-            navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
-
-        }
-        else
-        {
-            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
-            navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
-        }
 
         //Checking if the google services is correctly configured
         if (googleServiceAvailable()) {
@@ -91,12 +77,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "Google Services is not Available  !!", Toast.LENGTH_LONG).show();
 
         }
-
-        //Displaying the map when the main activity starts
-        setTitle("HOME");
-        FM = getSupportFragmentManager();
-        FT = FM.beginTransaction();
-        FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
 
 
     }
@@ -368,17 +348,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             {
                                 if(out.User_ID > 0)
                                 {
-
                                     GlobalVariables gv = ((GlobalVariables)getBaseContext().getApplicationContext());
 
                                     gv.setUserID(out.User_ID + "");
-                                    //gv.setFirstname(out.user.FirstName);
                                     gv.setLasrName(out.user.LastName);
                                     gv.setLoggedIN("IN");
 
+                                    String userID =  gv.getUserID();
+                                    if(userID.equals("empty"))
+                                    {
+                                        navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
+                                        navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+                                        navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+                                    }
+                                    else
+                                    {
+                                        navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
+                                        navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+
+                                        if(out.INorOUT.equals("out"))
+                                        {
+                                            //Displaying the map when the main activity starts
+                                            setTitle("HOME");
+                                            FM = getSupportFragmentManager();
+                                            FT = FM.beginTransaction();
+                                            FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
+
+                                        }else if(out.INorOUT.equals("in"))
+                                        {
+                                            Toast.makeText(MainActivity.this,"in "+ out.user.LastName,Toast.LENGTH_LONG).show();
+
+                                            Intent nfc = new Intent(MainActivity.this, NFC_TAG.class);
+                                            startActivity(nfc);
+
+                                        }
+
+
+                                       // Toast.makeText(MainActivity.this,"Welcome "+ out.user.LastName,Toast.LENGTH_LONG).show();
+                                    }
+
+
 
                                 }
-                                Toast.makeText(MainActivity.this,"Welcome "+ out.user.LastName,Toast.LENGTH_LONG).show();
+
                             }
                             else {
 
