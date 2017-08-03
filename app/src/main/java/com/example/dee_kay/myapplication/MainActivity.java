@@ -34,6 +34,7 @@ import java.io.FileInputStream;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
         {
 
+            public static boolean ONBACKPRESS = false;
             NavigationView navigationView;
             FragmentManager FM;
             FragmentTransaction FT;
@@ -63,10 +64,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        //Getting data from the local database
-        getDataFromFile();
-
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -78,8 +75,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
+        if(ONBACKPRESS == false)
+        {
+            //Getting data from the local database
+            getDataFromFile();
+        }else if (ONBACKPRESS)
+        {
+            //Displaying the map when the main activity starts
+            setTitle("HOME");
+            FM = getSupportFragmentManager();
+            FT = FM.beginTransaction();
+            FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
+        }
 
     }
+
 
             /**
              *  Checking for google services permissions
@@ -344,57 +354,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         public void run() {
                             Output out = (Output)o;
 
-                            if(out.Comfirmation.equals("true"))
+                            if(out != null)
                             {
-                                if(out.User_ID > 0)
-                                {
-                                    GlobalVariables gv = ((GlobalVariables)getBaseContext().getApplicationContext());
 
-                                    gv.setUserID(out.User_ID + "");
-                                    gv.setLasrName(out.user.LastName);
-                                    gv.setLoggedIN("IN");
+                                if (out.Comfirmation.equals("true")) {
+                                    if (out.User_ID > 0) {
+                                        GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
 
-                                    String userID =  gv.getUserID();
-                                    if(userID.equals("empty"))
-                                    {
-                                        navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
-                                        navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
-                                        navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
-                                    }
-                                    else
-                                    {
-                                        navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
-                                        navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+                                        gv.setUserID(out.User_ID + "");
+                                        gv.setLasrName(out.user.LastName);
+                                        gv.setLoggedIN("IN");
 
-                                        if(out.INorOUT.equals("out"))
+                                        String userID = gv.getUserID();
+                                        if (userID.equals("empty")) {
+                                            navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
+                                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+                                            navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+                                        } else
                                         {
-                                            //Displaying the map when the main activity starts
-                                            setTitle("HOME");
-                                            FM = getSupportFragmentManager();
-                                            FT = FM.beginTransaction();
-                                            FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
+                                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
+                                            navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
 
-                                        }else if(out.INorOUT.equals("in"))
-                                        {
-                                            Toast.makeText(MainActivity.this,"in "+ out.user.LastName,Toast.LENGTH_LONG).show();
+                                            if (out.INorOUT.equals("OUT")) {
 
-                                            Intent nfc = new Intent(MainActivity.this, NFC_TAG.class);
-                                            startActivity(nfc);
+                                                //Displaying the map when the main activity starts
+                                                setTitle("HOME");
+                                                FM = getSupportFragmentManager();
+                                                FT = FM.beginTransaction();
+                                                FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
 
+                                            } else if (out.INorOUT.equals("IN")) {
+
+                                                Intent inParking = new Intent(MainActivity.this, InAparking.class);
+                                                startActivity(inParking);
+                                            }
+                                            //Welcome to message
+                                            Toast.makeText(MainActivity.this, "Welcome " + out.user.LastName, Toast.LENGTH_LONG).show();
                                         }
-
-
-                                       // Toast.makeText(MainActivity.this,"Welcome "+ out.user.LastName,Toast.LENGTH_LONG).show();
                                     }
 
+                                } else {
 
-
+                                    Toast.makeText(MainActivity.this, "Incorrect Password Or User name", Toast.LENGTH_LONG).show();
                                 }
-
-                            }
-                            else {
-
-                                Toast.makeText(MainActivity.this,"Incorrect Password Or User name",Toast.LENGTH_LONG).show();
+                            }else  //when there is a time out
+                            {
+                                Toast.makeText(MainActivity.this, "CONNECTION TIME OUT", Toast.LENGTH_LONG).show();
                             }
                         }
                     });

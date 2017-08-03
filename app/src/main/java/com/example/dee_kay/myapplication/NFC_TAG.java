@@ -49,15 +49,13 @@ public class NFC_TAG extends AppCompatActivity {
     Hours [] Hours = null;  //Goes to the adapter
     List<Hours> hoursList = null;  //Used for plotting on the view
     ListView listView;
-    Hours hours;            //Used when getting the parking information
 
-    String chooenHours;
+
 
     GlobalVariables gv;
 
     //Notification
     NotificationManager notificationManager;
-    boolean isNotifactionAct = false;
     private int notifyID = 13;
 
     private CountDownTimer countDownTimer;
@@ -66,7 +64,7 @@ public class NFC_TAG extends AppCompatActivity {
 
     TextView tv_nfcTag;
     NfcAdapter  nfcAdapter;
-    private boolean isTosendHours  = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +78,7 @@ public class NFC_TAG extends AppCompatActivity {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         tv_nfcTag = (TextView) findViewById(R.id.tv_nfcTag);
 
-        input.parking_id = 14 + "";
+
     }
 
 
@@ -133,149 +131,6 @@ public class NFC_TAG extends AppCompatActivity {
     }
 
 
-    /**\
-     * For handling list item when they are clicked
-     */
-    private void clickCallBack()
-    {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-
-                GlobalVariables gv = ((GlobalVariables)getBaseContext().getApplicationContext());
-                User_id = gv.getUserID();
-
-
-                if(gv.getUserID().equals("empty"))
-                {
-                    Toast.makeText(getBaseContext(),"User not logged in",Toast.LENGTH_LONG).show();
-
-                    Login login = new Login();
-                    FragmentManager manager = getSupportFragmentManager();
-                    manager.beginTransaction().replace(R.id.activity_nfc__tag ,login, login.getTag()).commit();
-
-                }else
-                {
-                    hours = (Hours) parent.getItemAtPosition(position);
-                    chooenHours = hours.hours;
-                    Toast.makeText((getBaseContext()), String.valueOf(chooenHours), Toast.LENGTH_LONG).show();
-
-                    double doubleValue = Double.parseDouble(chooenHours.trim());
-                    int minutes = (int)doubleValue;
-
-
-                    //Checking if the user has chosen the parking time
-                    if(chooenHours.length() != 0) {
-
-                        //Sending the hours that the user has chosen
-                         isTosendHours = true;
-                        new myAsync().execute();
-
-                        countDownTimer = new CountDownTimer((minutes) * 1000, 1000) {
-
-                            String done;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                tv_nfcTag.setText("" + millisUntilFinished / 1000);
-
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                tv_nfcTag.setText("Done");
-
-                                NotificationCompat.Builder notificatiionBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext())
-                                        .setContentTitle("Parking Time")
-                                        .setContentText("Your parking time just elapsed !!!")
-                                        .setTicker("Parking Time").setSmallIcon(R.drawable.icon);
-
-
-                                Intent intent2 = new Intent(getApplicationContext(), NFC_TAG.class);
-                                TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
-                                taskStackBuilder.addParentStack(NFC_TAG.class);
-                                taskStackBuilder.addNextIntent(intent2);
-
-                                PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
-                                notificatiionBuilder.setContentIntent(pendingIntent);
-                                notificatiionBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND);
-                                notificatiionBuilder.setAutoCancel(true);
-
-
-                                notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                                notificationManager.notify(notifyID, notificatiionBuilder.build());
-
-
-                                done = "done";
-                                new myAsyncDone().execute();
-
-                            }
-
-                            //Telling the server that we done
-                            class myAsyncDone extends AsyncTask {
-                                @Override
-                                protected Object doInBackground(Object[] params)
-                                {
-
-                                    FireExitClient client = new FireExitClient(Input.AZURE_URL);
-
-                                        //Sending the parking ID and done, to decrement the user counter
-                                        input.parking_id = 14 + "";
-                                        input.Done = done;
-
-
-                                        client.configure(new Configurator("http://tempuri.org/","IService1","Done"));
-                                        //passing the input class as a parameter to the service
-                                        client.addParameter("request",input);
-
-
-
-
-                                        output = new Output();
-
-                                        try {
-                                            output = client.call(output);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-
-
-
-                                    return output;
-                                }
-
-                                @Override
-                                protected void onPostExecute( final Object o) {
-                                    super.onPostExecute(o);
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Output out = (Output)o;
-                                            if(out.Comfirmation == "OUT")
-                                            {
-                                                Toast.makeText(getApplicationContext(),"Out !!!",Toast.LENGTH_LONG).show();
-                                            }
-
-                                        }
-                                    });
-                                }
-                            }
-
-
-                        };
-                        countDownTimer.start();
-
-                    }
-                    else {
-                        Toast.makeText(getBaseContext(),"Please choose your time in the parking",Toast.LENGTH_LONG).show();
-                    }
-
-
-                }
-            }
-        });
-
-    }
-
 
     /**
      * For placing the parking onto the list view
@@ -296,7 +151,6 @@ public class NFC_TAG extends AppCompatActivity {
         ArrayAdapter<Hours> hoursAdapter = new HoursCustomAdapter(this,Hours);
         listView.setAdapter(hoursAdapter);
 
-        clickCallBack();
     }
 
 
@@ -307,40 +161,25 @@ public class NFC_TAG extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object[] params)
         {
+                FireExitClient client = new FireExitClient(Input.AZURE_URL);
+                client.configure(new Configurator("http://tempuri.org/","IService1","TagIn"));
 
-            FireExitClient client = new FireExitClient(Input.AZURE_URL);
+                gv =  ((GlobalVariables)getBaseContext().getApplicationContext());
 
-            if(isTosendHours == false)
-            {
-                client.configure(new Configurator("http://tempuri.org/","IService1","GetHours"));
+                input.user.User_ID = gv.getUserID();
+                //Default parking..
+                input.parking_id = 14 + "";
 
                 //passing the input class as a parameter to the service
                 client.addParameter("request",input);
-                output = new Output();
 
+
+                output = new Output();
                 try {
                     output = client.call(output);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-            }
-            else if(isTosendHours == true)
-            {
-                client.configure(new Configurator("http://tempuri.org/","IService1","ChosenHours"));
-
-                //use this to charge the user
-                input.choosenHours = chooenHours;
-                //passing the input class as a parameter to the service
-                client.addParameter("request",input);
-                output = new Output();
-
-                try {
-                    output = client.call(output);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
 
             return output;
         }
@@ -353,16 +192,7 @@ public class NFC_TAG extends AppCompatActivity {
                 public void run() {
                     Output out = (Output)o;
 
-                    if(out.HoursList.size() != 0)
-                    {
-                        plotParking();
-                    }else if(out.Comfirmation.equals("IN"))
-                    {
-                        Toast.makeText(getApplicationContext(),"IN !!!",Toast.LENGTH_LONG).show();
-                    }else
-                    {
-                        Toast.makeText(getApplicationContext(),"No hours",Toast.LENGTH_LONG).show();
-                    }
+
                 }
             });
         }
