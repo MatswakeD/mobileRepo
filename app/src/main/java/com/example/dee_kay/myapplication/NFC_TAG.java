@@ -61,10 +61,10 @@ public class NFC_TAG extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private String User_id;
 
-
-    TextView tv_nfcTag;
+    TextView tv_parkingName,tv_parkingLocation,tv_status,tv_dateTime;
     NfcAdapter  nfcAdapter;
 
+    String taggedIN = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +73,14 @@ public class NFC_TAG extends AppCompatActivity {
 
         input = new Input();
         handler = new Handler();
-
-
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        tv_nfcTag = (TextView) findViewById(R.id.tv_nfcTag);
+
+
+        tv_parkingName = (TextView) findViewById(R.id.tv_InparkingName);
+        tv_parkingLocation = (TextView) findViewById(R.id.tv_onceoffParkingLocation);
+        tv_status = (TextView) findViewById(R.id.tv_OnceoffStatus);
+        tv_dateTime = (TextView) findViewById(R.id.tv_onceOFFtime);
+
 
 
     }
@@ -122,7 +126,6 @@ public class NFC_TAG extends AppCompatActivity {
         if(intent.hasExtra(nfcAdapter.EXTRA_TAG));
         {
             Toast.makeText(this,"NFC INTENT", Toast.LENGTH_SHORT).show();
-            tv_nfcTag.setText("it working");
 
 
             new myAsync().execute();
@@ -138,7 +141,7 @@ public class NFC_TAG extends AppCompatActivity {
     protected void plotParking()
     {
         //Merging the parking list into an array
-        listView = (ListView) findViewById(R.id.hoursList_view);
+        //listView = (ListView) findViewById(R.id.hoursList_view);
 
         hoursList = output.HoursList;
         int size = hoursList.size();
@@ -192,6 +195,27 @@ public class NFC_TAG extends AppCompatActivity {
                 public void run() {
                     Output out = (Output)o;
 
+                    try
+                    {
+                        if(out.Comfirmation.equals("IN"))
+                        {
+                            tv_parkingName.setText(out.parking.Parking_Name);
+                            tv_parkingLocation.setText(out.parking.Parking_City);
+                            tv_status.setText(out.Comfirmation);
+                            tv_dateTime.setText(out.intTime);
+
+                        }else
+                        {
+                            Toast.makeText(NFC_TAG.this,"User not in a parking", Toast.LENGTH_LONG).show();
+                            tv_status.setText("OUT");
+                        }
+
+
+                    }catch (NullPointerException e)
+                    {
+                        e.printStackTrace();
+                        Toast.makeText(NFC_TAG.this,"CONNECTION TIME OUT", Toast.LENGTH_LONG).show();
+                    }
 
                 }
             });

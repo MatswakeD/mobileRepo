@@ -25,6 +25,7 @@ public class Output
     public String paid;
 
     public String INorOUT;
+    public String intTime;
 
     public Output()
     {

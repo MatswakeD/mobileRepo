@@ -36,7 +36,7 @@
         android:layout_alignStart="@+id/tv_parkingName_parkingList" />
 
     <TextView
-        android:text="parking location"
+        android:text="Number of bays"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"

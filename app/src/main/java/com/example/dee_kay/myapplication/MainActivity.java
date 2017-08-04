@@ -2,11 +2,14 @@ package com.example.dee_kay.myapplication;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.dee_kay.myapplication.DataBase.DateBaseHelper;
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         myDB = new DateBaseHelper(this);
         handler = new Handler();
@@ -354,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         public void run() {
                             Output out = (Output)o;
 
-                            if(out != null)
+                            try
                             {
 
                                 if (out.Comfirmation.equals("true")) {
@@ -397,8 +402,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                     Toast.makeText(MainActivity.this, "Incorrect Password Or User name", Toast.LENGTH_LONG).show();
                                 }
-                            }else  //when there is a time out
+                            }catch (NullPointerException e)
                             {
+                                e.printStackTrace();
                                 Toast.makeText(MainActivity.this, "CONNECTION TIME OUT", Toast.LENGTH_LONG).show();
                             }
                         }
