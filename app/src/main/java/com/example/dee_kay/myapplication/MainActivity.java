@@ -390,8 +390,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                             } else if (out.INorOUT.equals("IN")) {
 
+                                                //Passing the parking ID to the next activity
+                                                String  parkingID = out.parking_ID + "";
                                                 Intent inParking = new Intent(MainActivity.this, InAparking.class);
+                                                inParking.putExtra("parking_id", parkingID);
                                                 startActivity(inParking);
+
                                             }
                                             //Welcome to message
                                             Toast.makeText(MainActivity.this, "Welcome " + out.user.LastName, Toast.LENGTH_LONG).show();
