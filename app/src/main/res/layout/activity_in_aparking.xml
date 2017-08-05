@@ -54,6 +54,16 @@
         android:layout_alignStart="@+id/tv_OnceoffStatus" />
 
     <TextView
+        android:text="Time spent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:id="@+id/tv_timeSpend"
+        android:layout_below="@+id/tv_onceOFFtime"
+        android:layout_alignStart="@+id/tv_onceOFFtime" />
+
+
+    <TextView
         android:text="Parking Name"
         android:textStyle="bold"
         android:textSize="15sp"

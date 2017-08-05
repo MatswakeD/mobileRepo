@@ -116,8 +116,8 @@ public class Tab_ParkingList extends Fragment {
         ArrayAdapter<Parking> parkingAdapter = new ParkingList_Adapeter_Layout(getActivity(),PARKING);
         listView.setAdapter(parkingAdapter);
 
-
-            clickCallBack();
+        //Handles item click
+        clickCallBack();
     }
 
     /**

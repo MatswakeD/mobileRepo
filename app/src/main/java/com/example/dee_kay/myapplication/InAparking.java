@@ -1,6 +1,9 @@
 package com.example.dee_kay.myapplication;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -24,10 +27,11 @@ public class InAparking extends AppCompatActivity {
     Output output;
     Handler handler;
 
+    NfcAdapter nfcAdapter;
+    boolean isTagout = false;
 
 
-
-    TextView tv_parkingName,tv_parkingLocation,tv_status,tv_dateTime;
+    TextView tv_parkingName,tv_parkingLocation,tv_status,tv_dateTime,tv_spent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +39,13 @@ public class InAparking extends AppCompatActivity {
 
         input = new Input();
         handler = new Handler();
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         tv_parkingName = (TextView) findViewById(R.id.tv_InparkingName);
         tv_parkingLocation = (TextView) findViewById(R.id.tv_onceoffParkingLocation);
         tv_status = (TextView) findViewById(R.id.tv_OnceoffStatus);
         tv_dateTime = (TextView) findViewById(R.id.tv_onceOFFtime);
+        tv_spent = (TextView) findViewById(R.id.tv_timeSpend);
 
 
         GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
@@ -61,24 +67,86 @@ public class InAparking extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        enableForegroundDispatchSystem();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        disableForegroundDispatchSystem();
+    }
+
+    /**
+     * ForeGround dispatch
+     */
+    private void enableForegroundDispatchSystem()
+    {
+        Intent intent = new Intent(this, InAparking.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+
+        IntentFilter[] intentFilters = new IntentFilter[]{};
+        nfcAdapter.enableForegroundDispatch(this,pendingIntent,intentFilters,null);
+    }
+
+    /**
+     * Disabling foreground
+     */
+    private void disableForegroundDispatchSystem()
+    {
+        nfcAdapter.disableForegroundDispatch(this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if(intent.hasExtra(nfcAdapter.EXTRA_TAG));
+        {
+            Toast.makeText(this,"NFC INTENT OUT", Toast.LENGTH_SHORT).show();
+            isTagout = true;
+            new myAsync().execute();
+    }
+    }
+
     class myAsync extends AsyncTask {
         @Override
         protected Object doInBackground(Object[] params)
         {
 
             FireExitClient client = new FireExitClient(Input.AZURE_URL);
-            client.configure(new Configurator("http://tempuri.org/","IService1","InParking"));
 
-            //passing the input class as a parameter to the service
-            client.addParameter("request",input);
-
-            output = new Output();
-
-            try
+            if(isTagout == false)
             {
-                output = client.call(output);
-            } catch (Exception e) {
-                e.printStackTrace();
+                client.configure(new Configurator("http://tempuri.org/","IService1","InParking"));
+
+                //passing the input class as a parameter to the service
+                client.addParameter("request",input);
+
+                output = new Output();
+                try
+                {
+                    output = client.call(output);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }else if(isTagout == true)
+            {
+                client.configure(new Configurator("http://tempuri.org/","IService1","TagOut"));
+
+                //passing the input class as a parameter to the service
+                client.addParameter("request",input);
+
+                output = new Output();
+                try
+                {
+                    output = client.call(output);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             return output;
@@ -91,22 +159,29 @@ public class InAparking extends AppCompatActivity {
                 @Override
                 public void run() {
                     Output out = (Output)o;
-
                     try
                     {
-                        if(!input.parking_id.equals(""))
+                        if(isTagout == true)
                         {
-                            tv_parkingName.setText(out.parking.Parking_Name);
-                            tv_parkingLocation.setText(out.parking.Parking_City);
-                            tv_status.setText("IN");
-                            tv_dateTime.setText(out.intTime);
 
-                        }else
-                        {
-                            Toast.makeText(InAparking.this,"User not in a parking", Toast.LENGTH_LONG).show();
-                            tv_status.setText("OUT");
+                            tv_status.setText(out.Comfirmation);
+                            tv_spent.setText("Time spent: "+ out.timeSpent);
+
+
+                        }else { //user has not tagged out
+
+                            if (!input.parking_id.equals("")) {
+                                tv_parkingName.setText(out.parking.Parking_Name);
+                                tv_parkingLocation.setText(out.parking.Parking_City);
+                                tv_status.setText("Parking Status : IN");
+                                tv_dateTime.setText("Tag in time :"+out.intTime);
+                                tv_spent.setText("Time spent: "+ out.timeSpent);
+
+                            } else {
+                                Toast.makeText(InAparking.this, "User not in a parking", Toast.LENGTH_LONG).show();
+                                tv_status.setText("OUT");
+                            }
                         }
-
 
                     }catch (NullPointerException e)
                     {

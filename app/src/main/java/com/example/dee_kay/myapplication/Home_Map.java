@@ -193,9 +193,9 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
 
                     if(out.parkingList.size() != 0) {
-                        //"For searching a specific location
-                        try {
 
+                        try {
+                        //Plotting the parking(s) on the map
                             geoLocation();
 
                         } catch (IOException e) {
@@ -441,7 +441,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
         //zoom in the camera to user current location
-        gotoLocationZoom(latLng,12);
+        gotoLocationZoom(latLng,14);
 
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);

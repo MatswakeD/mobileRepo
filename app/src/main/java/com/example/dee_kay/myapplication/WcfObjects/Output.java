@@ -26,6 +26,8 @@ public class Output
 
     public String INorOUT;
     public String intTime;
+
+    public String timeSpent;
     public int parking_ID;
 
     public Output()
