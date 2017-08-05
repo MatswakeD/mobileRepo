@@ -23,6 +23,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ import com.threepin.fireexit_wcf.FireExitClient;
 import java.io.IOException;
 
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.dee_kay.myapplication.Login.USER_ID;
 
@@ -61,7 +63,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         ,LocationListener{
 
     GoogleMap mGoogleMap;
-    SupportMapFragment mapFrag;
+
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
@@ -75,7 +77,10 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     private String User_id = "";
     private String userIDgv = "";
     Handler handler;
-    FloatingActionButton btnNFC;
+    FloatingActionButton btnNFC,btnSearch;
+
+    EditText  et_search;
+    boolean IsSearchig = false;
 
     public Home_Map() {
         // Required empty public constructor
@@ -95,6 +100,9 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         handler = new Handler();
 
+        et_search = (EditText) mView.findViewById(R.id.et_search);
+
+
         Bundle b = getArguments();
         if(b != null){
             this.User_id = b.getString(USER_ID);
@@ -110,10 +118,17 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             }
         });
 
+        //Setting the text box to visible
+        setSearchTextBoxToVisible();
+
+        //For searching a specific parking
+        Search();
+
         GlobalVariables gv = ((GlobalVariables)getActivity().getApplicationContext());
         userIDgv = gv.getUserID();
         return mView;
     }
+
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
@@ -167,19 +182,23 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         {
 
             FireExitClient client = new FireExitClient(Input.AZURE_URL);
-            client.configure(new Configurator("http://tempuri.org/","IService1","GetParkings"));
-
-            //passing the input class as a parameter to the service
-            client.addParameter("request","");
 
 
-            output = new Output();
+                client.configure(new Configurator("http://tempuri.org/","IService1","GetParkings"));
 
-            try {
-                output = client.call(output);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                //passing the input class as a parameter to the service
+                client.addParameter("request","");
+
+
+                output = new Output();
+
+                try {
+                    output = client.call(output);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             return output;
         }
 
@@ -190,13 +209,19 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                 @Override
                 public void run() {
                     Output out = (Output)o;
-
-
                     if(out.parkingList.size() != 0) {
 
                         try {
-                        //Plotting the parking(s) on the map
-                            geoLocation();
+
+                            if(IsSearchig == false)
+                            {
+                                //Plotting the parking(s) on the map
+                                geoLocation();
+                            }else if(IsSearchig == true)
+                            {
+                                geoSearch(et_search.getText().toString());
+                                IsSearchig = false;
+                            }
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -324,6 +349,77 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
 
     /**
+     * For setting the text box visible
+     */
+    public void setSearchTextBoxToVisible()
+    {
+        btnSearch = (FloatingActionButton) mView.findViewById(R.id.btnFB_search);
+         btnSearch.setOnLongClickListener(new View.OnLongClickListener() {
+           @Override
+           public boolean onLongClick(View v) {
+
+               et_search.setVisibility(View.VISIBLE);
+               return true;
+           }
+       });
+
+    }
+
+    /**
+     * Used for searching a specific location
+     */
+    private void Search()
+    {
+        btnSearch = (FloatingActionButton) mView.findViewById(R.id.btnFB_search);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                IsSearchig = true;
+
+                new myAsync().execute();
+
+            }
+        });
+
+    }
+
+
+    /**
+     * For searching a specific parking on the map
+     */
+    public void geoSearch(String parking) throws IOException
+    {
+        Geocoder gc = new Geocoder(getActivity());
+        List<Parking> parkingList =  output.parkingList;
+
+        int parkingSize = parkingList.size();
+
+        for (int i = 0; i < parkingSize; i++) {
+
+            if(parking.equals(parkingList.get(i).Parking_Name) )
+            {
+                List<Address> listName = gc.getFromLocationName(parkingList.get(i).Parking_Name +" "+ parkingList.get(i).Parking_City, 1);
+
+                Address address = listName.get(0);
+
+                double lat = address.getLatitude();
+                double lng = address.getLongitude();
+                LatLng ll = new LatLng(lat, lng);
+
+                //Zooming in the location
+                gotoLocationZoom(ll,11);
+                et_search.setVisibility(View.INVISIBLE);
+            }else
+            {
+                //Toast.makeText(getActivity(),"No such parking in our database",Toast.LENGTH_LONG).show();
+            }
+
+
+        }
+
+    }
+    /**
      * Draw parking(s) onto the GoogleMaps
      * @throws IOException
      */
@@ -346,8 +442,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                 //If did not find the parking by lat-long, the search using parking name
                 if(list.size()== 0)
                 {
-                    list = gc.getFromLocationName(parkingList.get(i).Parking_Name, 1);
-                    Address address = list.get(0);
+                    List<Address> listName = gc.getFromLocationName(parkingList.get(i).Parking_Name, 1);
+                    Address address = listName.get(0);
                     String locality = parkingList.get(i).Parking_City + "\n" + "Number of bays " + parkingList.get(i).Number_Of_bays;
 
 
