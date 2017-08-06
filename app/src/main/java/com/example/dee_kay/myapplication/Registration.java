@@ -105,6 +105,7 @@ public class Registration extends Fragment {
                         //Saving to file
                         saveFile(filename,fileInfor);
 
+                        input.user = user;
                         //Saving the data in the database
                         new myAsync().execute();
 

@@ -408,7 +408,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                 LatLng ll = new LatLng(lat, lng);
 
                 //Zooming in the location
-                gotoLocationZoom(ll,11);
+                gotoLocationZoom(ll,17);
                 et_search.setVisibility(View.INVISIBLE);
             }else
             {

@@ -288,18 +288,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //read file
                 String readFileInfor = readFile(filename);
 
-                input = new Input();
+                if(!readFileInfor.equals(""))
+                {
+                    input = new Input();
 
-                //Splitting the string from the file
-                String[] seperated = readFileInfor.split(":");
-                String email = seperated[0];
-                String pass = seperated[1];
+                    //Splitting the string from the file
+                    String[] seperated = readFileInfor.split(":");
+                    String email = seperated[0];
+                    String pass = seperated[1];
 
-                input.user.Email = email;
-                input.user.Password = pass;
+                    input.user.Email = email;
+                    input.user.Password = pass;
 
-                //Sending the data for verification
-                new myAsync().execute();
+                    //Sending the data for verification
+                    new myAsync().execute();
+                }else
+                {
+                    Registration registration = new Registration();
+                    FragmentManager manager = getSupportFragmentManager();
+                    manager.beginTransaction().replace(R.id.content_main, registration, registration.getTag()).commit();
+                }
+
 
             }
 
@@ -405,11 +414,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 } else {
 
                                     Toast.makeText(MainActivity.this, "Incorrect Password Or User name", Toast.LENGTH_LONG).show();
-                                }
+
+                                    GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
+                                    String userID = gv.getUserID();
+                                    if (userID.equals("empty")) {
+                                        navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
+                                        navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+                                        navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+                                    } else {
+                                        navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
+                                        navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+                                    }
+
+                                    }
                             }catch (NullPointerException e)
                             {
                                 e.printStackTrace();
                                 Toast.makeText(MainActivity.this, "CONNECTION TIME OUT", Toast.LENGTH_LONG).show();
+
+
+                                GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
+                                String userID = gv.getUserID();
+                                if (userID.equals("empty")) {
+                                    navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
+                                    navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+                                    navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+                                } else {
+                                    navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
+                                    navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+                                }
+
+
                             }
                         }
                     });
