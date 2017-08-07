@@ -2,6 +2,7 @@ package com.example.dee_kay.myapplication;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import com.example.dee_kay.myapplication.WcfObjects.User;
 import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
 
+import java.io.FileOutputStream;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +45,7 @@ public class Login extends Fragment {
     Handler handler;
 
     private String User_id = "";
+    String filename = "file.txt";
 
 
     public Login() {
@@ -89,6 +93,13 @@ public class Login extends Fragment {
                     //Packaging login inside input for sending
                     input.user = user;
 
+                    String fileInfor = et_EmailAddress.getText().toString()+ ":" + password;
+
+
+                    //Saving to file
+                    saveFile(filename,fileInfor);
+
+
                     new myAsync().execute();
                 }
                 else
@@ -105,6 +116,26 @@ public class Login extends Fragment {
         return v ;
     }
 
+    /**
+     *
+     * @param file
+     * @param text
+     */
+    public void saveFile(String file, String text)
+    {
+        FileOutputStream fos;
+        try{
+
+            fos = getActivity().getApplicationContext().openFileOutput(file, Context.MODE_PRIVATE);
+            fos.write(text.getBytes());
+            fos.close();
+            Toast.makeText(getActivity(),"Saved",Toast.LENGTH_LONG).show();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Toast.makeText(getActivity(),"Error saving file!!",Toast.LENGTH_LONG).show();
+        }
+    }
     class myAsync extends AsyncTask{
         @Override
         protected Object doInBackground(Object[] params)

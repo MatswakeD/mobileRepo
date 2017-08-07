@@ -126,6 +126,11 @@ public class Registration extends Fragment {
         return v;
     }
 
+    /**
+     *
+     * @param file
+     * @param text
+     */
     public void saveFile(String file, String text)
     {
         FileOutputStream fos;

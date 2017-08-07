@@ -86,7 +86,7 @@ public class Tab_2 extends Fragment {
         {
             Toast.makeText(getActivity(),"User is not logged in",Toast.LENGTH_LONG).show();
         }else {
-            new myAsync().execute();
+            //new myAsync().execute();
         }
 
 
