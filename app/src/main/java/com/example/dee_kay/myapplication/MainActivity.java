@@ -194,17 +194,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.content_main, login, login.getTag()).commit();
         }
-        else if(id == R.id.nav_opengate){
 
-            Intent openGateIntent = new Intent(this, OpenGate.class);
-            startActivity(openGateIntent);
-        }
         else if(id == R.id.nav_nfc){
 
             Intent nfc = new Intent(this, NFC_TAG.class);
             startActivity(nfc);
         }
 
+        else if(id == R.id.nav_nfcTagout){
+
+            Intent tagout = new Intent(this, InAparking.class);
+            startActivity(tagout);
+        }
 
         else if(id == R.id.nav_register){
 

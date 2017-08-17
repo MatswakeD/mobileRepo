@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@drawable/coners"
     android:layout_height="match_parent">
 
     <TextView
@@ -19,7 +20,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_place_black_24dp"
+        android:src="@drawable/ic_local_parking_black_24dp"
         android:layout_marginStart="22dp"
         android:id="@+id/ParkingImage"
         android:layout_alignParentTop="true"

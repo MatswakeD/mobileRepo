@@ -16,7 +16,7 @@ import com.example.dee_kay.myapplication.CustomAdaptors.ParkingTabAdapter;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Host_Home_Tab extends Fragment {
+public class Host_Home_Tab extends Fragment implements TabLayout.OnTabSelectedListener {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
@@ -39,19 +39,37 @@ public class Host_Home_Tab extends Fragment {
         tabLayout = (TabLayout)v.findViewById(R.id.ParkingTAB);
         viewPager = (ViewPager)v.findViewById(R.id.viewpager_parking);
 
+        tabLayout.addTab(tabLayout.newTab().setText("Home map").setIcon(R.drawable.ic_map_black_24dp));
+        tabLayout.addTab(tabLayout.newTab().setText("Parking List").setIcon(R.drawable.ic_local_parking_black_24dp));
 
         //set an adapter
-        viewPager.setAdapter(new ParkingTabAdapter(getChildFragmentManager()));
+        viewPager.setAdapter(new ParkingTabAdapter(getActivity().getSupportFragmentManager(),tabLayout.getTabCount()));
 
-        tabLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                tabLayout.setupWithViewPager(viewPager);
-            }
-        });
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+//        tabLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                tabLayout.setupWithViewPager(viewPager);
+//            }
+//        });
+        tabLayout.setOnTabSelectedListener(this);
 
         return v;
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }

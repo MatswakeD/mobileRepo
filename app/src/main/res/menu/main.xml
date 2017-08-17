@@ -11,10 +11,6 @@
         android:id="@+id/action_Register"
         android:title="Register"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_opengate"
-        android:title="Open Boom Gate"
-        app:showAsAction="never" />
 
 
     <item

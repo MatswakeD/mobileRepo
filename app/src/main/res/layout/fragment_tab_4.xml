@@ -12,11 +12,18 @@
         >
 
     <ListView
-        android:background="#B0BEC5"
+
         android:id="@+id/listView_ActiveBookings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+
+
+        android:dividerHeight="0.5dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginLeft="3dp"
+
+
         android:layout_marginTop="15dp" />
 
     </android.support.v4.widget.SwipeRefreshLayout>

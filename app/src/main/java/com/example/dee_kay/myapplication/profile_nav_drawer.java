@@ -40,12 +40,12 @@ public class profile_nav_drawer extends AppCompatActivity
     String Deactivated = "S";
     Handler handler;
 
-    TextView tv_LastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_nav_drawer);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

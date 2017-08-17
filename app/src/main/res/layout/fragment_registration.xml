@@ -113,8 +113,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sign Up"
-            android:textColor="@android:color/black"
-            android:backgroundTint="#03a9f4"/>
+            android:textColor="@android:color/white"
+            android:backgroundTint="#01579b"/>
 
         <TextView
             android:id="@+id/tv_registrationStatus"

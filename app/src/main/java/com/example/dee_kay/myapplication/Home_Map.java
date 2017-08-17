@@ -434,31 +434,15 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             for (int i = 0; i < parkingSize; i++) {
                 //List<Address> listA = gc.getFromLocation(28.057293,-26.189586,1);
 
-                double latt = Double.parseDouble(parkingList.get(i).Coordinates_ltd);
-                double lngg = Double.parseDouble(parkingList.get(i).Coordinates_lng);
+                //double latt = Double.parseDouble(parkingList.get(i).Coordinates_ltd);
+                //double lngg = Double.parseDouble(parkingList.get(i).Coordinates_lng);
 
-                List<Address> list = gc.getFromLocation(latt, lngg, 1);
+                //List<Address> list = gc.getFromLocation(latt,lngg, 1);
+               // List<Address> list = gc.getFromLocationName(parkingList.get(i).Parking_Name, 1);
 
-                //If did not find the parking by lat-long, the search using parking name
-                if(list.size()== 0)
-                {
-                    List<Address> listName = gc.getFromLocationName(parkingList.get(i).Parking_Name, 1);
-                    Address address = listName.get(0);
-                    String locality = parkingList.get(i).Parking_City + "\n" + "Number of bays " + parkingList.get(i).Number_Of_bays;
+                List<Address> list = gc.getFromLocationName(parkingList.get(i).Parking_Address, 20);
 
-
-                    double lat = address.getLatitude();
-                    double lng = address.getLongitude();
-                    LatLng ll = new LatLng(lat, lng);
-
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(ll);
-                    markerOptions.title(parkingList.get(i).Parking_Name).snippet(locality);
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                    OtherOlaces = mGoogleMap.addMarker(markerOptions);
-                    gotoLocationZoom(ll,6);
-                }
-                else
+                if(list.size() != 0)
                 {
                     Address address = list.get(0);
                     String locality = parkingList.get(i).Parking_City + "\n" + "Number of bays " + parkingList.get(i).Number_Of_bays;
@@ -474,7 +458,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     OtherOlaces = mGoogleMap.addMarker(markerOptions);
                     gotoLocationZoom(ll,6);
-
                 }
 
 

@@ -15,12 +15,12 @@ import com.example.dee_kay.myapplication.CustomAdaptors.MyAdapter;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TabFragment extends Fragment {
+public class TabFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
-    public static int int_items = 3;
+    public static int int_items = 2;
 
 
     public TabFragment() {
@@ -38,17 +38,32 @@ public class TabFragment extends Fragment {
         tabLayout = (TabLayout)v.findViewById(R.id.tabs);
         viewPager = (ViewPager)v.findViewById(R.id.viewpager);
 
-        //set an adapter
-        viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
+        tabLayout.addTab(tabLayout.newTab().setText("PROFILE").setIcon(R.drawable.ic_person_black_24dp));
+        tabLayout.addTab(tabLayout.newTab().setText("CREDITS").setIcon(R.drawable.ic_local_atm_black_24dp));
 
-        tabLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                tabLayout.setupWithViewPager(viewPager);
-            }
-        });
+        //set an adapter
+        viewPager.setAdapter(new MyAdapter(getActivity().getSupportFragmentManager(),tabLayout.getTabCount()));
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+
+        tabLayout.setOnTabSelectedListener(this);
 
         return v;
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }

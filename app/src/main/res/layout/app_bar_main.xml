@@ -16,8 +16,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#B0BEC5"
-            app:popupTheme="@style/AppTheme.NoActionBar" />
+            android:background="?attr/colorAccent"
+             />
 
     </android.support.design.widget.AppBarLayout>
 

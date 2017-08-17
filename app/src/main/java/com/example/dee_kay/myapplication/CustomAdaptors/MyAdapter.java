@@ -18,8 +18,10 @@ import static com.example.dee_kay.myapplication.TabFragment.int_items;
 
 public class MyAdapter extends FragmentPagerAdapter
 {
-    public MyAdapter(FragmentManager fm) {
+    private int tabs;
+    public MyAdapter(FragmentManager fm, int tabs) {
         super(fm);
+        this.tabs = tabs;
     }
 
 
@@ -34,7 +36,7 @@ public class MyAdapter extends FragmentPagerAdapter
                 return new Tab_2();
             }
             case 2: {
-                return new Tab_5_Vehicle();
+
             }
 
         }
@@ -44,24 +46,24 @@ public class MyAdapter extends FragmentPagerAdapter
 
     @Override
     public int getCount() {
-        return int_items;
+        return tabs;
     }
 
-    public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0: {
-                return "Profile";
-            }
-            case 1: {
-                return "Credits";
-            }
-            case 2: {
-                return "Vehicle";
-            }
-
-
-        }
-        return null;
-    }
+//    public CharSequence getPageTitle(int position) {
+//        switch (position) {
+//            case 0: {
+//                return "Profile";
+//            }
+//            case 1: {
+//                return "Credits";
+//            }
+//            case 2: {
+//
+//            }
+//
+//
+//        }
+//        return null;
+//    }
 
 }
