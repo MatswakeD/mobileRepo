@@ -16,7 +16,7 @@ import com.example.dee_kay.myapplication.R;
 
 
 
-public class Booking_TabFragment extends Fragment {
+public class Booking_TabFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
@@ -39,20 +39,30 @@ public class Booking_TabFragment extends Fragment {
         tabLayout = (TabLayout)v.findViewById(R.id.Bookingtabs);
         viewPager = (ViewPager)v.findViewById(R.id.viewpager);
 
-        //set an adapter
-        viewPager.setAdapter(new BookingTabAdapter(getChildFragmentManager()));
+        tabLayout.addTab(tabLayout.newTab().setText("ACTIVE BOOKING").setIcon(R.drawable.ic_alarm_on_black_24dp));
+        tabLayout.addTab(tabLayout.newTab().setText("OLD BOOKING").setIcon(R.drawable.ic_history_black_24dp));
 
-        tabLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                tabLayout.setupWithViewPager(viewPager);
-            }
-        });
+        //set an adapter
+        viewPager.setAdapter(new BookingTabAdapter(getActivity().getSupportFragmentManager(),tabLayout.getTabCount()));
+
+        tabLayout.setOnTabSelectedListener(this);
 
         return v;
     }
 
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
 
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }

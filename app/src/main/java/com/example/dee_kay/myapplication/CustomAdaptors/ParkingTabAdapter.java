@@ -16,7 +16,6 @@ import static com.example.dee_kay.myapplication.Host_Home_Tab.int_items;
 
 public class ParkingTabAdapter extends FragmentStatePagerAdapter
 {
-
     private int tabs;
 
     public ParkingTabAdapter(FragmentManager fm, int tabs) {

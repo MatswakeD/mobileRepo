@@ -16,9 +16,13 @@ import static com.example.dee_kay.myapplication.TabFragment.int_items;
  * Created by DEE-KAY on 2017/06/25.
  */
 
+
 public class BookingTabAdapter extends FragmentPagerAdapter {
-    public BookingTabAdapter(FragmentManager fm) {
+    private int tabs;
+
+    public BookingTabAdapter(FragmentManager fm, int tabs) {
         super(fm);
+        this.tabs = tabs;
     }
 
 
@@ -37,19 +41,19 @@ public class BookingTabAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return items;
+        return tabs;
     }
 
-    public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0: {
-                return "Active Bookings";
-            }
-            case 1: {
-                return "Old Bookings";
-            }
-
-        }
-        return null;
-    }
+//    public CharSequence getPageTitle(int position) {
+//        switch (position) {
+//            case 0: {
+//                return "Active Bookings";
+//            }
+//            case 1: {
+//                return "Old Bookings";
+//            }
+//
+//        }
+//        return null;
+//    }
 }
