@@ -75,7 +75,6 @@
             android:name=".profile_nav_drawer"
             android:label="@string/title_activity_profile_nav_drawer"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Tabbed" />
         <activity android:name=".NFC_TAG" />
         <activity android:name=".InAparking" />
         <activity android:name=".TAG_OUT"></activity>

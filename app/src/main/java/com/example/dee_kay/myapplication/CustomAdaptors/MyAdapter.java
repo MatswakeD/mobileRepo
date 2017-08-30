@@ -3,14 +3,9 @@ package com.example.dee_kay.myapplication.CustomAdaptors;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.widget.Switch;
 
 import com.example.dee_kay.myapplication.Tab_1;
 import com.example.dee_kay.myapplication.Tab_2;
-import com.example.dee_kay.myapplication.Tab_3;
-import com.example.dee_kay.myapplication.Tab_5_Vehicle;
-
-import static com.example.dee_kay.myapplication.TabFragment.int_items;
 
 /**
  * Created by DEE-KAY on 2017/04/15.
