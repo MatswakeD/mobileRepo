@@ -72,7 +72,7 @@ public class Tab_4 extends Fragment {
                     @Override
                     public void run() {
                         swipeRefreshLayout.setRefreshing(false);
-
+                        new myAsync().execute();
                     }
                 }, 2000);
             }

@@ -10,6 +10,8 @@ public class Output
 {
     public String Comfirmation;
 
+    public String transaction;
+
     public int User_ID;
     public User user;
 

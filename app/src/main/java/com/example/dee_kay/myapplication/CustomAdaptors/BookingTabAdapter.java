@@ -3,6 +3,7 @@ package com.example.dee_kay.myapplication.CustomAdaptors;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.dee_kay.myapplication.Tab_1;
 import com.example.dee_kay.myapplication.Tab_2;
@@ -17,7 +18,7 @@ import static com.example.dee_kay.myapplication.TabFragment.int_items;
  */
 
 
-public class BookingTabAdapter extends FragmentPagerAdapter {
+public class BookingTabAdapter extends FragmentStatePagerAdapter {
     private int tabs;
 
     public BookingTabAdapter(FragmentManager fm, int tabs) {

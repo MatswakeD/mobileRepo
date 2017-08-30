@@ -14,7 +14,7 @@
         app:tabIndicatorColor="#FFFF"
         app:tabIndicatorHeight="3dp"
         app:tabSelectedTextColor="#FFFF"
-        app:tabTextColor="#FFFF"
+        app:tabTextColor="#000000"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >

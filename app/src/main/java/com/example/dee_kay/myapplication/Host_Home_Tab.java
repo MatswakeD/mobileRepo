@@ -47,12 +47,7 @@ public class Host_Home_Tab extends Fragment implements TabLayout.OnTabSelectedLi
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-//        tabLayout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                tabLayout.setupWithViewPager(viewPager);
-//            }
-//        });
+
         tabLayout.setOnTabSelectedListener(this);
 
         return v;

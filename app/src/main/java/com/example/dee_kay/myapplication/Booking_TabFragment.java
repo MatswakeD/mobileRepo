@@ -45,6 +45,7 @@ public class Booking_TabFragment extends Fragment implements TabLayout.OnTabSele
         //set an adapter
         viewPager.setAdapter(new BookingTabAdapter(getActivity().getSupportFragmentManager(),tabLayout.getTabCount()));
 
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(this);
 
         return v;
