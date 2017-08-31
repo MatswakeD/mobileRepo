@@ -50,7 +50,7 @@ public class Tab_1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_tab_1, container, false);
+        v = inflater.inflate(R.layout.profile_layout, container, false);
 
         input = new Input();
         handler = new Handler();

@@ -10,70 +10,81 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.dee_kay.myapplication.InAparking">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/round">
-
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_place_black_24dp"
-        android:layout_marginStart="22dp"
-        android:id="@+id/imageView"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/round"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_alignParentStart="true">
 
-    <TextView
-        android:text="parking location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:id="@+id/tv_onceoffParkingLocation"
-        android:layout_below="@+id/tv_InparkingName"
-        android:layout_alignStart="@+id/tv_InparkingName" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_place_black_24dp"
+            android:layout_marginStart="22dp"
+            android:id="@+id/imageView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp" />
 
-    <TextView
-        android:text="Status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:id="@+id/tv_OnceoffStatus"
-        android:layout_below="@+id/tv_onceoffParkingLocation"
-        android:layout_alignStart="@+id/tv_onceoffParkingLocation" />
+        <TextView
+            android:text="parking location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:id="@+id/tv_onceoffParkingLocation"
+            android:layout_below="@+id/tv_InparkingName"
+            android:layout_alignStart="@+id/tv_InparkingName" />
 
-    <TextView
+        <TextView
+            android:text="Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:id="@+id/tv_OnceoffStatus"
+            android:layout_below="@+id/tv_onceoffParkingLocation"
+            android:layout_alignStart="@+id/tv_onceoffParkingLocation" />
 
-        android:text="Parking date and time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:id="@+id/tv_onceOFFtime"
-        android:layout_below="@+id/tv_OnceoffStatus"
-        android:layout_alignStart="@+id/tv_OnceoffStatus" />
+        <TextView
 
-    <TextView
-        android:text="Time spent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:id="@+id/tv_timeSpend"
-        android:layout_below="@+id/tv_onceOFFtime"
-        android:layout_alignStart="@+id/tv_onceOFFtime" />
+            android:text="Parking date and time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:id="@+id/tv_onceOFFtime"
+            android:layout_below="@+id/tv_OnceoffStatus"
+            android:layout_alignStart="@+id/tv_OnceoffStatus" />
+
+        <TextView
+            android:text="Time spent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:id="@+id/tv_timeSpend"
+            android:layout_below="@+id/tv_onceOFFtime"
+            android:layout_alignStart="@+id/tv_onceOFFtime" />
+
+        <TextView
+            android:text="Charged fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:id="@+id/tv_charges"
+            android:layout_below="@+id/tv_timeSpend"
+            android:layout_alignStart="@+id/tv_timeSpend" />
 
 
-    <TextView
-        android:text="Parking Name"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="42dp"
-        android:id="@+id/tv_InparkingName"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView" />
+        <TextView
+            android:text="Parking Name"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:id="@+id/tv_InparkingName"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView" />
 
-    </RelativeLayout>
+        </RelativeLayout>
 
 </RelativeLayout>

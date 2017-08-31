@@ -31,7 +31,7 @@ public class InAparking extends AppCompatActivity {
     boolean isTagout = false;
 
 
-    TextView tv_parkingName,tv_parkingLocation,tv_status,tv_dateTime,tv_spent;
+    TextView tv_parkingName,tv_parkingLocation,tv_status,tv_dateTime,tv_spent,tv_charges;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +46,7 @@ public class InAparking extends AppCompatActivity {
         tv_status = (TextView) findViewById(R.id.tv_OnceoffStatus);
         tv_dateTime = (TextView) findViewById(R.id.tv_onceOFFtime);
         tv_spent = (TextView) findViewById(R.id.tv_timeSpend);
-
+        tv_charges = (TextView) findViewById(R.id.tv_charges);
 
         GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
         String pID = getIntent().getStringExtra("parking_id");
@@ -166,6 +166,7 @@ public class InAparking extends AppCompatActivity {
 
                             tv_status.setText(out.Comfirmation);
                             tv_spent.setText("Time spent: "+ out.timeSpent);
+                            tv_charges.setText("Parking charges: R " + out.parkingRates);
 
 
                         }else { //user has not tagged out

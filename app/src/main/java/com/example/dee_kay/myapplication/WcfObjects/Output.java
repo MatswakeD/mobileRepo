@@ -11,6 +11,7 @@ public class Output
     public String Comfirmation;
 
     public String transaction;
+    public Double parkingRates;
 
     public int User_ID;
     public User user;
@@ -24,7 +25,7 @@ public class Output
     public List<Book> Booking_List_Old;
     public List<Book> Booking_List_Active;
     public List<Hours> HoursList;
-    public String paid;
+
 
     public String INorOUT;
     public String intTime;
