@@ -15,6 +15,7 @@ import android.nfc.tech.NdefFormatable;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,21 +51,11 @@ public class NFC_TAG extends AppCompatActivity {
     List<Hours> hoursList = null;  //Used for plotting on the view
     ListView listView;
 
-
-
     GlobalVariables gv;
-
-    //Notification
-    NotificationManager notificationManager;
-    private int notifyID = 13;
-
-    private CountDownTimer countDownTimer;
-    private String User_id;
 
     TextView tv_parkingName,tv_parkingLocation,tv_status,tv_dateTime;
     NfcAdapter  nfcAdapter;
 
-    String taggedIN = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,12 +114,33 @@ public class NFC_TAG extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
+        boolean tagged = true;
         if(intent.hasExtra(nfcAdapter.EXTRA_TAG));
         {
             Toast.makeText(this,"NFC INTENT", Toast.LENGTH_SHORT).show();
 
 
-            new myAsync().execute();
+            if(tagged == false)
+            {
+                Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                NdefMessage ndefMessage = createNdefMessage("My String test.....");
+
+                writeNdefMessage(tag,ndefMessage);
+                tagged = true;
+
+            }else if(tagged == true)
+            {
+                Parcelable [] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+                if(parcelables != null && parcelables.length > 0)
+                {
+                    readTextFromMessage((NdefMessage)parcelables[0]);
+                }else
+                {
+                    Toast.makeText(this,"No NDEF messages found!!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            //new myAsync().execute();
 
         }
     }
@@ -233,34 +245,18 @@ public class NFC_TAG extends AppCompatActivity {
             if(ndefFormatable == null)
             {
                 Toast.makeText(this, "Tag is not ndef formatable",Toast.LENGTH_SHORT).show();
+                return;
             }
             ndefFormatable.connect();
             ndefFormatable.format(ndefMessage);
             ndefFormatable.close();
 
+            Toast.makeText(this, "Tag written",Toast.LENGTH_SHORT).show();
         }catch (Exception e)
         {
             Log.e("formatTag", e.getMessage());
         }
     }
-
-    /**
-     * Read the nfc tag
-     * @param ndefMessage
-     */
-//    private void readTextFromMessage( NdefMessage ndefMessage)
-//    {
-//        NdefRecord[] ndefRecords = ndefMessage.getRecords();
-//        if(ndefRecords !=null && ndefRecords.length >0)
-//        {
-//            NdefRecord ndefRecord = ndefRecords[0];
-//            String tagContent = getTextFromNdefRecord(ndefRecord);
-//            tv_nfcTag.setText(tagContent);
-//        }else
-//        {
-//            Toast.makeText(this,"no NDEF records found",Toast.LENGTH_LONG).show();
-//        }
-//    }
 
 
     /**
@@ -306,6 +302,25 @@ public class NFC_TAG extends AppCompatActivity {
     }
 
     /**
+     * Read the nfc tag
+     * @param ndefMessage
+     */
+    private void readTextFromMessage( NdefMessage ndefMessage)
+    {
+        NdefRecord[] ndefRecords = ndefMessage.getRecords();
+        if(ndefRecords !=null && ndefRecords.length >0)
+        {
+            NdefRecord ndefRecord = ndefRecords[0];
+            String tagContent = getTextFromNdefRecord(ndefRecord);
+            Toast.makeText(this,tagContent,Toast.LENGTH_LONG).show();
+        }else
+        {
+            Toast.makeText(this,"no NDEF records found",Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    /**
      *
      * @param content
      * @return
@@ -330,10 +345,44 @@ public class NFC_TAG extends AppCompatActivity {
 
         }catch (Exception e)
         {
-            Log.e("Something went wrong",e.getMessage());
+            Log.e("createTextRecord",e.getMessage());
         }
 
         return null;
+    }
+
+
+
+    private NdefMessage createNdefMessage(String content)
+    {
+        NdefMessage ndefMessage;
+
+        NdefRecord ndefRecord = null;
+        try {
+            ndefRecord = createTextRecord(content);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        ndefMessage = new NdefMessage(new NdefRecord[]{ndefRecord});
+
+        return ndefMessage;
+    }
+
+
+    public String getTextFromNdefRecord(NdefRecord ndefRecord)
+    {
+        String tagContent = null;
+
+        byte[] payload = ndefRecord.getPayload();
+        String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16";
+        int languageSize = payload[0] & 0063;
+        try {
+            tagContent = new String(payload,languageSize + 1,payload.length - languageSize -1,textEncoding);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return tagContent;
     }
 
 
