@@ -1,5 +1,6 @@
 package com.example.dee_kay.myapplication;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -17,13 +18,18 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,29 +59,92 @@ public class NFC_TAG extends AppCompatActivity {
 
     GlobalVariables gv;
 
-    TextView tv_parkingName,tv_parkingLocation,tv_status,tv_dateTime;
+    TextView tv_parkingName,tv_parkingLocation,tv_status,tv_dateTime,tv_id;
     NfcAdapter  nfcAdapter;
 
+    private Toolbar toolbar;
+    Button btnWriteID ;
+    boolean tagged = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc__tag);
 
+
+        toolbar = (Toolbar) findViewById(R.id.tagInBar);
+        setSupportActionBar(toolbar);
+        setTitle("TAG IN");
+
+
         input = new Input();
         handler = new Handler();
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
 
+        tv_id = (TextView) findViewById(R.id.tvID);
         tv_parkingName = (TextView) findViewById(R.id.tv_InparkingName);
-        tv_parkingLocation = (TextView) findViewById(R.id.tv_onceoffParkingLocation);
-        tv_status = (TextView) findViewById(R.id.tv_OnceoffStatus);
+        tv_parkingLocation = (TextView) findViewById(R.id.tvParkingLocation);
+        tv_status = (TextView) findViewById(R.id.tvStatus);
         tv_dateTime = (TextView) findViewById(R.id.tv_onceOFFtime);
+
+
+        //Button for writing a new ID onto an NFC tag
+        btnWriteID = (Button)findViewById(R.id.btnWriteID);
+        btnWriteID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                tv_id.setVisibility(View.VISIBLE); //Making the edit text visible
+                tagged = false;
+            }
+        });
 
 
 
     }
 
+    /**
+     * Plugging the action bar menu
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_tagin_bar, menu);
+        return true;
+    }
+    /**
+     * Handling action bar menu clicks
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId())
+        {
+
+            case R.id.action_back:
+            {
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
+                ((Activity) this).overridePendingTransition(0,0);
+                return true;
+            }
+        }
+
+
+
+
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onResume() {
@@ -114,7 +183,7 @@ public class NFC_TAG extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        boolean tagged = true;
+
         if(intent.hasExtra(nfcAdapter.EXTRA_TAG));
         {
             Toast.makeText(this,"NFC INTENT", Toast.LENGTH_SHORT).show();
@@ -123,24 +192,39 @@ public class NFC_TAG extends AppCompatActivity {
             if(tagged == false)
             {
                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                NdefMessage ndefMessage = createNdefMessage("My String test.....");
 
-                writeNdefMessage(tag,ndefMessage);
+                //getting the ID that the user has entered and checking the if the text box is not empty
+                if(!tv_id.equals(""))
+                {
+                    NdefMessage ndefMessage = createNdefMessage(tv_id.getText().toString());
+
+                    writeNdefMessage(tag,ndefMessage);
+                }else
+                {
+                    Toast.makeText(this,"Please enter the ID",Toast.LENGTH_LONG).show();
+                }
+
+                //for reading the tag
                 tagged = true;
+
 
             }else if(tagged == true)
             {
                 Parcelable [] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
                 if(parcelables != null && parcelables.length > 0)
                 {
-                    readTextFromMessage((NdefMessage)parcelables[0]);
+
+                    input.parking_id = readTextFromMessage((NdefMessage)parcelables[0]);
+
+                    new myAsync().execute();
                 }else
                 {
                     Toast.makeText(this,"No NDEF messages found!!", Toast.LENGTH_LONG).show();
                 }
+
             }
 
-            //new myAsync().execute();
+
 
         }
     }
@@ -182,8 +266,6 @@ public class NFC_TAG extends AppCompatActivity {
                 gv =  ((GlobalVariables)getBaseContext().getApplicationContext());
 
                 input.user.User_ID = gv.getUserID();
-                //Default parking..
-                input.parking_id = 14 + "";
 
                 //passing the input class as a parameter to the service
                 client.addParameter("request",input);
@@ -305,18 +387,20 @@ public class NFC_TAG extends AppCompatActivity {
      * Read the nfc tag
      * @param ndefMessage
      */
-    private void readTextFromMessage( NdefMessage ndefMessage)
+    private String readTextFromMessage( NdefMessage ndefMessage)
     {
         NdefRecord[] ndefRecords = ndefMessage.getRecords();
+        String tagContent = "" ;
         if(ndefRecords !=null && ndefRecords.length >0)
         {
             NdefRecord ndefRecord = ndefRecords[0];
-            String tagContent = getTextFromNdefRecord(ndefRecord);
+            tagContent = getTextFromNdefRecord(ndefRecord);
             Toast.makeText(this,tagContent,Toast.LENGTH_LONG).show();
         }else
         {
             Toast.makeText(this,"no NDEF records found",Toast.LENGTH_LONG).show();
         }
+        return tagContent;
     }
 
 
