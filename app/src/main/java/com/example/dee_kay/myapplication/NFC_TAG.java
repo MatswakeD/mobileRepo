@@ -83,6 +83,7 @@ public class NFC_TAG extends AppCompatActivity {
 
 
         tv_id = (TextView) findViewById(R.id.tvID);
+
         tv_parkingName = (TextView) findViewById(R.id.tv_InparkingName);
         tv_parkingLocation = (TextView) findViewById(R.id.tvParkingLocation);
         tv_status = (TextView) findViewById(R.id.tvStatus);

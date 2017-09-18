@@ -42,7 +42,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/tvParkingName"
+                android:id="@+id/tv_InparkingName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -75,7 +75,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rightroundcolor"
                 android:gravity="center"
-                android:hint="Last name"
+                android:hint="Status"
                 android:selectAllOnFocus="true"
                 android:textColorHint="@android:color/black"
                 android:textSize="15dp" />
