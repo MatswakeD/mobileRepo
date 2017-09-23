@@ -21,6 +21,7 @@
         <item>Special Bay</item>
         <item>Normal Bay</item>
     </string-array>
+    <string name="title_activity_notification_parking">Map</string>
 
 
 </resources>

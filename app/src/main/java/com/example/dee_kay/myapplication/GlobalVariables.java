@@ -2,6 +2,10 @@ package com.example.dee_kay.myapplication;
 
 import android.app.Application;
 
+import com.example.dee_kay.myapplication.WcfObjects.Parking;
+
+import java.util.ArrayList;
+
 /**
  * Created by DEE-KAY on 2017/05/16.
  */
@@ -12,7 +16,7 @@ public class GlobalVariables extends Application
     private String LoggedIN = "empty";
     private String LasrName = "empty", Firstname ="empty";
     private static GlobalVariables singleton = null;
-
+    public ArrayList<Parking> ParkingLatLong = null;
 
     public static GlobalVariables getSingleton()
     {
@@ -23,6 +27,7 @@ public class GlobalVariables extends Application
     public void onCreate() {
         super.onCreate();
         singleton = this;
+        this.ParkingLatLong = new ArrayList<Parking>();
     }
 
     public String getUserID() {

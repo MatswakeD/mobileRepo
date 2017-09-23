@@ -107,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Registration Status"
+                android:hint="Enter parking ID"
                 android:textColor="#00C853"
                 android:textSize="15sp"
                 android:textStyle="bold"

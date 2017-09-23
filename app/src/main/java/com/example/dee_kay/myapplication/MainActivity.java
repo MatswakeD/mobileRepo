@@ -35,20 +35,18 @@ import com.threepin.fireexit_wcf.FireExitClient;
 
 import java.io.FileInputStream;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
-        {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-            public static boolean ONBACKPRESS = false;
-            NavigationView navigationView;
-            FragmentManager FM;
-            FragmentTransaction FT;
+    public static boolean ONBACKPRESS = false;
+    NavigationView navigationView;
+    FragmentManager FM;
+    FragmentTransaction FT;
 
-            DateBaseHelper myDB;
-            Input input;
-            Output output;
-            Handler handler;
-
-            String filename = "file.txt";
+    DateBaseHelper myDB;
+    Input input;
+    Output output;
+    Handler handler;
+    String filename = "file.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +78,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-        if(ONBACKPRESS == false)
-        {
+        if (ONBACKPRESS == false) {
             //Getting data from the local database
             getDataFromFile();
-        }else if (ONBACKPRESS)
-        {
+        } else if (ONBACKPRESS) {
             //Displaying the map when the main activity starts
             setTitle("HOME");
             FM = getSupportFragmentManager();
@@ -93,15 +89,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
         }
 
+
     }
 
 
-            /**
-             *  Checking for google services permissions
-             */
+    /**
+     * Checking for google services permissions
+     */
 
-    public boolean googleServiceAvailable()
-    {
+    public boolean googleServiceAvailable() {
         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
         int isAvalable = api.isGooglePlayServicesAvailable(this);
         if (isAvalable == ConnectionResult.SUCCESS) {
@@ -116,11 +112,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-            /**
-             * Plugging the action bar menu
-             * @param menu
-             * @return
-             */
+    /**
+     * Plugging the action bar menu
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -128,11 +125,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-            /**
-             * Handling action bar menu clicks
-             * @param item
-             * @return
-             */
+    /**
+     * Handling action bar menu clicks
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -144,23 +142,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             return true;
         }
-        if (id == R.id.action_Register)
-        {
+        if (id == R.id.action_Register) {
             Registration registration = new Registration();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.content_main, registration, registration.getTag()).commit();
             return true;
         }
 
-        if (id == R.id.action_login)
-        {
+        if (id == R.id.action_login) {
             Login login = new Login();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.content_main, login, login.getTag()).commit();
             return true;
         }
-        if (id == R.id.action_exit)
-        {
+        if (id == R.id.action_exit) {
             finish();
             return true;
         }
@@ -169,11 +164,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-            /**
-             * handling menu item clicks
-              * @param item
-             * @return
-             */
+    /**
+     * handling menu item clicks
+     *
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -181,60 +177,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
 
-        if(id == R.id.nav_homeMap)
-        {
+        if (id == R.id.nav_homeMap) {
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
-            ((Activity) this).overridePendingTransition(0,0);
-        }
-
-         else if (id == R.id.nav_login) {
+            ((Activity) this).overridePendingTransition(0, 0);
+        } else if (id == R.id.nav_login) {
 
             Login login = new Login();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.content_main, login, login.getTag()).commit();
-        }
-
-        else if(id == R.id.nav_nfc){
+        } else if (id == R.id.nav_nfc) {
 
             Intent nfc = new Intent(this, NFC_TAG.class);
             startActivity(nfc);
-        }
-
-        else if(id == R.id.nav_nfcTagout){
+        } else if (id == R.id.nav_nfcTagout) {
 
             Intent tagout = new Intent(this, InAparking.class);
             startActivity(tagout);
-        }
-
-        else if(id == R.id.nav_register){
+        } else if (id == R.id.nav_register) {
 
             Registration registration = new Registration();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.content_main, registration, registration.getTag()).commit();
-        }
-
-        else if(id == R.id.nav_aboutus){
+        } else if (id == R.id.nav_aboutus) {
 
 
-        }
-
-        else if(id == R.id.nav_logout)
-        {
-            GlobalVariables gv = ((GlobalVariables)this.getApplicationContext());
+        } else if (id == R.id.nav_logout) {
+            GlobalVariables gv = ((GlobalVariables) this.getApplicationContext());
             gv.setUserID("empty");
 
             Home_Map map = new Home_Map();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.content_main, map, map.getTag()).commit();
 
-            Toast.makeText(this,"Good Bye "+ gv.getLasrName() ,Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Good Bye " + gv.getLasrName(), Toast.LENGTH_LONG).show();
             navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
 
             return true;
-        }
-
-        else if(id == R.id.nav_newProfile){
+        } else if (id == R.id.nav_newProfile) {
 
             Intent profile = new Intent(this, profile_nav_drawer.class);
             startActivity(profile);
@@ -246,194 +226,134 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-            /**
-             * Handling a back button
-             */
-            boolean doubleBackToExitPressedOnce = false;
+    /**
+     * Handling a back button
+     */
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+            return;
+        }
+
+        if (doubleBackToExitPressedOnce) {
+            finish();
+            Toast.makeText(this, "Application closed", Toast.LENGTH_LONG).show();
+            System.exit(0);
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Tap again to quit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onBackPressed() {
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 1500);
+        return;
 
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                if (drawer.isDrawerOpen(GravityCompat.START)) {
-                    drawer.closeDrawer(GravityCompat.START);
-                    return;
-                }
+    }
 
-                if (doubleBackToExitPressedOnce) {
-                    finish();
-                    Toast.makeText(this, "Application closed", Toast.LENGTH_LONG).show();
-                    System.exit(0);
-                    return;
-                }
 
-                this.doubleBackToExitPressedOnce = true;
-                Toast.makeText(this, "Tap again to quit", Toast.LENGTH_SHORT).show();
+    /**
+     * Getting data from a local data
+     */
+    public void getDataFromFile() {
+        //read file
+        String readFileInfor = readFile(filename);
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        doubleBackToExitPressedOnce = false;
-                    }
-                }, 1500);
-                return;
+        if (!readFileInfor.equals("")) {
+            input = new Input();
 
+            //Splitting the string from the file
+            String[] seperated = readFileInfor.split(":");
+            String email = seperated[0];
+            String pass = seperated[1];
+
+            input.user.Email = email;
+            input.user.Password = pass;
+
+            //Sending the data for verification
+            new myAsync().execute();
+        } else {
+            Registration registration = new Registration();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.content_main, registration, registration.getTag()).commit();
+        }
+
+
+    }
+
+
+    /**
+     * Read user information from file
+     *
+     * @param file
+     * @return
+     */
+    public String readFile(String file) {
+        String text = "";
+        try {
+
+            FileInputStream fis = openFileInput(file);
+            int size = fis.available();
+            byte[] buffer = new byte[size];
+            fis.read(buffer);
+            fis.close();
+            text = new String(buffer);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "File cannot be read!!", Toast.LENGTH_LONG).show();
+        }
+        return text;
+    }
+
+
+    class myAsync extends AsyncTask {
+        @Override
+        protected Object doInBackground(Object[] params) {
+
+            FireExitClient client = new FireExitClient(Input.AZURE_URL);
+            client.configure(new Configurator("http://tempuri.org/", "IService1", "SignIn"));
+
+            //passing the input class as a parameter to the service
+            client.addParameter("request", input);
+
+            output = new Output();
+
+            try {
+                output = client.call(output);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
+            return output;
+        }
 
-            /**
-             * Getting data from a local data
-             */
-            public void getDataFromFile()
-            {
-                //read file
-                String readFileInfor = readFile(filename);
-
-                if(!readFileInfor.equals(""))
-                {
-                    input = new Input();
-
-                    //Splitting the string from the file
-                    String[] seperated = readFileInfor.split(":");
-                    String email = seperated[0];
-                    String pass = seperated[1];
-
-                    input.user.Email = email;
-                    input.user.Password = pass;
-
-                    //Sending the data for verification
-                    new myAsync().execute();
-                }else
-                {
-                    Registration registration = new Registration();
-                    FragmentManager manager = getSupportFragmentManager();
-                    manager.beginTransaction().replace(R.id.content_main, registration, registration.getTag()).commit();
-                }
-
-
-            }
-
-
-            /**
-             * Read user information from file
-             * @param file
-             * @return
-             */
-            public String readFile(String file)
-            {
-                String text = "";
-                try{
-
-                    FileInputStream fis = openFileInput(file);
-                    int size = fis.available();
-                    byte[] buffer = new byte[size];
-                    fis.read(buffer);
-                    fis.close();
-                    text = new String(buffer);
-                }catch (Exception e)
-                {
-                    e.printStackTrace();
-                    Toast.makeText(this,"File cannot be read!!",Toast.LENGTH_LONG).show();
-                }
-                return text;
-            }
-
-
-            class myAsync extends AsyncTask {
+        @Override
+        protected void onPostExecute(final Object o) {
+            super.onPostExecute(o);
+            handler.post(new Runnable() {
                 @Override
-                protected Object doInBackground(Object[] params)
-                {
-
-                    FireExitClient client = new FireExitClient(Input.AZURE_URL);
-                    client.configure(new Configurator("http://tempuri.org/","IService1","SignIn"));
-
-                    //passing the input class as a parameter to the service
-                    client.addParameter("request",input);
-
-                    output = new Output();
+                public void run() {
+                    Output out = (Output) o;
 
                     try {
-                        output = client.call(output);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
-                    return output;
-                }
-
-                @Override
-                protected void onPostExecute( final Object o) {
-                    super.onPostExecute(o);
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Output out = (Output)o;
-
-                            try
-                            {
-
-                                if (out.Comfirmation.equals("true")) {
-                                    if (out.User_ID > 0) {
-                                        GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
-
-                                        gv.setUserID(out.User_ID + "");
-                                        gv.setLasrName(out.user.LastName);
-                                        gv.setLoggedIN("IN");
-
-                                        String userID = gv.getUserID();
-                                        if (userID.equals("empty")) {
-                                            navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
-                                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
-                                            navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
-                                        } else
-                                        {
-                                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
-                                            navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
-
-                                            if (out.INorOUT.equals("OUT")) {
-
-                                                //Displaying the map when the main activity starts
-                                                setTitle("HOME");
-                                                FM = getSupportFragmentManager();
-                                                FT = FM.beginTransaction();
-                                                FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
-
-                                            } else if (out.INorOUT.equals("IN")) {
-
-                                                //Passing the parking ID to the next activity
-                                                String  parkingID = out.parking_ID + "";
-                                                Intent inParking = new Intent(MainActivity.this, InAparking.class);
-                                                inParking.putExtra("parking_id", parkingID);
-                                                startActivity(inParking);
-
-                                            }
-                                            //Welcome to message
-                                            Toast.makeText(MainActivity.this, "Welcome " + out.user.LastName, Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-
-                                } else {
-
-                                    Toast.makeText(MainActivity.this, "Incorrect Password Or User name", Toast.LENGTH_LONG).show();
-
-                                    GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
-                                    String userID = gv.getUserID();
-                                    if (userID.equals("empty")) {
-                                        navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
-                                        navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
-                                        navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
-                                    } else {
-                                        navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
-                                        navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
-                                    }
-
-                                    }
-                            }catch (NullPointerException e)
-                            {
-                                e.printStackTrace();
-                                Toast.makeText(MainActivity.this, "CONNECTION TIME OUT", Toast.LENGTH_LONG).show();
-
-
+                        if (out.Comfirmation.equals("true")) {
+                            if (out.User_ID > 0) {
                                 GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
+
+                                gv.setUserID(out.User_ID + "");
+                                gv.setLasrName(out.user.LastName);
+                                gv.setLoggedIN("IN");
+
                                 String userID = gv.getUserID();
                                 if (userID.equals("empty")) {
                                     navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
@@ -442,14 +362,67 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 } else {
                                     navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
                                     navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+
+                                    if (out.INorOUT.equals("OUT")) {
+
+                                        //Displaying the map when the main activity starts
+                                        setTitle("HOME");
+                                        FM = getSupportFragmentManager();
+                                        FT = FM.beginTransaction();
+                                        FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
+
+                                    } else if (out.INorOUT.equals("IN")) {
+
+                                        //Passing the parking ID to the next activity
+                                        String parkingID = out.parking_ID + "";
+                                        Intent inParking = new Intent(MainActivity.this, InAparking.class);
+                                        inParking.putExtra("parking_id", parkingID);
+                                        startActivity(inParking);
+
+                                    }
+                                    //Welcome to message
+                                    Toast.makeText(MainActivity.this, "Welcome " + out.user.LastName, Toast.LENGTH_LONG).show();
                                 }
-
-
                             }
+
+                        } else {
+
+                            Toast.makeText(MainActivity.this, "Incorrect Password Or User name", Toast.LENGTH_LONG).show();
+
+                            GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
+                            String userID = gv.getUserID();
+                            if (userID.equals("empty")) {
+                                navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
+                                navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+                                navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+                            } else {
+                                navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
+                                navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+                            }
+
                         }
-                    });
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                        Toast.makeText(MainActivity.this, "CONNECTION TIME OUT", Toast.LENGTH_LONG).show();
+
+
+                        GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
+                        String userID = gv.getUserID();
+                        if (userID.equals("empty")) {
+                            navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
+                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+                            navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+                        } else {
+                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
+                            navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+                        }
+
+
+                    }
                 }
-            }
+            });
+        }
+    }
 
 }
 

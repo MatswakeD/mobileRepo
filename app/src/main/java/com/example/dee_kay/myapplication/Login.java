@@ -185,7 +185,7 @@ public class Login extends Fragment {
                             GlobalVariables gv = ((GlobalVariables)getActivity().getApplicationContext());
 
                             gv.setUserID(User_id);
-                            //gv.setFirstname(out.user.FirstName);
+                            gv.setFirstname(out.user.FirstName);
                             gv.setLasrName(out.user.LastName);
                             gv.setLoggedIN("IN");
 

@@ -77,6 +77,14 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".NFC_TAG" />
         <activity android:name=".InAparking" />
+
+        <service
+            android:name=".ClosestParking"
+            android:enabled="true"
+            android:exported="true" />
+
+
+
     </application>
 
 </manifest>

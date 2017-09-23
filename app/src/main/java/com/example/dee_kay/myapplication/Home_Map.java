@@ -81,6 +81,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
     EditText  et_search;
     boolean IsSearchig = false;
+    GlobalVariables gv = null;
+    Intent intentService;   //Notification service
 
     public Home_Map() {
         // Required empty public constructor
@@ -124,7 +126,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         //For searching a specific parking
         Search();
 
-        GlobalVariables gv = ((GlobalVariables)getActivity().getApplicationContext());
+        gv = ((GlobalVariables)getActivity().getApplicationContext());
         userIDgv = gv.getUserID();
         return mView;
     }
@@ -374,9 +376,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 IsSearchig = true;
-
                 new myAsync().execute();
 
             }
@@ -425,20 +425,14 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
      */
     public void geoLocation()throws IOException
     {
-        Geocoder gc = new Geocoder(getActivity());
+         Geocoder gc = new Geocoder(getActivity());
+         Parking parking = new Parking();
 
         List<Parking> parkingList =  output.parkingList;
         int parkingSize = parkingList.size();
 
 
             for (int i = 0; i < parkingSize; i++) {
-                //List<Address> listA = gc.getFromLocation(28.057293,-26.189586,1);
-
-                //double latt = Double.parseDouble(parkingList.get(i).Coordinates_ltd);
-                //double lngg = Double.parseDouble(parkingList.get(i).Coordinates_lng);
-
-                //List<Address> list = gc.getFromLocation(latt,lngg, 1);
-               // List<Address> list = gc.getFromLocationName(parkingList.get(i).Parking_Name, 1);
 
                 List<Address> list = gc.getFromLocationName(parkingList.get(i).Parking_Address, 20);
 
@@ -452,6 +446,15 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                     double lng = address.getLongitude();
                     LatLng ll = new LatLng(lat, lng);
 
+                    //Storing the parking lat-long
+                    parking.Parking_Name = parkingList.get(i).Parking_Name;
+                    parking.Coordinates_lng = lng;
+                    parking.Coordinates_ltd = lat;
+
+                    //storing the object in global variable class
+                    gv.ParkingLatLong.add(parking);
+
+
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(ll);
                     markerOptions.title(parkingList.get(i).Parking_Name).snippet(locality);
@@ -462,6 +465,10 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
 
             }
+
+        //Starting the service
+        intentService = new Intent(getActivity(), ClosestParking.class);
+        getActivity().startService(intentService);
 
     }
 
