@@ -351,6 +351,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
 
                                 gv.setUserID(out.User_ID + "");
+                                gv.setFirstname(out.user.FirstName);
                                 gv.setLasrName(out.user.LastName);
                                 gv.setLoggedIN("IN");
 
@@ -415,6 +416,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         } else {
                             navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
                             navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+
+
+                        }
+
+                        //Retrying to load
+                        new myAsync().execute();
+                        String id = gv.getUserID();
+                        if (id.equals("empty")) {
+                            navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
+                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+                            navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+                        } else {
+                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
+                            navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+
+
                         }
 
 

@@ -23,6 +23,13 @@
     </string-array>
     <string name="title_activity_notification_parking">Map</string>
     <string name="title_activity_near_by_parking">Map</string>
+    <string name="load_credits">Load Credits</string>
+    <string name="amount">Amount</string>
+    <string name="load">Load</string>
+    <string name="temParkingStatus">Parking Status : OUT</string>
+    <string name="temParkingSubcity">"Parking Sub City : "</string>
+    <string name="tempParkingInstatus">"Parking Status : "</string>
+    <string name="temParkingTimeStamp">"Time Stamp : "</string>
 
 
 </resources>

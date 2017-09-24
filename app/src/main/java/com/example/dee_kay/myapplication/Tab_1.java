@@ -25,6 +25,7 @@ import com.threepin.fireexit_wcf.FireExitClient;
 import java.util.Locale;
 
 /**
+ * User profile
  * A simple {@link Fragment} subclass.
  */
 public class Tab_1 extends Fragment {

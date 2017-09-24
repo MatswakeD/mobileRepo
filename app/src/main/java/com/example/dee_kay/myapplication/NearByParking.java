@@ -1,10 +1,8 @@
 package com.example.dee_kay.myapplication;
-
-
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.location.Geocoder;
+
 import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -15,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
-import com.example.dee_kay.myapplication.WcfObjects.Parking;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -33,7 +30,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 
-
+/**
+ * Handles plotting a near by parking onto the map
+ */
 public class NearByParking extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
         , LocationListener {
 
@@ -43,12 +42,13 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private GlobalVariables gv;
+    private Marker OtherOlaces;
 
-    Marker OtherOlaces;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_near_by_parking);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -56,6 +56,9 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    /**
+     * Checking location permission, and asking the user to set them on on
+     */
     private void checkLocationPermission() {
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -73,7 +76,7 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 requestPermissions(
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         }
                     })
@@ -85,12 +88,14 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
             // No explanation needed, we can request the permission.
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_LOCATION );
+                    MY_PERMISSIONS_REQUEST_LOCATION);
         }
     }
 
-    protected synchronized void buildGoogleApiClient()
-    {
+    /**
+     * Google Api handler
+     */
+    protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -112,10 +117,7 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Adding user current location
 
         //Initialize google Play Service
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -130,8 +132,7 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
                 //Request Location Permission
                 checkLocationPermission();
             }
-        }
-        else {
+        } else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
 
@@ -146,41 +147,45 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
         }
 
     }
+
     /**
      * Draw parking(s) onto the GoogleMaps
+     *
      * @throws IOException
      */
-    public void geoLocation()throws IOException
-    {
+    public void geoLocation() throws IOException {
         //Getting user current location
         gv = (GlobalVariables) getApplication();
 
-                LatLng ll = new LatLng(gv.parkingLat, gv.parkingLng);
+        //Setting lat long of the parking that is near by the user
+        LatLng ll = new LatLng(gv.parkingLat, gv.parkingLng);
 
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(ll);
-                markerOptions.title(gv.ParkingName);
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                OtherOlaces = mMap.addMarker(markerOptions);
-                gotoLocationZoom(ll,6);
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(ll);
+        markerOptions.title(gv.ParkingName);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        OtherOlaces = mMap.addMarker(markerOptions);
+        gotoLocationZoom(ll, 6);
 
-
-
-        }
+    }
 
 
     /**
      * For zooming the camera
+     *
      * @param ll
      * @param zoom
      */
-    private void gotoLocationZoom(LatLng ll, float zoom)
-    {
-        CameraUpdate updateCamera = CameraUpdateFactory.newLatLngZoom(ll,zoom);
+    private void gotoLocationZoom(LatLng ll, float zoom) {
+        CameraUpdate updateCamera = CameraUpdateFactory.newLatLngZoom(ll, zoom);
         // mGoogleMap.moveCamera(updateCamera);
         mMap.animateCamera(updateCamera);
     }
 
+    /**
+     * Checking user current location if it has changed, then plotting the current location
+     * @param location
+     */
     @Override
     public void onLocationChanged(Location location) {
 
@@ -198,7 +203,7 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //zoom in the camera to user current location
-        gotoLocationZoom(latLng,14);
+        gotoLocationZoom(latLng, 14);
 
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -206,6 +211,10 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
     }
 
 
+    /**
+     * Handles location accuracy
+     * @param bundle
+     */
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
@@ -219,7 +228,7 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
                     android.Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
-                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest,this);
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             }
         }
     }

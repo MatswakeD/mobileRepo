@@ -73,7 +73,7 @@ public class ClosestParking extends Service {
                     while (currentTime < futureTime) {
                         synchronized (this) {
                             try {
-                                // System.out.println("SERVICE: WAITING");
+                                System.out.println("SERVICE: WAITING");
 
                                 wait(futureTime - currentTime);
                                 checkLocation();
@@ -104,12 +104,11 @@ public class ClosestParking extends Service {
     private static final int notificationID = 100;
     NotificationManager manager;
 
-
     /**
      * Near by parking notification
      */
     public void locationNotification() {
-        String msgText = "Hi " + parking.Parking_Name + " is in the same area as you are, if you looking for a parking.";
+        String msgText = "Hi " + gv.getFirstname() + " " + parking.Parking_Name + " Parking" + " is in the same area as you are, if you looking for a parking.";
 
         PendingIntent pi = getPendingIntent();
         Notification.Builder builder = new Notification.Builder(this);
@@ -117,10 +116,10 @@ public class ClosestParking extends Service {
         long[] array = {1, 2, 3};
         builder
                 .setTicker("E-Parking")
-                .setContentTitle("Update from " + "E-Parking")
+                .setContentTitle("E-Parking")
                 .setVibrate(array)
                 .setContentText("Update from " + "Near by Parking")
-                .setSmallIcon(R.drawable.ic_alarm_on_black_24dp)
+                .setSmallIcon(R.drawable.ic_place_black_24dp)
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setWhen(System.currentTimeMillis());
         //.addAction(R.drawable.ic_shopping_cart_black_36dp, "open app", pi);
@@ -189,8 +188,8 @@ public class ClosestParking extends Service {
                 parking.Coordinates_lng = parkingList.get(x).Coordinates_lng;
 
                 //Saving the parking coordinates
-                gv.ParkingName =  parking.Parking_Name;
-                gv.parkingLat =  parking.Coordinates_ltd;
+                gv.ParkingName = parking.Parking_Name;
+                gv.parkingLat = parking.Coordinates_ltd;
                 gv.parkingLng = parking.Coordinates_lng;
 
                 //session.traderName = o.locations.get(x).TraderName;

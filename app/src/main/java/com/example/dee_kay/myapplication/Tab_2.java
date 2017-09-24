@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dee_kay.myapplication.WcfObjects.Input;
@@ -27,6 +28,7 @@ import java.util.Locale;
 public class Tab_2 extends Fragment {
 
 
+    private TextView tv_creditStatus;
     private EditText et_credits;
     private Button btnLoadCredits;
     Output output;
@@ -54,30 +56,36 @@ public class Tab_2 extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_tab_2, container, false);
 
+        tv_creditStatus =(TextView) v.findViewById(R.id.tv_credit_status);
         et_credits = (EditText) v.findViewById(R.id.et_credits);
         btnLoadCredits = (Button) v.findViewById(R.id.btn_load);
 
         btnLoadCredits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 if(User_id.equals("empty"))
                 {
                     Toast.makeText(getActivity(),"User is not logged in",Toast.LENGTH_LONG).show();
                 }
                 else {
-                    editing = "true";
-                    new myAsync().execute();
+
 
                     //Capturing user contact details
-                    input.wallet.Balance = Double.parseDouble(et_credits.getText().toString());
-
+                    try {
+                        input.wallet.Balance = Double.parseDouble(et_credits.getText().toString());
+                        editing = "true";
+                        new myAsync().execute();
+                    }catch (NumberFormatException e)
+                    {
+                        Toast.makeText(getActivity(),"Please provide a valid amount",Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
 
 
+
+        //Getting the user ID
         GlobalVariables gv = ((GlobalVariables)getActivity().getApplicationContext());
         User_id = gv.getUserID();
 
@@ -101,11 +109,9 @@ public class Tab_2 extends Fragment {
         @Override
         protected Object doInBackground(Object[] params)
         {
-
-
             if(editing.equals("false"))
             {
-                FireExitClient client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
+                FireExitClient client = new FireExitClient(Input.AZURE_URL);
                 client.configure(new Configurator("http://tempuri.org/","IService1","GetProfile"));
                 //passing the input class as a parameter to the service
                 client.addParameter("request",input);
@@ -123,7 +129,7 @@ public class Tab_2 extends Fragment {
             else  //edit the user profile
             {
 
-                FireExitClient client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
+                FireExitClient client = new FireExitClient(Input.AZURE_URL);
                 client.configure(new Configurator("http://tempuri.org/","IService1","EditWallet"));
                 //passing the input class as a parameter to the service
                 client.addParameter("request",input);
@@ -137,6 +143,8 @@ public class Tab_2 extends Fragment {
                     e.printStackTrace();
                 }
 
+
+                //For the displaying the edited amount
                 input.user.User_ID = User_id;
                 client = new FireExitClient("http://eparkingservices.cloudapp.net/Service1.svc");
                 client.configure(new Configurator("http://tempuri.org/","IService1","GetProfile"));
@@ -166,7 +174,12 @@ public class Tab_2 extends Fragment {
 
                     if(!out.profile.Deactivate.toUpperCase(Locale.ENGLISH).equals("DEACTIVATED")) {
                         if (out != null) {
+
                             et_credits.setText("R " + out.wallet.Balance);
+                            if(out.Comfirmation.equals("true"))
+                            {
+                                tv_creditStatus.setText("Low on credits, please re-load");
+                            }
 
                         } else {
                             Toast.makeText(getActivity(), "User is not logged in", Toast.LENGTH_LONG).show();
