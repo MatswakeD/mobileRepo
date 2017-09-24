@@ -188,6 +188,11 @@ public class ClosestParking extends Service {
                 parking.Coordinates_ltd = parkingList.get(x).Coordinates_ltd;
                 parking.Coordinates_lng = parkingList.get(x).Coordinates_lng;
 
+                //Saving the parking coordinates
+                gv.ParkingName =  parking.Parking_Name;
+                gv.parkingLat =  parking.Coordinates_ltd;
+                gv.parkingLng = parking.Coordinates_lng;
+
                 //session.traderName = o.locations.get(x).TraderName;
                 //session.trLatitude = o.locations.get(x).Lat;
                 //session.trLongitude = o.locations.get(x).Long;
@@ -211,7 +216,7 @@ public class ClosestParking extends Service {
      */
     public PendingIntent getPendingIntent() {
 
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), NearByParking.class);
 
         //for plotting the location after openning the notifaction
         //intent.putExtra("session", session);
@@ -222,6 +227,7 @@ public class ClosestParking extends Service {
 
     /**
      * Used for getting data from the database
+     * Getting the parking that might be possibly around the user
      */
     class myAsync extends AsyncTask {
 
@@ -229,7 +235,7 @@ public class ClosestParking extends Service {
         protected Object doInBackground(Object[] params) {
 
             FireExitClient client = new FireExitClient(Input.AZURE_URL);
-            //Calling the function from the service, to give a list parkings
+            //Calling the function from the service, to give a list parking(s)
             client.configure(new Configurator("http://tempuri.org/", "IService1", "GetParkings"));
 
             //passing the input class as a parameter to the service
@@ -260,6 +266,7 @@ public class ClosestParking extends Service {
 
 
                     } else {
+                        //If we did not get any parking, try again
                         new myAsync().execute();
                     }
 

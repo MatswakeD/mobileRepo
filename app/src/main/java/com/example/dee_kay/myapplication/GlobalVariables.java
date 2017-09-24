@@ -18,6 +18,10 @@ public class GlobalVariables extends Application
     private static GlobalVariables singleton = null;
     public ArrayList<Parking> ParkingLatLong = null;
 
+    public double parkingLat;
+    public double parkingLng;
+    public String ParkingName;
+
     public double lat;
     public double lng;
 
