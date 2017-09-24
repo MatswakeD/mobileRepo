@@ -5,19 +5,34 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import android.widget.Toast;
 
+import com.example.dee_kay.myapplication.WcfObjects.Input;
+import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.example.dee_kay.myapplication.WcfObjects.Parking;
+import com.example.dee_kay.myapplication.WcfObjects.User;
+import com.threepin.fireexit_wcf.Configurator;
+import com.threepin.fireexit_wcf.FireExitClient;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
+
+/**
+ * Service that checks for near parking around the user, and notify them
+ */
 public class ClosestParking extends Service {
 
+    private Handler handler;
+    private Output output;
 
-    private GlobalVariables gv = (GlobalVariables)getApplication();
     public ClosestParking() {
 
+        this.handler = new Handler();
 
     }
 
@@ -29,9 +44,25 @@ public class ClosestParking extends Service {
         //throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    private User userCurrentLocation = null;
+    private GlobalVariables gv = null;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+
+        //Getting user current location
+        gv = (GlobalVariables) getApplication();
+        userCurrentLocation = new User();
+
+        userCurrentLocation.lat = gv.lat;
+        userCurrentLocation.lng = gv.lng;
+
+        System.out.println("SERVICE: " + userCurrentLocation.lat);
+        System.out.println("SERVICE: " + userCurrentLocation.lng);
+
+
+        //Starting the service
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -58,7 +89,6 @@ public class ClosestParking extends Service {
 
         Thread notificationThread = new Thread(r);
         notificationThread.start();
-        locationNotification();
 
         return Service.START_STICKY;
 
@@ -71,23 +101,25 @@ public class ClosestParking extends Service {
     }
 
 
-
     private static final int notificationID = 100;
     NotificationManager manager;
 
 
+    /**
+     * Near by parking notification
+     */
     public void locationNotification() {
-        //String msgText = "Hi " + session.getUsername() + ", " + session.traderName + " is in the same area as you are, we thought you might wanna check their store out.";
+        String msgText = "Hi " + parking.Parking_Name + " is in the same area as you are, if you looking for a parking.";
 
         PendingIntent pi = getPendingIntent();
         Notification.Builder builder = new Notification.Builder(this);
 
         long[] array = {1, 2, 3};
         builder
-                //.setTicker("Neighbourgoods Market Johannesburg")
-                .setContentTitle("Update from " + "")
+                .setTicker("E-Parking")
+                .setContentTitle("Update from " + "E-Parking")
                 .setVibrate(array)
-                .setContentText("Update from " + "")
+                .setContentText("Update from " + "Near by Parking")
                 .setSmallIcon(R.drawable.ic_alarm_on_black_24dp)
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setWhen(System.currentTimeMillis());
@@ -95,7 +127,7 @@ public class ClosestParking extends Service {
         builder.setContentIntent(pi);
         builder.setAutoCancel(true);
         Notification notification = new Notification.BigTextStyle(builder)
-                .bigText("messgae goes here").build();
+                .bigText(msgText).build();
 
         //sending out notification to device
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -106,56 +138,77 @@ public class ClosestParking extends Service {
     }
 
     boolean stopNotification = false;
+    private Parking parking = null;
 
-
+    /**
+     * Calculating the radius of the user
+     */
     private void checkLocation() {
 
 
-        ArrayList<Parking> parkingList = gv.ParkingLatLong;
+        //getting parking coordinates
+        new myAsync().execute();
+
+        List<Parking> parkingList = output.parkingList;
         int parkingSize = parkingList.size();
 
-        System.out.println("-----------: " + parkingSize);
-
-
+        System.out.println("-------------: " + parkingSize);
 
         for (int x = 0; x < parkingSize; x++) {
 
             //System.out.println(o.locations.get(x).ProfileID +" :: " + o.locations.get(x).TraderName);
             //System.out.println("Lat: " + o.locations.get(x).Lat + "\nLong: "+ o.locations.get(x).Long + "\n\n");
 
-            //double tempLat = session.latitude - o.locations.get(x).Lat; //current = 2
-            //double tempLong = session.longitude - o.locations.get(x).Long;
+//            double tempLat = session.latitude - o.locations.get(x).Lat; //current = 2
+//            double tempLong = session.longitude - o.locations.get(x).Long;
 
-            //double a = (Math.pow(Math.sin(tempLat / 2), 2) + Math.cos(o.locations.get(x).Lat) * Math.cos(session.latitude) * Math.pow(Math.sin(tempLong / 2), 2));
-            //double c = (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-           // double r = 6373 * c;
+
+            //Getting the difference between the user's location and the parking around them
+            double tempLat = userCurrentLocation.lat - parkingList.get(x).Coordinates_ltd;
+            double tempLong = userCurrentLocation.lng - parkingList.get(x).Coordinates_lng;
+
+            //Calculating user's radius
+            double a = (Math.pow(Math.sin(tempLat / 2), 2) + Math.cos(parkingList.get(x).Coordinates_ltd) * Math.cos(userCurrentLocation.lat) * Math.pow(Math.sin(tempLong / 2), 2));
+            double c = (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+            double r = 6373 * c;
 
             //System.out.print(session.latitude + " : " + session.longitude);
-            //System.out.println("DISTANCE " + r);
+            System.out.println("DISTANCE " + r);
 
 
-//            if (r <= 15) {
-//
-//
-//                //System.out.print("LOOP: " + o.locations.get(x).TraderName + ": " + r);
-//                System.out.println();
-//                //session.traderName = o.locations.get(x).TraderName;
-//                //session.trLatitude = o.locations.get(x).Lat;
-//                //session.trLongitude = o.locations.get(x).Long;
-//
-//
-//
-//                if (!stopNotification) {
-//                    locationNotification();
-//                }
-//                return;
-//            }
+            //Storing the name of the parking, to display on the notification
+            parking = new Parking();
+            if (r <= 15) {
+
+                System.out.print("LOOP: " + parkingList.get(x).Parking_Name + ": " + r);
+                System.out.println();
+
+                parking.Parking_Name = parkingList.get(x).Parking_Name;
+                parking.Parking_City = parkingList.get(x).Parking_City;
+                parking.Coordinates_ltd = parkingList.get(x).Coordinates_ltd;
+                parking.Coordinates_lng = parkingList.get(x).Coordinates_lng;
+
+                //session.traderName = o.locations.get(x).TraderName;
+                //session.trLatitude = o.locations.get(x).Lat;
+                //session.trLongitude = o.locations.get(x).Long;
+
+
+                //Sending out the notification with the parking name
+                if (!stopNotification) {
+                    locationNotification();
+                }
+                return;
+            }
         }
 
     }
 
 
-    //User session = null;
+    /**
+     * For handling on click notification, and plot the parking that is around the user location
+     *
+     * @return
+     */
     public PendingIntent getPendingIntent() {
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -166,4 +219,53 @@ public class ClosestParking extends Service {
         return PendingIntent.getActivity(this, 0, intent, 0);
     }
 
+
+    /**
+     * Used for getting data from the database
+     */
+    class myAsync extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+
+            FireExitClient client = new FireExitClient(Input.AZURE_URL);
+            //Calling the function from the service, to give a list parkings
+            client.configure(new Configurator("http://tempuri.org/", "IService1", "GetParkings"));
+
+            //passing the input class as a parameter to the service
+            client.addParameter("request", "");
+
+
+            output = new Output();
+
+            try {
+                output = client.call(output);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            return output;
+        }
+
+        @Override
+        protected void onPostExecute(final Object o) {
+            super.onPostExecute(o);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Output out = (Output) o;
+
+                    if (out.parkingList.size() != 0) {
+
+
+                    } else {
+                        new myAsync().execute();
+                    }
+
+
+                }
+            });
+        }
+    }
 }

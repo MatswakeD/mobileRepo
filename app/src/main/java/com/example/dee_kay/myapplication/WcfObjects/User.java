@@ -12,5 +12,7 @@ public class User implements Serializable
     public String LastName;
     public String Email;
     public String Password;
+    public double lat;
+    public double lng;
 
 }

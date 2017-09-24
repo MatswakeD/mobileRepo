@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.example.dee_kay.myapplication.WcfObjects.Input;
 import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.example.dee_kay.myapplication.WcfObjects.Parking;
+import com.example.dee_kay.myapplication.WcfObjects.User;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -434,7 +435,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
             for (int i = 0; i < parkingSize; i++) {
 
-                List<Address> list = gc.getFromLocationName(parkingList.get(i).Parking_Address, 20);
+                List<Address> list = gc.getFromLocation(parkingList.get(i).Coordinates_ltd,parkingList.get(i).Coordinates_lng, 20);
 
                 if(list.size() != 0)
                 {
@@ -466,9 +467,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
             }
 
-        //Starting the service
-        intentService = new Intent(getActivity(), ClosestParking.class);
-        getActivity().startService(intentService);
+
 
     }
 
@@ -510,6 +509,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
     }
 
+
+    private User userCurrentLocation = null;
     @Override
     public void onLocationChanged(Location location) {
 
@@ -532,6 +533,20 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
+
+        //For storing user current location
+        userCurrentLocation = new User();
+        userCurrentLocation.lat = location.getLatitude();
+        userCurrentLocation.lng = location.getLongitude();
+
+        gv.lat = location.getLatitude();
+        gv.lng = location.getLongitude();
+
+
+        //Starting the service, with the current user location.
+        intentService = new Intent(getActivity(), ClosestParking.class);
+        intentService.putExtra("currentLocation",userCurrentLocation);
+        getActivity().startService(intentService);
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
