@@ -374,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                     } else if (out.INorOUT.equals("IN")) {
 
+
                                         //Passing the parking ID to the next activity
                                         String parkingID = out.parking_ID + "";
                                         Intent inParking = new Intent(MainActivity.this, InAparking.class);

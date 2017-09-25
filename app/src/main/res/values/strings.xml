@@ -30,6 +30,8 @@
     <string name="temParkingSubcity">"Parking Sub City : "</string>
     <string name="tempParkingInstatus">"Parking Status : "</string>
     <string name="temParkingTimeStamp">"Time Stamp : "</string>
+    <string name="date_time">Date time</string>
+    <string name="parking_fee">Parking fee</string>
 
 
 </resources>

@@ -1,90 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_in_aparking"
+    android:id="@+id/activity_nfc__tag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.dee_kay.myapplication.InAparking">
+    android:orientation="vertical"
+    tools:context="com.example.dee_kay.myapplication.NFC_TAG">
 
-    <RelativeLayout
+
+    <include
+        android:id="@+id/tagInBar"
+        layout="@layout/tagin_app_bar" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/round"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="25dp"
+        tools:context="com.example.dee_kay.myapplication.Registration">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_place_black_24dp"
-            android:layout_marginStart="22dp"
-            android:id="@+id/imageView"
-            android:layout_alignParentTop="true"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:gravity="center">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/taggedIN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp" />
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/round"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:text="parking location"
+            <TextView
+                android:id="@+id/tv_InparkingName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="Parking Name"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_onceoffParkingLocation"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rightroundcolor"
+                android:gravity="center"
+                android:hint="Parking Sub-city"
+                android:selectAllOnFocus="true"
+                android:textColorHint="@android:color/black"
+                android:textSize="15dp" />
+
+
+            <TextView
+                android:id="@+id/tv_OnceoffStatus"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rightroundcolor"
+                android:gravity="center"
+                android:hint="Status"
+                android:selectAllOnFocus="true"
+                android:textColorHint="@android:color/black"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_timeSpend"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rightroundcolor"
+                android:gravity="center"
+                android:hint="Time stamp"
+                android:selectAllOnFocus="true"
+                android:textColorHint="@android:color/black"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_onceOFFtime"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rightroundcolor"
+                android:gravity="center"
+                android:hint="@string/date_time"
+                android:selectAllOnFocus="true"
+                android:textColorHint="@android:color/black"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_charges"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rightroundcolor"
+                android:gravity="center"
+                android:hint="@string/parking_fee"
+                android:selectAllOnFocus="true"
+                android:textColorHint="@android:color/black"
+                android:textSize="15dp" />
+
+
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/tvID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:id="@+id/tv_onceoffParkingLocation"
-            android:layout_below="@+id/tv_InparkingName"
-            android:layout_alignStart="@+id/tv_InparkingName" />
-
-        <TextView
-            android:text="Status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:id="@+id/tv_OnceoffStatus"
-            android:layout_below="@+id/tv_onceoffParkingLocation"
-            android:layout_alignStart="@+id/tv_onceoffParkingLocation" />
-
-        <TextView
-
-            android:text="Parking date and time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:id="@+id/tv_onceOFFtime"
-            android:layout_below="@+id/tv_OnceoffStatus"
-            android:layout_alignStart="@+id/tv_OnceoffStatus" />
-
-        <TextView
-            android:text="Time spent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:id="@+id/tv_timeSpend"
-            android:layout_below="@+id/tv_onceOFFtime"
-            android:layout_alignStart="@+id/tv_onceOFFtime" />
-
-        <TextView
-            android:text="Charged fee"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:id="@+id/tv_charges"
-            android:layout_below="@+id/tv_timeSpend"
-            android:layout_alignStart="@+id/tv_timeSpend" />
-
-
-        <TextView
-            android:text="Parking Name"
-            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:hint="Enter parking ID, then tag the NFC"
+            android:textColor="#00C853"
             android:textSize="15sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="42dp"
-            android:id="@+id/tv_InparkingName"
-            android:layout_alignTop="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" />
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="60dp"
+            android:layout_below="@+id/taggedIN"
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
-        </RelativeLayout>
+    </RelativeLayout>
 
-</RelativeLayout>
+
+</LinearLayout>
