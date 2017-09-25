@@ -68,20 +68,9 @@
         android:hint="@string/search"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:singleLine="true"
         android:textColorHint="@android:color/black"
         android:textSize="15dp"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/RecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/et_search"
-        android:layout_marginTop="10dp"
-        android:scrollbars="vertical"
-
-        >
-
-    </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

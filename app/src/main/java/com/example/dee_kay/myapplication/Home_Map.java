@@ -1,7 +1,6 @@
 package com.example.dee_kay.myapplication;
 
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,15 +14,12 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,16 +36,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.threepin.fireexit_wcf.Configurator;
@@ -58,7 +53,6 @@ import com.threepin.fireexit_wcf.FireExitClient;
 import java.io.IOException;
 
 import java.util.List;
-import java.util.Locale;
 
 import static com.example.dee_kay.myapplication.Login.USER_ID;
 
@@ -88,10 +82,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     //for searching
     EditText et_search;
     boolean IsSearchig = false;
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    private static final LatLngBounds myBounds = new LatLngBounds(new LatLng(-0, 0), new LatLng(0, 0));
-
 
     GlobalVariables gv = null;
     Intent intentService;   //Notification service
@@ -116,27 +106,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         //for searching
         et_search = (EditText) mView.findViewById(R.id.et_search);
-        recyclerView = (RecyclerView) mView.findViewById(R.id.RecyclerView);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        //then setAdapter
 
-        et_search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         //Button for tag in
         btnNFC = (FloatingActionButton) mView.findViewById(R.id.floatingBTN_nfcTab);
@@ -192,6 +163,15 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+//        if(!mGoogleApiClient.isConnected() && !mGoogleApiClient.isConnecting())
+//        {
+//            mGoogleApiClient.connect();
+//        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
 
@@ -202,6 +182,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
     @Override
     public void onClick(View v) {
+
 
     }
 
@@ -409,10 +390,9 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
 
         boolean isFound = false;
-        if (mCurrLocationMarker != null) {
-            mGoogleMap.clear();
-        }
 
+
+        int counter = 0;
         int parkingSize = parkingList.size();
 
         for (int i = 0; i < parkingSize; i++) {
@@ -420,34 +400,42 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             if (parking.equals(parkingList.get(i).Parking_Name)) {
 
                 isFound = true;
-                List<Address> listName = gc.getFromLocation(parkingList.get(i).Coordinates_ltd, parkingList.get(i).Coordinates_lng, 20);
-
-                String locality = parkingList.get(i).Parking_City + "\n" + "Number of bays " + parkingList.get(i).Number_Of_bays;
-                Address address = listName.get(0);
-
-                double lat = address.getLatitude();
-                double lng = address.getLongitude();
-                LatLng ll = new LatLng(lat, lng);
-
-
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(ll);
-                markerOptions.title(parkingList.get(i).Parking_Name).snippet(locality);
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                OtherOlaces = mGoogleMap.addMarker(markerOptions);
-                //Zooming in the location
-                gotoLocationZoom(ll, 17);
+                counter = i;
 
                 et_search.setVisibility(View.INVISIBLE);
+               continue;
             } else {
-                isFound = false;
+
                 //Toast.makeText(getActivity(),"No parking by that name in our system !!",Toast.LENGTH_LONG).show();
             }
 
-            if (isFound == false) {
-                Toast.makeText(getActivity(), "No parking by that name in our system !!", Toast.LENGTH_LONG).show();
-            }
+        }
 
+        if(isFound == true)
+        {
+            if (mCurrLocationMarker != null) {
+                mGoogleMap.clear();
+            }
+            List<Address> listName = gc.getFromLocation(parkingList.get(counter).Coordinates_ltd, parkingList.get(counter).Coordinates_lng, 20);
+
+            String locality = parkingList.get(counter).Parking_City + "\n" + "Number of bays " + parkingList.get(counter).Number_Of_bays;
+            Address address = listName.get(0);
+
+            double lat = address.getLatitude();
+            double lng = address.getLongitude();
+            LatLng ll = new LatLng(lat, lng);
+
+
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(ll);
+            markerOptions.title(parkingList.get(counter).Parking_Name).snippet(locality);
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            OtherOlaces = mGoogleMap.addMarker(markerOptions);
+            //Zooming in the location
+            gotoLocationZoom(ll, 17);
+
+        }else if (isFound == false) {
+            Snackbar.make(mView,"No parking by that name was found !!",Snackbar.LENGTH_LONG).show();
         }
 
     }
@@ -502,11 +490,15 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
     }
 
+    /**
+     * Handling API client
+     */
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
                 .build();
         mGoogleApiClient.connect();
     }
