@@ -32,6 +32,7 @@
     <string name="temParkingTimeStamp">"Time Stamp : "</string>
     <string name="date_time">Date time</string>
     <string name="parking_fee">Parking fee</string>
+    <string name="search">Search</string>
 
 
 </resources>

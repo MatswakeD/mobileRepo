@@ -108,7 +108,7 @@ public class ClosestParking extends Service {
      * Near by parking notification
      */
     public void locationNotification() {
-        String msgText = "Hi " + gv.getFirstname() + " " + parking.Parking_Name + " Parking" + " is in the same area as you are, if you looking for a parking.";
+        String msgText = "Hi " + gv.getFirstname() + " '" + parking.Parking_Name + " Parking'" + " is in the same area as you are, if you looking for a parking.";
 
         PendingIntent pi = getPendingIntent();
         Notification.Builder builder = new Notification.Builder(this);

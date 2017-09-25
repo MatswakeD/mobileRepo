@@ -1,73 +1,87 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.dee_kay.myapplication.Home_Map"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    tools:context="com.example.dee_kay.myapplication.Home_Map">
 
 
     <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/map"
         android:layout_alignParentTop="true">
-
 
 
     </com.google.android.gms.maps.MapView>
 
 
-
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingBTN_nfcTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            app:fabSize="mini"
-            android:src="@drawable/ic_lock_open_black_24dp"
             android:layout_gravity="bottom|end"
-            android:id="@+id/floatingBTN_nfcTab"
-            app:backgroundTint="#CCf5f5f5"
             android:layout_marginBottom="58dp"
             android:layout_marginEnd="15dp"
-            />
+            android:clickable="true"
+            android:src="@drawable/ic_lock_open_black_24dp"
+            app:backgroundTint="#CCf5f5f5"
+            app:fabSize="mini" />
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btnFB_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            app:fabSize="mini"
-            android:src="@drawable/ic_search_black_24dp"
             android:layout_gravity="bottom|end"
-            android:id="@+id/btnFB_search"
-            app:backgroundTint="#CCf5f5f5"
-
             android:layout_marginBottom="105dp"
             android:layout_marginEnd="15dp"
-            />
+            android:clickable="true"
+            android:src="@drawable/ic_search_black_24dp"
+            app:backgroundTint="#CCf5f5f5"
+            app:fabSize="mini" />
 
-        <EditText
-            android:id="@+id/et_search"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:selectAllOnFocus="true"
-            android:textColorHint="@android:color/black"
-            android:gravity="center"
-            android:layout_gravity="bottom"
-            android:hint="Search "
-            android:textSize="15dp"
-            android:background="@drawable/search"
-            android:layout_marginBottom="6dp"
-            android:layout_marginTop="10dp"
-            android:visibility="invisible"/>
+
+
     </android.support.design.widget.CoordinatorLayout>
 
 
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="12dp"
+        android:alpha="0.5"
+        android:background="@drawable/search_box"
+        android:drawableLeft="@drawable/ic_search_black_24dp"
+        android:gravity="center"
+        android:hint="@string/search"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColorHint="@android:color/black"
+        android:textSize="15dp"
+        android:visibility="visible" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/et_search"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical"
+
+        >
+
+    </android.support.v7.widget.RecyclerView>
 </RelativeLayout>
