@@ -23,10 +23,14 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dee_kay.myapplication.CustomAdaptors.AutoCompleteAdapter;
+import com.example.dee_kay.myapplication.CustomAdaptors.ParkingList_Adapeter_Layout;
 import com.example.dee_kay.myapplication.WcfObjects.Input;
 import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.example.dee_kay.myapplication.WcfObjects.Parking;
@@ -80,8 +84,10 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     FloatingActionButton btnNFC, btnSearch;
 
     //for searching
-    EditText et_search;
+    AutoCompleteTextView et_search;
     boolean IsSearchig = false;
+    List<Parking> parkingList = null;
+    String[] parkingName = null;
 
     GlobalVariables gv = null;
     Intent intentService;   //Notification service
@@ -104,8 +110,9 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         handler = new Handler();
 
+
         //for searching
-        et_search = (EditText) mView.findViewById(R.id.et_search);
+        et_search = (AutoCompleteTextView) mView.findViewById(R.id.et_search);
 
 
 
@@ -125,6 +132,11 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         //For searching a specific parking
         Search();
 
+        //For searching auto-complete
+        //if(parkingList != null)
+
+
+
         gv = ((GlobalVariables) getActivity().getApplicationContext());
         userIDgv = gv.getUserID();
         return mView;
@@ -141,6 +153,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             mapView.onResume();
             mapView.getMapAsync(this);
         }
+
+
     }
 
     @Override
@@ -159,6 +173,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         }
 
         new myAsync().execute();
+
+
 
     }
 
@@ -229,9 +245,11 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                             if (IsSearchig == false) {
                                 //Plotting the parking(s) on the map
                                 geoLocation();
+                                parkingList = output.parkingList;
                             } else if (IsSearchig == true) {
                                 geoSearch(et_search.getText().toString());
                                 IsSearchig = false;
+
                             }
 
                         } catch (IOException e) {
@@ -358,10 +376,32 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             public boolean onLongClick(View v) {
 
                 et_search.setVisibility(View.VISIBLE);
+                AutoCompleteSearch();
                 return true;
             }
         });
 
+    }
+
+
+    /**
+     * Used for searching
+     * Provide user with auto-complete based on the names that are in the data base
+     */
+    public void AutoCompleteSearch() {
+
+        if (parkingName.length != 0) {
+            ArrayAdapter<String> adapter = new AutoCompleteAdapter(getActivity(),parkingName);
+            et_search.setAdapter(adapter);
+
+        } else {
+            Snackbar.make(mView, "No parking(s) to search from ,sorry !!", Snackbar.LENGTH_LONG).show();
+        }
+
+//        String[] parkingName = {"alec","auto","love","lang"};
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, parkingName);
+//        et_search.setAdapter(adapter);
     }
 
     /**
@@ -386,9 +426,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
      */
     public void geoSearch(String parking) throws IOException {
         Geocoder gc = new Geocoder(getActivity());
-        List<Parking> parkingList = output.parkingList;
 
-
+        parkingList = output.parkingList;
         boolean isFound = false;
 
 
@@ -397,13 +436,13 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         for (int i = 0; i < parkingSize; i++) {
 
-            if (parking.equals(parkingList.get(i).Parking_Name)) {
+            if (parking.trim().equals(parkingList.get(i).Parking_Name)) {
 
                 isFound = true;
                 counter = i;
 
                 et_search.setVisibility(View.INVISIBLE);
-               continue;
+                continue;
             } else {
 
                 //Toast.makeText(getActivity(),"No parking by that name in our system !!",Toast.LENGTH_LONG).show();
@@ -411,8 +450,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         }
 
-        if(isFound == true)
-        {
+        if (isFound == true) {
             if (mCurrLocationMarker != null) {
                 mGoogleMap.clear();
             }
@@ -434,8 +472,8 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             //Zooming in the location
             gotoLocationZoom(ll, 17);
 
-        }else if (isFound == false) {
-            Snackbar.make(mView,"No parking by that name was found !!",Snackbar.LENGTH_LONG).show();
+        } else if (isFound == false) {
+            Snackbar.make(mView, "No parking by that name was found !!", Snackbar.LENGTH_LONG).show();
         }
 
     }
@@ -449,8 +487,9 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         Geocoder gc = new Geocoder(getActivity());
         Parking parking = new Parking();
 
-        List<Parking> parkingList = output.parkingList;
+        parkingList = output.parkingList;
         int parkingSize = parkingList.size();
+        parkingName = new String[parkingList.size()];
 
 
         for (int i = 0; i < parkingSize; i++) {
@@ -484,6 +523,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                 gotoLocationZoom(ll, 6);
             }
 
+            parkingName[i] = parkingList.get(i).Parking_Name ;
 
         }
 

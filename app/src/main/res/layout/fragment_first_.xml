@@ -52,25 +52,29 @@
     </android.support.design.widget.CoordinatorLayout>
 
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/et_search"
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="12dp"
-        android:alpha="0.5"
+
         android:background="@drawable/search_box"
         android:drawableLeft="@drawable/ic_search_black_24dp"
         android:gravity="center"
         android:hint="@string/search"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:singleLine="true"
-        android:textColorHint="@android:color/black"
+
+        android:textColor="#000"
+        android:textColorHint="#000"
         android:textSize="15dp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        />
+
+
 
 </RelativeLayout>
