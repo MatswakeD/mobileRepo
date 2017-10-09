@@ -67,7 +67,7 @@ public class ClosestParking extends Service {
             @Override
             public void run() {
                 for (int i = 0; i < 5; i++) {
-                    long futureTime = System.currentTimeMillis() + 1000;
+                    long futureTime = System.currentTimeMillis() + 2000;
                     long currentTime = System.currentTimeMillis();
 
                     while (currentTime < futureTime) {

@@ -20,6 +20,7 @@ import android.support.v4.app.Fragment;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,11 +37,16 @@ import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.example.dee_kay.myapplication.WcfObjects.Parking;
 import com.example.dee_kay.myapplication.WcfObjects.User;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -58,6 +64,8 @@ import java.io.IOException;
 
 import java.util.List;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 import static com.example.dee_kay.myapplication.Login.USER_ID;
 
 /**
@@ -110,8 +118,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         handler = new Handler();
 
-        //for searching
-        et_search = (AutoCompleteTextView) mView.findViewById(R.id.et_search);
 
         //Getting the parking(s) using a thread
         //While the application is still loading
@@ -127,8 +133,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             }
         });
 
-        //Setting the text box to visible
-        setSearchTextBoxToVisible();
 
         //For searching a specific parking
         Search();
@@ -185,13 +189,10 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             }
         });
 
+        //Starting the thread
         parkingThread.start();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 
     @Override
     public void onPause() {
@@ -222,7 +223,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             //passing the input class as a parameter to the service
             client.addParameter("request", "");
 
-
             output = new Output();
 
             try {
@@ -251,7 +251,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                                 geoLocation();
                                 parkingList = output.parkingList;
                             } else if (IsSearchig == true) {
-                                geoSearch(et_search.getText().toString());
+
                                 IsSearchig = false;
 
                             }
@@ -370,44 +370,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
 
     /**
-     * For setting the text box visible
-     */
-    public void setSearchTextBoxToVisible() {
-        btnSearch = (FloatingActionButton) mView.findViewById(R.id.btnFB_search);
-        btnSearch.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                et_search.setVisibility(View.VISIBLE);
-                AutoCompleteSearch();
-                return true;
-            }
-        });
-
-    }
-
-
-    /**
-     * Used for searching
-     * Provide user with auto-complete based on the names that are in the data base
-     */
-    public void AutoCompleteSearch() {
-
-        if (parkingName.length != 0) {
-            ArrayAdapter<String> adapter = new AutoCompleteAdapter(getActivity(),parkingName);
-            et_search.setAdapter(adapter);
-
-        } else {
-            Snackbar.make(mView, "No parking(s) to search from ,sorry !!", Snackbar.LENGTH_LONG).show();
-        }
-
-//        String[] parkingName = {"alec","auto","love","lang"};
-//
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, parkingName);
-//        et_search.setAdapter(adapter);
-    }
-
-    /**
      * Used for searching a specific location
      */
     private void Search() {
@@ -418,16 +380,64 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                 IsSearchig = true;
                 new myAsync().execute();
 
+                try {
+                    Intent intent =
+                            new PlaceAutocomplete
+                                    .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                    .build(getActivity());
+                    startActivityForResult(intent, 1);
+                } catch (GooglePlayServicesRepairableException e) {
+                    // TODO: Handle the error.
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    // TODO: Handle the error.
+                }
+
             }
         });
 
     }
 
+    public LatLng searchResultsLatLong = null;
+    public CharSequence searchResultsPlaceName = "";
+    public CharSequence searchResultsAddress = null;
+    // A place has been received; use requestCode to track the request.
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                // retrieve the data by using getPlace() method.
+                Place place = PlaceAutocomplete.getPlace(getActivity(), data);
+                Log.e("Tag", "Place: " + place.getAddress() + place.getPhoneNumber());
+
+
+                //Saving the search results in variables to use later
+                searchResultsLatLong = place.getLatLng();
+                searchResultsPlaceName = place.getName();
+                searchResultsAddress = place.getAddress();
+
+                try {
+                    geoSearch(searchResultsPlaceName.toString(),searchResultsLatLong);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(getActivity(), data);
+                // TODO: Handle the error.
+                Snackbar.make(mView,"Invalid search input!!",Snackbar.LENGTH_LONG).show();
+                Log.e("Tag", status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+                Snackbar.make(mView,"Search Cancelled !!",Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
 
     /**
      * For searching a specific parking on the map
      */
-    public void geoSearch(String parking) throws IOException {
+    public void geoSearch(String parking, LatLng latLng) throws IOException {
         Geocoder gc = new Geocoder(getActivity());
 
         parkingList = output.parkingList;
@@ -438,21 +448,29 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         for (int i = 0; i < parkingSize; i++) {
 
-            if (parking.trim().equals(parkingList.get(i).Parking_Name)) {
-
+            //Checking if the parking provided by the user, is in our database
+            if (parking.trim().toLowerCase().equals(parkingList.get(i).Parking_Name.trim().toLowerCase()) )
+            {
                 isFound = true;
                 counter = i;
+            }else
+            {
+                //Searching by coordinates
+                double lng = latLng.longitude;
+                double lat = latLng.latitude;
+                if (lng == parkingList.get(i).Coordinates_lng && lat == parkingList.get(i).Coordinates_ltd )
+                {
+                    isFound = true;
+                    counter = i;
+                }
 
-                et_search.setVisibility(View.INVISIBLE);
-                continue;
-            } else {
-
-                //Toast.makeText(getActivity(),"No parking by that name in our system !!",Toast.LENGTH_LONG).show();
             }
+
+
 
         }
 
-        if (isFound == true) {
+        if (isFound) {
             if (mCurrLocationMarker != null) {
                 mGoogleMap.clear();
             }

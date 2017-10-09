@@ -47,10 +47,17 @@
             app:backgroundTint="#CCf5f5f5"
             app:fabSize="mini" />
 
-
-
     </android.support.design.widget.CoordinatorLayout>
 
+
+
+    <TextView
+        android:id="@+id/searched_address"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/findPlace"
+        android:layout_margin="20dp"
+        android:textSize="25dp" />
 
     <AutoCompleteTextView
         android:id="@+id/et_search"

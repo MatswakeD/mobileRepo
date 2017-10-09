@@ -59,13 +59,15 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
 
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value=" AIzaSyDBbmFLsgluMQtZuDeL6GKitaZeHc-3qiI" />
+        <!--<meta-data-->
+            <!--android:name="com.google.android.maps.v2.API_KEY"-->
+            <!--android:value=" AIzaSyDWiMBi6TRsjQOBwgCK-8YS87G6acq2pgE" />-->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDWiMBi6TRsjQOBwgCK-8YS87G6acq2pgE" />
         <activity
             android:name=".OpenGate"
             android:label="@string/title_activity_open_gate"
