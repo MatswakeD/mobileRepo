@@ -140,6 +140,9 @@ public class profile_nav_drawer extends AppCompatActivity
         }
         else if (id == R.id.nav_history) {
 
+             ParkingHistory PH = new ParkingHistory();
+             FragmentManager manager = getSupportFragmentManager();
+             manager.beginTransaction().replace(R.id.content_profile_nav_drawer, PH, PH.getTag()).commit();
         }
 
         else if (id == R.id.nav_logout_profile) {

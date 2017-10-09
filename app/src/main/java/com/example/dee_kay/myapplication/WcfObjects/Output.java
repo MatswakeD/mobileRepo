@@ -25,6 +25,7 @@ public class Output
     public List<Book> Booking_List_Old;
     public List<Book> Booking_List_Active;
     public List<Hours> HoursList;
+    public List<ParkingTransc> parkingTransc;
 
 
     public String INorOUT;
@@ -39,6 +40,7 @@ public class Output
         this.Booking_List_Old = new ArrayList<>();
         this.Booking_List_Active = new ArrayList<>();
         this.HoursList = new ArrayList<>();
+        this.parkingTransc = new ArrayList<>();
 
         this.user = new User();
         this.User_ID = 0;

@@ -2,14 +2,11 @@ package com.example.dee_kay.myapplication;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Service;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
+
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -20,8 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.dee_kay.myapplication.DataBase.DateBaseHelper;
@@ -29,12 +24,14 @@ import com.example.dee_kay.myapplication.WcfObjects.Input;
 import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
 
 import java.io.FileInputStream;
 
+/**
+ * MainActivity handles the start up of the program
+ */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static boolean ONBACKPRESS = false;
@@ -47,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Output output;
     Handler handler;
     String filename = "file.txt";
+    GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +86,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FM = getSupportFragmentManager();
             FT = FM.beginTransaction();
             FT.replace(R.id.content_main, new Host_Home_Tab()).commit();
+
+            if(gv.getUserID().equals("empty"))
+            {
+                //If the user is no longer logged in
+                enableNavLabels();
+            }else
+            {
+                //if the user is still logged in
+                loggedInNavLabels();
+            }
+
+
         }
 
 
@@ -156,7 +167,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         if (id == R.id.action_exit) {
-            finish();
+
+            finish();  //exiting the program completely
             return true;
         }
 
@@ -241,7 +253,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if (doubleBackToExitPressedOnce) {
-            finish();
+
+            //Closing all other active activities
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("EXIT", true);
+            startActivity(intent);
+
+            //Then closing main activity
+            if (getIntent().getBooleanExtra("EXIT", false)) {
+                finish();
+            }
+
             Toast.makeText(this, "Application closed", Toast.LENGTH_LONG).show();
             System.exit(0);
             return;
@@ -314,6 +337,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return text;
     }
 
+    /**
+     * Showing the user that they can not access other part of the application
+     * If they are not logged in
+     * So they should log in first before they can access other part of the application
+     */
+    protected void enableNavLabels() {
+        navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
+        navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+        navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+
+
+    }
+
+    /**
+     * For setting the log in and log out clickable or un-clickable
+     * Based on if the user successfully logged in
+     */
+    protected void loggedInNavLabels() {
+        navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
+        navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+    }
+
 
     class myAsync extends AsyncTask {
         @Override
@@ -348,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         if (out.Comfirmation.equals("true")) {
                             if (out.User_ID > 0) {
-                                GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
+
 
                                 gv.setUserID(out.User_ID + "");
                                 gv.setFirstname(out.user.FirstName);
@@ -357,12 +402,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                 String userID = gv.getUserID();
                                 if (userID.equals("empty")) {
-                                    navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
-                                    navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
-                                    navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+
+                                    //if the user was not logged in successfully
+                                    enableNavLabels();
                                 } else {
-                                    navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
-                                    navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+
+                                    //if the user is logged in successfully
+                                    loggedInNavLabels();
 
                                     if (out.INorOUT.equals("OUT")) {
 
@@ -394,12 +440,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
                             String userID = gv.getUserID();
                             if (userID.equals("empty")) {
-                                navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
-                                navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
-                                navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+
+                                //Logging in was unsuccessful
+                                enableNavLabels();
                             } else {
-                                navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
-                                navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+
+                                //Logging was successful
+                                loggedInNavLabels();
                             }
 
                         }
@@ -411,12 +458,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
                         String userID = gv.getUserID();
                         if (userID.equals("empty")) {
-                            navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
-                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
-                            navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+
+                            //Logging in was unsuccessful
+                            enableNavLabels();
                         } else {
-                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
-                            navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+                            //Logging was successful
+                            loggedInNavLabels();
 
 
                         }
@@ -425,12 +472,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new myAsync().execute();
                         String id = gv.getUserID();
                         if (id.equals("empty")) {
-                            navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(false);
-                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
-                            navigationView.getMenu().findItem(R.id.nav_newProfile).setTitle("Log in to access your account");
+                            //Logging in was unsuccessful
+                            enableNavLabels();
                         } else {
-                            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
-                            navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
+                            //Logging was successful
+                            loggedInNavLabels();
 
 
                         }

@@ -33,6 +33,10 @@
     <string name="date_time">Date time</string>
     <string name="parking_fee">Parking fee</string>
     <string name="search">Search</string>
+    <string name="parking_city">Parking City</string>
+    <string name="parking_feee">Parking fee</string>
+    <string name="date_of_parking">Date of Parking</string>
+    <string name="parking_name">Parking Name</string>
 
 
 </resources>

@@ -20,7 +20,7 @@
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_history_black_24dp"
             android:title="History"
-            android:visible="false"/>
+            android:visible="true"/>
 
     </group>
 
