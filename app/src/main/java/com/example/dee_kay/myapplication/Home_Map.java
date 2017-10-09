@@ -110,11 +110,12 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         handler = new Handler();
 
-
         //for searching
         et_search = (AutoCompleteTextView) mView.findViewById(R.id.et_search);
 
-
+        //Getting the parking(s) using a thread
+        //While the application is still loading
+        GetParkingThread();
 
         //Button for tag in
         btnNFC = (FloatingActionButton) mView.findViewById(R.id.floatingBTN_nfcTab);
@@ -131,11 +132,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         //For searching a specific parking
         Search();
-
-        //For searching auto-complete
-        //if(parkingList != null)
-
-
 
         gv = ((GlobalVariables) getActivity().getApplicationContext());
         userIDgv = gv.getUserID();
@@ -172,19 +168,29 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             User_id = savedInstanceState.getString(USER_ID, "");
         }
 
-        new myAsync().execute();
 
 
+    }
 
+    /**
+     * Getting the parking while else the application is still loading
+     * Its component/fragment or activity
+     */
+    protected  void GetParkingThread()
+    {
+        Thread parkingThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new myAsync().execute();
+            }
+        });
+
+        parkingThread.start();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        if(!mGoogleApiClient.isConnected() && !mGoogleApiClient.isConnecting())
-//        {
-//            mGoogleApiClient.connect();
-//        }
     }
 
     @Override
@@ -199,19 +205,17 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
     @Override
     public void onClick(View v) {
 
-
     }
 
-    /*
- * Used for getting parking(s) from the data-store
- * */
+    /**
+    * Used for getting parking(s) from the data-store
+    */
     class myAsync extends AsyncTask {
 
         @Override
         protected Object doInBackground(Object[] params) {
 
             FireExitClient client = new FireExitClient(Input.AZURE_URL);
-
 
             client.configure(new Configurator("http://tempuri.org/", "IService1", "GetParkings"));
 
@@ -330,7 +334,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         }
 
-
         if (mGoogleMap != null) {
             mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
@@ -429,7 +432,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
         parkingList = output.parkingList;
         boolean isFound = false;
-
 
         int counter = 0;
         int parkingSize = parkingList.size();

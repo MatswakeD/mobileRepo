@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Output output;
     Handler handler;
     String filename = "file.txt";
-    GlobalVariables gv = ((GlobalVariables) getBaseContext().getApplicationContext());
+    GlobalVariables gv = null;
 
 
     @Override
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         myDB = new DateBaseHelper(this);
         handler = new Handler();
+        gv =  ((GlobalVariables) getApplicationContext());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -355,6 +356,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * Based on if the user successfully logged in
      */
     protected void loggedInNavLabels() {
+        navigationView.getMenu().findItem(R.id.nav_newProfile).setEnabled(true);
         navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(true);
         navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
     }
