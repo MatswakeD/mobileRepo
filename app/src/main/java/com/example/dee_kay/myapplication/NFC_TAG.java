@@ -219,27 +219,6 @@ public class NFC_TAG extends AppCompatActivity {
         }
     }
 
-
-    /**
-     * For placing the parking onto the list view
-     */
-    protected void plotParking() {
-        //Merging the parking list into an array
-        //listView = (ListView) findViewById(R.id.hoursList_view);
-
-        hoursList = output.HoursList;
-        int size = hoursList.size();
-        Hours = new Hours[size];
-        for (int i = 0; i < size; i++) {
-            Hours[i] = hoursList.get(i);
-        }
-
-        ArrayAdapter<Hours> hoursAdapter = new HoursCustomAdapter(this, Hours);
-        listView.setAdapter(hoursAdapter);
-
-    }
-
-
     private boolean isCredit = false;
 
     /**
@@ -335,13 +314,6 @@ public class NFC_TAG extends AppCompatActivity {
                     Output out = (Output) o;
 
                     try {
-
-                        if(isCredit == true)
-                        {
-                            isCredit = false;
-                            Toast.makeText(NFC_TAG.this,"You can tag in again",Toast.LENGTH_LONG).show();
-                        }else
-                        {
                             if(!out.Comfirmation.equals("ZERO"))
                             {
                                 if (out.Comfirmation.equals("IN")) {
@@ -356,11 +328,8 @@ public class NFC_TAG extends AppCompatActivity {
                                 }
                             }else if(out.Comfirmation.equals("ZERO"))
                             {
-                                ShowLoadCreditsDailog();
+                                Toast.makeText(NFC_TAG.this,"WARNING!! Insufficient funds",Toast.LENGTH_LONG).show();
                             }
-                        }
-
-
 
 
                     } catch (NullPointerException e) {

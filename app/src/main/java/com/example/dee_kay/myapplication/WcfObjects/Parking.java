@@ -14,9 +14,7 @@ public class Parking
 
     public double Coordinates_ltd;
     public double Coordinates_lng;
-
-    public int Number_Of_bays;
-
+    public double Congestion;
 
 
 }

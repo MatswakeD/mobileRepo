@@ -476,7 +476,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
             }
             List<Address> listName = gc.getFromLocation(parkingList.get(counter).Coordinates_ltd, parkingList.get(counter).Coordinates_lng, 20);
 
-            String locality = parkingList.get(counter).Parking_City + "\n" + "Number of bays " + parkingList.get(counter).Number_Of_bays;
+            String locality = parkingList.get(counter).Parking_City + "\n" + "Congestion " + parkingList.get(counter).Congestion + " %";
             Address address = listName.get(0);
 
             double lat = address.getLatitude();
@@ -518,7 +518,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
             if (list.size() != 0) {
                 Address address = list.get(0);
-                String locality = parkingList.get(i).Parking_City + "\n" + "Number of bays " + parkingList.get(i).Number_Of_bays;
+                String locality = parkingList.get(i).Parking_City + "\n" + "Congestion " + parkingList.get(i).Congestion + " %";
 
 
                 double lat = address.getLatitude();

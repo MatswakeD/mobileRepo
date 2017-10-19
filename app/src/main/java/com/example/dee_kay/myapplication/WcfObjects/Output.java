@@ -33,6 +33,7 @@ public class Output
 
     public String timeSpent;
     public int parking_ID;
+    public String Nobays;
 
     public Output()
     {

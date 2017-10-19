@@ -139,8 +139,9 @@ public class ClosestParking extends Service {
     boolean stopNotification = false;
     private Parking parking = null;
 
+
     /**
-     * Calculating the radius of the user
+     *
      */
     private void checkLocation() {
 

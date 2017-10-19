@@ -254,7 +254,7 @@ public class Booking extends AppCompatActivity implements DatePickerDialog.OnDat
                         {
                             tv_parkingName.setText(out.parking.Parking_Name);
                             tv_parkingCity.setText(out.parking.Parking_City);
-                            tv_numOfbay.setText(out.parking.Number_Of_bays + "");
+                            //tv_numOfbay.setText(out.parking.Number_Of_bays + "");
                         }
 
 
