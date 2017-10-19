@@ -44,7 +44,7 @@ public class ParkingList_Adapeter_Layout extends ArrayAdapter<Parking>
         imageView.setImageResource(R.drawable.ic_place_black_24dp);
         tv_parkingName.setText(parking_name);
         tv_parking_city.setText(parking_city);
-        tv_congestion.setText(congestion + "");
+        tv_congestion.setText("Congestion "+congestion + " %");
 
         return customView;
     }
