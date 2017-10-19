@@ -108,7 +108,7 @@ public class Tab_ParkingList extends Fragment {
         parking_list = output.parkingList;
         int size = parking_list.size();
         PARKING = new Parking[size];
-        for(int i=0; i<size; i++ )
+        for(int i= 0; i<size; i++ )
         {
             PARKING[i] = parking_list.get(i);
         }

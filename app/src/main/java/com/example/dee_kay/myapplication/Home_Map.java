@@ -523,6 +523,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
                 double lat = address.getLatitude();
                 double lng = address.getLongitude();
+
                 LatLng ll = new LatLng(lat, lng);
 
                 //Storing the parking lat-long

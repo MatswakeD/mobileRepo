@@ -22,7 +22,6 @@ public class ParkingList_Adapeter_Layout extends ArrayAdapter<Parking>
         super(context, R.layout.parking_list_custom_layout,PARKING);
     }
 
-
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
@@ -30,18 +29,22 @@ public class ParkingList_Adapeter_Layout extends ArrayAdapter<Parking>
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View customView = inflater.inflate(R.layout.parking_list_custom_layout,parent,false);
 
+        //Getting the parking information from the database
         String parking_name = getItem(position).Parking_Name;
         String parking_city = getItem(position).Parking_City;
+        double congestion = getItem(position).Congestion;
 
         ImageView imageView = (ImageView) customView.findViewById(R.id.ParkingImage);
         TextView tv_parkingName = (TextView) customView.findViewById(R.id.tv_parkingName_parkingList);
         TextView tv_parking_city = (TextView) customView.findViewById(R.id.tv_parkingCity);
+        TextView tv_congestion = (TextView) customView.findViewById(R.id.tv_numBay);
 
 
-
+        //Plotting information on the custom layout
         imageView.setImageResource(R.drawable.ic_place_black_24dp);
         tv_parkingName.setText(parking_name);
         tv_parking_city.setText(parking_city);
+        tv_congestion.setText(congestion + "");
 
         return customView;
     }
