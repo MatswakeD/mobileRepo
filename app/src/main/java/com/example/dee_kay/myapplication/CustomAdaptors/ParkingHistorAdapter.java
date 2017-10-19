@@ -50,8 +50,8 @@ public class ParkingHistorAdapter extends ArrayAdapter<ParkingTransc>
         imageView.setImageResource(R.drawable.ic_place_black_24dp);
         tv_parkingName.setText(parking_name);
         tv_parking_city.setText(parking_city);
-        tv_parkingfee.setText("Parking charges : "+ parking_fee);
-        tv_parkingDateTime.setText("Parking Date : "+parkingDateTime);
+        tv_parkingfee.setText("Parking charges : R"+ parking_fee);
+        tv_parkingDateTime.setText("Parking Date :"+parkingDateTime);
 
         return customView;
     }

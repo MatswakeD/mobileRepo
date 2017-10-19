@@ -176,7 +176,7 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
         markerOptions.title(gv.ParkingName);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         OtherOlaces = mMap.addMarker(markerOptions);
-        gotoLocationZoom(ll, 6);
+        gotoLocationZoom(ll, 18);
 
     }
 
@@ -214,7 +214,7 @@ public class NearByParking extends FragmentActivity implements OnMapReadyCallbac
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //zoom in the camera to user current location
-        gotoLocationZoom(latLng, 14);
+        gotoLocationZoom(latLng, 18);
 
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
