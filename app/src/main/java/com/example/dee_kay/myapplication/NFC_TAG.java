@@ -314,8 +314,6 @@ public class NFC_TAG extends AppCompatActivity {
                     Output out = (Output) o;
 
                     try {
-                            if(!out.Comfirmation.equals("ZERO"))
-                            {
                                 if (out.Comfirmation.equals("IN")) {
                                     tv_parkingName.setText(out.parking.Parking_Name);
                                     tv_parkingLocation.setText(getString(R.string.temParkingSubcity) + out.parking.Parking_City);
@@ -326,11 +324,6 @@ public class NFC_TAG extends AppCompatActivity {
                                     Toast.makeText(NFC_TAG.this, "User not in a parking", Toast.LENGTH_LONG).show();
                                     tv_status.setText(R.string.temParkingStatus);
                                 }
-                            }else if(out.Comfirmation.equals("ZERO"))
-                            {
-                                Toast.makeText(NFC_TAG.this,"WARNING!! Insufficient funds",Toast.LENGTH_LONG).show();
-                            }
-
 
                     } catch (NullPointerException e) {
                         e.printStackTrace();
