@@ -29,6 +29,9 @@ import com.threepin.fireexit_wcf.FireExitClient;
 
 import java.util.Locale;
 
+/**
+ * Handles user profile
+ */
 public class profile_nav_drawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -73,8 +76,7 @@ public class profile_nav_drawer extends AppCompatActivity
 
         }
 
-
-
+        //Loading user profile fragment
         setTitle("Account");
         FM = getSupportFragmentManager();
         FT = FM.beginTransaction();
@@ -132,11 +134,7 @@ public class profile_nav_drawer extends AppCompatActivity
             Intent Home = new Intent(this, MainActivity.class);
             startActivity(Home);
 
-//        } else if (id == R.id.nav_booking) {
-//
-//            Booking_TabFragment BT = new Booking_TabFragment();
-//            FragmentManager manager = getSupportFragmentManager();
-//            manager.beginTransaction().replace(R.id.content_profile_nav_drawer, BT, BT.getTag()).commit();
+
         }
         else if (id == R.id.nav_history) {
 
@@ -293,18 +291,27 @@ public class profile_nav_drawer extends AppCompatActivity
                 public void run() {
                     Output out = (Output)o;
 
-                    if(!out.Comfirmation.toUpperCase(Locale.ENGLISH).equals("DEACTIVATED"))
-                    {
-                        navigationView.getMenu().findItem(R.id.nav_Deactivate).setEnabled(true);
+                    try {
+                        if (!out.Comfirmation.toUpperCase(Locale.ENGLISH).equals("DEACTIVATED")) {
+                            navigationView.getMenu().findItem(R.id.nav_Deactivate).setEnabled(true);
 
 //                        navigationView.getMenu().findItem(R.id.nav_booking).setEnabled(true);
-                        navigationView.getMenu().findItem(R.id.nav_activate_profile).setEnabled(false);
-                    }
-                    else  {
-                        navigationView.getMenu().findItem(R.id.nav_activate_profile).setEnabled(true);
-                        navigationView.getMenu().findItem(R.id.nav_Deactivate).setEnabled(false);
+                            navigationView.getMenu().findItem(R.id.nav_activate_profile).setEnabled(false);
+                        } else {
+                            navigationView.getMenu().findItem(R.id.nav_activate_profile).setEnabled(true);
+                            navigationView.getMenu().findItem(R.id.nav_Deactivate).setEnabled(false);
 //                        navigationView.getMenu().findItem(R.id.nav_booking).setEnabled(false);
+                        }
                     }
+                    catch(NullPointerException e)
+                    {
+                        navigationView.getMenu().findItem(R.id.nav_activate_profile).setEnabled(false);
+                        navigationView.getMenu().findItem(R.id.nav_Deactivate).setEnabled(false);
+
+                        Toast.makeText(getApplication(),"User not logged in",Toast.LENGTH_LONG).show();
+                    }
+
+
 
 
                 }

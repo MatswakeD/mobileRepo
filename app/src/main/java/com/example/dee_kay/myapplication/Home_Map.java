@@ -446,11 +446,14 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         int counter = 0;
         int parkingSize = parkingList.size();
 
+
+
         for (int i = 0; i < parkingSize; i++) {
 
             //Checking if the parking provided by the user, is in our database
             if (parking.trim().toLowerCase().equals(parkingList.get(i).Parking_Name.trim().toLowerCase()) )
             {
+
                 isFound = true;
                 counter = i;
             }else
@@ -466,15 +469,15 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
             }
 
-
-
         }
 
         if (isFound) {
             if (mCurrLocationMarker != null) {
                 mGoogleMap.clear();
             }
-            List<Address> listName = gc.getFromLocation(parkingList.get(counter).Coordinates_ltd, parkingList.get(counter).Coordinates_lng, 20);
+//            List<Address> listName = gc.getFromLocation(parkingList.get(counter).Coordinates_ltd, parkingList.get(counter).Coordinates_lng, 20);
+
+            List<Address> listName = gc.getFromLocationName(parkingList.get(counter).Parking_Address, 1);
 
             String locality = parkingList.get(counter).Parking_City + "\n" + "Congestion " + parkingList.get(counter).Congestion + " %";
             Address address = listName.get(0);
@@ -523,7 +526,6 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
 
                 double lat = address.getLatitude();
                 double lng = address.getLongitude();
-
                 LatLng ll = new LatLng(lat, lng);
 
                 //Storing the parking lat-long

@@ -96,17 +96,17 @@
                 android:layout_marginBottom="10dp"
                 />
 
-            <EditText
-                android:id="@+id/et_telephone"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:textColorHint="@android:color/black"
-                android:gravity="center"
-                android:hint="Telephone"
-                android:textSize="15dp"
-                android:background="@drawable/rightroundcolor"
-                android:layout_marginBottom="10dp"
-                />
+            <!--<EditText-->
+                <!--android:id="@+id/et_telephone"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="35dp"-->
+                <!--android:textColorHint="@android:color/black"-->
+                <!--android:gravity="center"-->
+                <!--android:hint="Telephone"-->
+                <!--android:textSize="15dp"-->
+                <!--android:background="@drawable/rightroundcolor"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--/>-->
 
             <EditText
                 android:id="@+id/et_UserAddress"

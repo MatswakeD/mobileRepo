@@ -2,6 +2,7 @@ package com.example.dee_kay.myapplication;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 /**
  * MainActivity handles the start up of the program
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Handler handler;
     String filename = "file.txt";
     GlobalVariables gv = null;
+
 
 
     @Override
@@ -226,7 +229,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "Good Bye " + gv.getLasrName(), Toast.LENGTH_LONG).show();
             navigationView.getMenu().findItem(R.id.nav_login).setEnabled(false);
 
-            return true;
+            saveFile(filename,"");
+            navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+            navigationView.getMenu().findItem(R.id.nav_login).setEnabled(true);
+
+
         } else if (id == R.id.nav_newProfile) {
 
             Intent profile = new Intent(this, profile_nav_drawer.class);
@@ -314,6 +321,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+
+    /**
+     *
+     * @param file
+     * @param text
+     */
+    public void saveFile(String file, String text)
+    {
+        FileOutputStream fos;
+        try{
+
+            fos = MainActivity.this.getApplicationContext().openFileOutput(file, Context.MODE_PRIVATE);
+            fos.write(text.getBytes());
+            fos.close();
+            Toast.makeText(MainActivity.this,"Saved",Toast.LENGTH_LONG).show();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Toast.makeText(MainActivity.this,"Error saving file!!",Toast.LENGTH_LONG).show();
+        }
+    }
 
     /**
      * Read user information from file
