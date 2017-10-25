@@ -2,13 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dee_kay.myapplication.Tab_ParkingList">
+    tools:context="com.example.dee_kay.myapplication.Tab_ParkingList"
+    >
 
     <ListView
 
-        android:id="@+id/Parking_list_view"
+        android:id="@+id/parkingMapViewList"
         android:layout_width="match_parent"
-        android:dividerHeight="1.5dp"
+        android:dividerHeight="5.5dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="5dp"

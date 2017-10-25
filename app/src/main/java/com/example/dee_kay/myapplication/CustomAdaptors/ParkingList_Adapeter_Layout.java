@@ -18,6 +18,7 @@ import com.example.dee_kay.myapplication.WcfObjects.Parking;
 
 public class ParkingList_Adapeter_Layout extends ArrayAdapter<Parking>
 {
+
     public ParkingList_Adapeter_Layout(Context context,Parking [] PARKING ) {
         super(context, R.layout.parking_list_custom_layout,PARKING);
     }

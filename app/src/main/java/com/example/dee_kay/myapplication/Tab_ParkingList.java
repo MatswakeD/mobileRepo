@@ -15,16 +15,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.dee_kay.myapplication.CustomAdaptors.BookingCustomAdapter;
-import com.example.dee_kay.myapplication.CustomAdaptors.ParkingList_Adapeter_Layout;
-import com.example.dee_kay.myapplication.R;
+import com.example.dee_kay.myapplication.CustomAdaptors.ParkingMapView_Adapter;
+
 import com.example.dee_kay.myapplication.WcfObjects.Input;
 import com.example.dee_kay.myapplication.WcfObjects.Output;
 import com.example.dee_kay.myapplication.WcfObjects.Parking;
 import com.threepin.fireexit_wcf.Configurator;
 import com.threepin.fireexit_wcf.FireExitClient;
 
-import java.io.IOException;
+
 import java.util.List;
 
 /**
@@ -62,11 +61,26 @@ public class Tab_ParkingList extends Fragment {
         //Used for storing IDs globally
          gv = ((GlobalVariables)getActivity().getApplicationContext());
 
-        //Getting the parking(s) from db
-        new myAsync().execute();
-
+        //Thread the process of get parking(s).
+        GetParkings();
 
         return v;
+    }
+
+    /**
+     * Get parking(s) from db by a thread
+     */
+    protected void GetParkings()
+    {
+        Thread getParking = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                //Getting the parking(s) from db
+                new myAsync().execute();
+            }
+        });
+        getParking.start();
     }
 
     /**\
@@ -97,25 +111,37 @@ public class Tab_ParkingList extends Fragment {
 
     }
 
+
     /**
      * For placing the parking onto the list view
      */
     protected void plotParking()
     {
         //Merging the parking list into an array
-        listView = (ListView) getView().findViewById(R.id.Parking_list_view);
+        listView = (ListView) getView().findViewById(R.id.parkingMapViewList);
 
-        parking_list = output.parkingList;
-        int size = parking_list.size();
-        PARKING = new Parking[size];
-        for(int i= 0; i<size; i++ )
-        {
-            PARKING[i] = parking_list.get(i);
-        }
+        Thread DrawParking = new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        ArrayAdapter<Parking> parkingAdapter = new ParkingList_Adapeter_Layout(getActivity(),PARKING);
+                parking_list = output.parkingList;
+                int size = parking_list.size();
+                PARKING = new Parking[size];
+                for (int i = 0; i < size; i++) {
+                    PARKING[i] = parking_list.get(i);
+                }
+
+//        ArrayAdapter<Parking> parkingAdapter = new ParkingList_Adapeter_Layout(getActivity(),PARKING);
+//        listView.setAdapter(parkingAdapter);
+
+
+            }
+        });
+
+        DrawParking.start();
+
+        ArrayAdapter<Parking> parkingAdapter = new ParkingMapView_Adapter(getActivity(), PARKING);
         listView.setAdapter(parkingAdapter);
-
         //Handles item click
         clickCallBack();
     }

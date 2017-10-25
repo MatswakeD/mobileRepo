@@ -540,10 +540,10 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(ll);
                 markerOptions.title(parkingList.get(i).Parking_Name).snippet(locality);
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                 OtherOlaces = mGoogleMap.addMarker(markerOptions);
 
-                gotoLocationZoom(ll, 6);
+                gotoLocationZoom(ll, 8);
             }
 
             parkingName[i] = parkingList.get(i).Parking_Name ;
@@ -614,7 +614,7 @@ public class Home_Map extends Fragment implements OnMapReadyCallback, GoogleApiC
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
         //zoom in the camera to user current location
-        gotoLocationZoom(latLng, 14);
+        gotoLocationZoom(latLng, 15);
 
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
